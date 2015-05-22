@@ -13,9 +13,11 @@
 
 bool simulate;
 bool ignoreDotUnderscore;
+bool ignoreDotAPDisk;
 bool verbose;
 
 int sumDotUnderscore=0;
+int sumDotAPDisk=0;
 
 
 int main(int argc, const char * argv[]) {
@@ -27,6 +29,7 @@ int main(int argc, const char * argv[]) {
     GBSettings *factoryDefaults = [GBSettings settingsWithName:@"Factory" parent:nil];
     [factoryDefaults setBool:NO forKey:@"test-argument"];
     [factoryDefaults setBool:NO forKey:@"ignore-dot-underscore"];
+    [factoryDefaults setBool:NO forKey:@"ignore-apdisk"];
     [factoryDefaults setBool:NO forKey:@"simulate"];
     [factoryDefaults setBool:NO forKey:@"verbose"];
     
@@ -37,6 +40,7 @@ int main(int argc, const char * argv[]) {
     GBCommandLineParser *parser = [[GBCommandLineParser alloc] init];
     [parser registerOption:@"test-argument" shortcut:'t' requirement:GBValueNone];
     [parser registerOption:@"ignore-dot-underscore" shortcut:'d' requirement:GBValueNone];
+    [parser registerOption:@"ignore-apdisk" shortcut:'a' requirement:GBValueNone];
     [parser registerOption:@"simulate" shortcut:'s' requirement:GBValueNone];
     [parser registerOption:@"verbose" shortcut:'v' requirement:GBValueNone];
     
@@ -49,6 +53,7 @@ int main(int argc, const char * argv[]) {
     // From here on, just use settings...
     BOOL test=[settings boolForKey:@"test-argument"];
     ignoreDotUnderscore=[settings boolForKey:@"ignore-dot-underscore"];
+    ignoreDotAPDisk=[settings boolForKey:@"ignore-apdisk"];
     simulate=[settings boolForKey:@"ignore-dot-underscore"];
     verbose=[settings boolForKey:@"verbose"];
     
@@ -82,11 +87,9 @@ int main(int argc, const char * argv[]) {
     FSEventStreamScheduleWithRunLoop(stream, CFRunLoopGetCurrent(),kCFRunLoopDefaultMode);
     
     FSEventStreamStart(stream);
-    NSLog(@"Starting to watch ");
-    
-    
+    logger(@"Starting observation mode now. Please press Ctrl+C to interrupt",false);
+
     CFRunLoopRun();
-    NSLog(@"Starting to watch ");
     return 0;
 }
 
@@ -136,15 +139,11 @@ int processFile(NSString* file){
     NSFileManager *manager = [NSFileManager defaultManager];
     NSError *error = nil;
     
-    NSString* pattern=@"ttt";
-    NSString* origFile=@"";
-    
-    NSRange match;
-    
+    NSString* pattern=@"";
     
     //First we look for ´._ files
     
-    if (!ignoreDotUnderscore){
+    if (!ignoreDotAPDisk){
         
         pattern=@"._";
         
@@ -158,17 +157,15 @@ int processFile(NSString* file){
             NSString *potentialBaseFile=[NSString stringWithFormat:@"%@/%@", path,cuttedFileName];
             
             //check that it really starts with ._
-            if (firstThreeChar==@"._")
+            if ([firstThreeChar isEqualToString:pattern])
             {
-                bool testttt=[[NSFileManager defaultManager] fileExistsAtPath:potentialBaseFile ];
                 
                 if([[NSFileManager defaultManager] fileExistsAtPath:potentialBaseFile ])
                 {
                     
                     logger([NSString stringWithFormat:@"%@%@", @"Found the following ._ file:" , file],true);
                     
-                    
-                    
+
                     if (!simulate)
                         
                         if ([manager removeItemAtPath:file error:&error])
@@ -193,19 +190,51 @@ int processFile(NSString* file){
         
         
     }
+    
+    
+    if (!ignoreDotAPDisk){
+        
+       pattern=@".apdisk";
+        
+        if ([file rangeOfString:pattern].location != NSNotFound) {
+            
+                    logger([NSString stringWithFormat:@"%@%@", @"Found the following .apdisk file:" , file],true);
+                    
+                    
+                    if (!simulate)
+                        
+                        if ([manager removeItemAtPath:file error:&error])
+                        {
+                            logger(@"Sucesfully removed file",true);
+                            
+                            sumDotAPDisk++;
+                        }
+                        else  {
+                            logger(@"Error removing file",true);
+                            
+                            
+                        }
+                    return 2;
+                
+            
+            
+            
+        }
+        
+        
+        
+        
+    }
     return 0;
 }
 
 void cleanDirectory(NSString *directory)
 {
-    logger([NSString stringWithFormat:@"%@%@", @"Starting to clean directory :" , directory],true);
+    logger([NSString stringWithFormat:@"%@%@", @"Starting to clean directory :" , directory],false);
 
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSURL *url=[NSURL URLWithString:[directory stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-   // NSString *bundleURL = [NSString stringWithFormat:@"%@", directory];
-   // NSURL *url = [NSURL URLWithString:[bundleURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-    
-   // NSURL *bundleURL = [[NSBundle mainBundle] bundleURL];
+
     NSDirectoryEnumerator *enumerator = [fileManager enumeratorAtURL:url
                                           includingPropertiesForKeys:@[NSURLNameKey, NSURLIsDirectoryKey]
                                                              options:0
@@ -229,18 +258,8 @@ void cleanDirectory(NSString *directory)
         NSString *myString = [fileURL path];
         NSString  *test22=@"dfd";
         
-       // NSNumber *isDirectory;
-       // [fileURL getResourceValue:&isDirectory forKey:NSURLIsDirectoryKey error:nil];
-        
-        // Skip directories with '_' prefix, for example
-      //  if ([filename hasPrefix:@"_"] && [isDirectory boolValue]) {
-        //    [enumerator skipDescendants];
-          //  continue;
-        //}
-        
-        //if (![isDirectory boolValue]) {
-          //  [mutableFileURLs addObject:fileURL];
-        //}
+
     }
+    
 }
 
