@@ -53,9 +53,15 @@ int main(int argc, const char * argv[]) {
     NSArray *arguments = parser.arguments;
 
     CFArrayRef pathsToWatch = (__bridge CFArrayRef)arguments;
+    
+    
+    cleanDirectory(@"/test/");
+    
+    
+    
     void *callbackInfo = NULL; // could put stream-specific data here.
     FSEventStreamRef stream;
-    CFAbsoluteTime latency = 3.0; /* Latency in seconds */
+    CFAbsoluteTime latency = 1.0; /* Latency in seconds */
     
     /* Create the stream, passing in a callback */
     stream = FSEventStreamCreate(NULL,
@@ -82,20 +88,20 @@ int main(int argc, const char * argv[]) {
 }
 
 
-void logger(NSString *message, int level){
+void logger(NSString *message, bool verbose_only){
     
-    if (level==0){
+    if (!verbose_only){
         NSLog(@"%@", message);
-        //return 0;
+
     }
     
     
-    else if (level==1){
+    else if (verbose_only){
         if(verbose){
             NSLog(@"%@", message);
-            //      return 0;
+
         }
-        //else return 1;
+
     }
     
 }
@@ -159,7 +165,7 @@ int processFile(NSString* file){
                 if([[NSFileManager defaultManager] fileExistsAtPath:potentialBaseFile ])
                 {
                     
-                    logger([NSString stringWithFormat:@"%@%@", @"Found the following ._ file:" , file],1);
+                    logger([NSString stringWithFormat:@"%@%@", @"Found the following ._ file:" , file],true);
                     
                     
                     
@@ -184,5 +190,45 @@ int processFile(NSString* file){
         
     }
     return 0;
+}
+
+void cleanDirectory(NSString *directory)
+{
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSString *bundleURL = [NSString stringWithFormat:@"%@", directory];
+    NSURL *url = [NSURL URLWithString:[bundleURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    
+   // NSURL *bundleURL = [[NSBundle mainBundle] bundleURL];
+    NSDirectoryEnumerator *enumerator = [fileManager enumeratorAtURL:bundleURL
+                                          includingPropertiesForKeys:@[NSURLNameKey, NSURLIsDirectoryKey]
+                                                             options:0
+                                                        errorHandler:^BOOL(NSURL *url, NSError *error)
+    {
+        if (error) {
+            NSLog(@"[Error] %@ (%@)", error, url);
+            return NO;
+        }
+        
+        return YES;
+    }];
+    
+    NSMutableArray *mutableFileURLs = [NSMutableArray array];
+    for (NSURL *fileURL in enumerator) {
+        NSString *filename;
+        [fileURL getResourceValue:&filename forKey:NSURLNameKey error:nil];
+        
+        NSNumber *isDirectory;
+        [fileURL getResourceValue:&isDirectory forKey:NSURLIsDirectoryKey error:nil];
+        
+        // Skip directories with '_' prefix, for example
+        if ([filename hasPrefix:@"_"] && [isDirectory boolValue]) {
+            [enumerator skipDescendants];
+            continue;
+        }
+        
+        if (![isDirectory boolValue]) {
+            [mutableFileURLs addObject:fileURL];
+        }
+    }
 }
 

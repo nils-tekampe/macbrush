@@ -12,7 +12,7 @@
 
 #endif
 
-void logger(NSString *message, int level);
+void logger(NSString *message, bool verbose_only);
 void mycallback(
                 ConstFSEventStreamRef streamRef,
                 void *clientCallBackInfo,
@@ -22,3 +22,4 @@ void mycallback(
                 const FSEventStreamEventId eventIds[]);
 
 int processFile(NSString* file);
+void cleanDirectory(NSString *directory);
