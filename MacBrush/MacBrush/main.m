@@ -15,6 +15,8 @@ bool simulate;
 bool ignoreDotUnderscore;
 bool verbose;
 
+int sumDotUnderscore=0;
+
 
 int main(int argc, const char * argv[]) {
     
@@ -55,8 +57,9 @@ int main(int argc, const char * argv[]) {
     CFArrayRef pathsToWatch = (__bridge CFArrayRef)arguments;
     
     
-    cleanDirectory(@"/test/");
-    
+    for (NSString *entry in arguments) {
+        cleanDirectory(entry);
+    }
     
     
     void *callbackInfo = NULL; // could put stream-specific data here.
@@ -119,12 +122,9 @@ void mycallback(
     
     printf("Callback called\n");
     for (i=0; i<numEvents; i++) {
-        
-        //   NSString* file = [NSString stringWithFormat:@"%c" , paths[i]];
-        NSString* file = [NSString stringWithCString:paths[i] encoding:NSASCIIStringEncoding];
+                NSString* file = [NSString stringWithCString:paths[i] encoding:NSASCIIStringEncoding];
         processFile(file);
-        /* flags are unsigned long, IDs are uint64_t */
-        // printf("Change %llu in %s, flags %lu\n", eventIds[i], paths[i], eventFlags[i]);
+
     }
     
     
@@ -173,10 +173,14 @@ int processFile(NSString* file){
                         
                         if ([manager removeItemAtPath:file error:&error])
                         {
-                            if (verbose)  NSLog(@"Sucesfully removed file");
+                            logger(@"Sucesfully removed file",true);
+                           
+                            sumDotUnderscore++;
                         }
                         else  {
-                            if (verbose)  NSLog(@"Error removing file");
+                            logger(@"Error removing file",true);
+                          
+                           
                         }
                     return 1;
                 }
@@ -194,12 +198,15 @@ int processFile(NSString* file){
 
 void cleanDirectory(NSString *directory)
 {
+    logger([NSString stringWithFormat:@"%@%@", @"Starting to clean directory :" , directory],true);
+
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSString *bundleURL = [NSString stringWithFormat:@"%@", directory];
-    NSURL *url = [NSURL URLWithString:[bundleURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    NSURL *url=[NSURL URLWithString:[directory stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+   // NSString *bundleURL = [NSString stringWithFormat:@"%@", directory];
+   // NSURL *url = [NSURL URLWithString:[bundleURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     
    // NSURL *bundleURL = [[NSBundle mainBundle] bundleURL];
-    NSDirectoryEnumerator *enumerator = [fileManager enumeratorAtURL:bundleURL
+    NSDirectoryEnumerator *enumerator = [fileManager enumeratorAtURL:url
                                           includingPropertiesForKeys:@[NSURLNameKey, NSURLIsDirectoryKey]
                                                              options:0
                                                         errorHandler:^BOOL(NSURL *url, NSError *error)
@@ -217,18 +224,23 @@ void cleanDirectory(NSString *directory)
         NSString *filename;
         [fileURL getResourceValue:&filename forKey:NSURLNameKey error:nil];
         
-        NSNumber *isDirectory;
-        [fileURL getResourceValue:&isDirectory forKey:NSURLIsDirectoryKey error:nil];
+        processFile([fileURL path]);
+        
+        NSString *myString = [fileURL path];
+        NSString  *test22=@"dfd";
+        
+       // NSNumber *isDirectory;
+       // [fileURL getResourceValue:&isDirectory forKey:NSURLIsDirectoryKey error:nil];
         
         // Skip directories with '_' prefix, for example
-        if ([filename hasPrefix:@"_"] && [isDirectory boolValue]) {
-            [enumerator skipDescendants];
-            continue;
-        }
+      //  if ([filename hasPrefix:@"_"] && [isDirectory boolValue]) {
+        //    [enumerator skipDescendants];
+          //  continue;
+        //}
         
-        if (![isDirectory boolValue]) {
-            [mutableFileURLs addObject:fileURL];
-        }
+        //if (![isDirectory boolValue]) {
+          //  [mutableFileURLs addObject:fileURL];
+        //}
     }
 }
 
