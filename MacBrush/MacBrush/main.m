@@ -16,11 +16,6 @@ bool ignoreDotUnderscore;
 bool verbose;
 
 
-
-
-
-
-
 int main(int argc, const char * argv[]) {
     
     
@@ -56,15 +51,8 @@ int main(int argc, const char * argv[]) {
     verbose=[settings boolForKey:@"verbose"];
     
     NSArray *arguments = parser.arguments;
-    
-    
-    
-    
-    
-    
-    //Fixme
-    CFStringRef mypath = CFSTR("/Users/nils/test/");
-    CFArrayRef pathsToWatch = CFArrayCreate(NULL, (const void **)&mypath, 1, NULL);
+
+    CFArrayRef pathsToWatch = (__bridge CFArrayRef)arguments;
     void *callbackInfo = NULL; // could put stream-specific data here.
     FSEventStreamRef stream;
     CFAbsoluteTime latency = 3.0; /* Latency in seconds */
