@@ -27,7 +27,6 @@ int main(int argc, const char * argv[]) {
     NSLog(@"Starting to watch ");
     // Create settings stack.
     GBSettings *factoryDefaults = [GBSettings settingsWithName:@"Factory" parent:nil];
-    [factoryDefaults setBool:NO forKey:@"test-argument"];
     [factoryDefaults setBool:NO forKey:@"ignore-dot-underscore"];
     [factoryDefaults setBool:NO forKey:@"ignore-apdisk"];
     [factoryDefaults setBool:NO forKey:@"simulate"];
@@ -38,7 +37,6 @@ int main(int argc, const char * argv[]) {
     
     // Create parser and register all options.
     GBCommandLineParser *parser = [[GBCommandLineParser alloc] init];
-    [parser registerOption:@"test-argument" shortcut:'t' requirement:GBValueNone];
     [parser registerOption:@"ignore-dot-underscore" shortcut:'d' requirement:GBValueNone];
     [parser registerOption:@"ignore-apdisk" shortcut:'a' requirement:GBValueNone];
     [parser registerOption:@"simulate" shortcut:'s' requirement:GBValueNone];
@@ -51,14 +49,13 @@ int main(int argc, const char * argv[]) {
     
     
     // From here on, just use settings...
-    BOOL test=[settings boolForKey:@"test-argument"];
     ignoreDotUnderscore=[settings boolForKey:@"ignore-dot-underscore"];
     ignoreDotAPDisk=[settings boolForKey:@"ignore-apdisk"];
     simulate=[settings boolForKey:@"ignore-dot-underscore"];
     verbose=[settings boolForKey:@"verbose"];
     
     NSArray *arguments = parser.arguments;
-
+    
     CFArrayRef pathsToWatch = (__bridge CFArrayRef)arguments;
     
     
@@ -88,7 +85,7 @@ int main(int argc, const char * argv[]) {
     
     FSEventStreamStart(stream);
     logger(@"Starting observation mode now. Please press Ctrl+C to interrupt",false);
-
+    
     CFRunLoopRun();
     return 0;
 }
@@ -98,16 +95,16 @@ void logger(NSString *message, bool verbose_only){
     
     if (!verbose_only){
         NSLog(@"%@", message);
-
+        
     }
     
     
     else if (verbose_only){
         if(verbose){
             NSLog(@"%@", message);
-
+            
         }
-
+        
     }
     
 }
@@ -125,9 +122,9 @@ void mycallback(
     
     printf("Callback called\n");
     for (i=0; i<numEvents; i++) {
-                NSString* file = [NSString stringWithCString:paths[i] encoding:NSASCIIStringEncoding];
+        NSString* file = [NSString stringWithCString:paths[i] encoding:NSASCIIStringEncoding];
         processFile(file);
-
+        
     }
     
     
@@ -165,65 +162,46 @@ int processFile(NSString* file){
                     
                     logger([NSString stringWithFormat:@"%@%@", @"Found the following ._ file:" , file],true);
                     
+                    
+                    if (!simulate){
 
-                    if (!simulate)
-                        
                         if ([manager removeItemAtPath:file error:&error])
                         {
                             logger(@"Sucesfully removed file",true);
-                           
                             sumDotUnderscore++;
                         }
                         else  {
                             logger(@"Error removing file",true);
-                          
-                           
                         }
                     return 1;
+                    }
                 }
             }
-            
-            
         }
-        
-        
-        
-        
+
     }
-    
     
     if (!ignoreDotAPDisk){
         
-       pattern=@".apdisk";
+        pattern=@".apdisk";
         
         if ([file rangeOfString:pattern].location != NSNotFound) {
             
-                    logger([NSString stringWithFormat:@"%@%@", @"Found the following .apdisk file:" , file],true);
-                    
-                    
-                    if (!simulate)
-                        
-                        if ([manager removeItemAtPath:file error:&error])
-                        {
-                            logger(@"Sucesfully removed file",true);
-                            
-                            sumDotAPDisk++;
-                        }
-                        else  {
-                            logger(@"Error removing file",true);
-                            
-                            
-                        }
-                    return 2;
+            logger([NSString stringWithFormat:@"%@%@", @"Found the following .apdisk file:" , file],true);
+            
+            if (!simulate){
                 
-            
-            
-            
+                if ([manager removeItemAtPath:file error:&error])
+                {
+                    logger(@"Sucesfully removed file",true);
+                    sumDotAPDisk++;
+                }
+                else  {
+                    logger(@"Error removing file",true);
+                }
+            return 2;
+            }
         }
-        
-        
-        
-        
     }
     return 0;
 }
@@ -231,34 +209,31 @@ int processFile(NSString* file){
 void cleanDirectory(NSString *directory)
 {
     logger([NSString stringWithFormat:@"%@%@", @"Starting to clean directory :" , directory],false);
-
+    
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSURL *url=[NSURL URLWithString:[directory stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-
+    
     NSDirectoryEnumerator *enumerator = [fileManager enumeratorAtURL:url
                                           includingPropertiesForKeys:@[NSURLNameKey, NSURLIsDirectoryKey]
                                                              options:0
                                                         errorHandler:^BOOL(NSURL *url, NSError *error)
-    {
-        if (error) {
-            NSLog(@"[Error] %@ (%@)", error, url);
-            return NO;
-        }
-        
-        return YES;
-    }];
+                                         {
+                                             if (error) {
+                                                 NSLog(@"[Error] %@ (%@)", error, url);
+                                                 return NO;
+                                             }
+                                             
+                                             return YES;
+                                         }];
     
-    NSMutableArray *mutableFileURLs = [NSMutableArray array];
     for (NSURL *fileURL in enumerator) {
         NSString *filename;
         [fileURL getResourceValue:&filename forKey:NSURLNameKey error:nil];
         
         processFile([fileURL path]);
-        
-        NSString *myString = [fileURL path];
-        NSString  *test22=@"dfd";
-        
 
+        
+        
     }
     
 }
