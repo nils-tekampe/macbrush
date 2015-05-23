@@ -12,35 +12,21 @@
 		29D2B44A1B0F5B4200B504F4 /* GBOptionsHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D2B4441B0F5B4200B504F4 /* GBOptionsHelper.m */; };
 		29D2B44B1B0F5B4200B504F4 /* GBPrint.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D2B4461B0F5B4200B504F4 /* GBPrint.m */; };
 		29D2B44C1B0F5B4200B504F4 /* GBSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D2B4481B0F5B4200B504F4 /* GBSettings.m */; };
-		29D2B4511B10903F00B504F4 /* MacBrush in CopyFiles */ = {isa = PBXBuildFile; fileRef = 29D2B4361B0F5AEF00B504F4 /* MacBrush */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 /* End PBXBuildFile section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		29D2B4501B108EA800B504F4 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = /Users/nils/Documents/GitHub/MacBrush/binary;
-			dstSubfolderSpec = 0;
-			files = (
-				29D2B4511B10903F00B504F4 /* MacBrush in CopyFiles */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		29D2B4361B0F5AEF00B504F4 /* MacBrush */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = MacBrush; sourceTree = BUILT_PRODUCTS_DIR; };
-		29D2B4391B0F5AEF00B504F4 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		29D2B4401B0F5B4200B504F4 /* GBCli.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBCli.h; sourceTree = "<group>"; };
-		29D2B4411B0F5B4200B504F4 /* GBCommandLineParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBCommandLineParser.h; sourceTree = "<group>"; };
-		29D2B4421B0F5B4200B504F4 /* GBCommandLineParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBCommandLineParser.m; sourceTree = "<group>"; };
-		29D2B4431B0F5B4200B504F4 /* GBOptionsHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBOptionsHelper.h; sourceTree = "<group>"; };
-		29D2B4441B0F5B4200B504F4 /* GBOptionsHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBOptionsHelper.m; sourceTree = "<group>"; };
-		29D2B4451B0F5B4200B504F4 /* GBPrint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBPrint.h; sourceTree = "<group>"; };
-		29D2B4461B0F5B4200B504F4 /* GBPrint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBPrint.m; sourceTree = "<group>"; };
-		29D2B4471B0F5B4200B504F4 /* GBSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBSettings.h; sourceTree = "<group>"; };
-		29D2B4481B0F5B4200B504F4 /* GBSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBSettings.m; sourceTree = "<group>"; };
-		29D2B44D1B0F5BBB00B504F4 /* main.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = main.h; sourceTree = "<group>"; };
+		29D2B4391B0F5AEF00B504F4 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = main.m; path = /Users/nils/Documents/GitHub/MacBrush/MacBrush/MacBrush/main.m; sourceTree = "<absolute>"; };
+		29D2B4401B0F5B4200B504F4 /* GBCli.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GBCli.h; path = /Users/nils/Documents/GitHub/MacBrush/MacBrush/MacBrush/GBCli.h; sourceTree = "<absolute>"; };
+		29D2B4411B0F5B4200B504F4 /* GBCommandLineParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GBCommandLineParser.h; path = /Users/nils/Documents/GitHub/MacBrush/MacBrush/MacBrush/GBCommandLineParser.h; sourceTree = "<absolute>"; };
+		29D2B4421B0F5B4200B504F4 /* GBCommandLineParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GBCommandLineParser.m; path = /Users/nils/Documents/GitHub/MacBrush/MacBrush/MacBrush/GBCommandLineParser.m; sourceTree = "<absolute>"; };
+		29D2B4431B0F5B4200B504F4 /* GBOptionsHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GBOptionsHelper.h; path = /Users/nils/Documents/GitHub/MacBrush/MacBrush/MacBrush/GBOptionsHelper.h; sourceTree = "<absolute>"; };
+		29D2B4441B0F5B4200B504F4 /* GBOptionsHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GBOptionsHelper.m; path = /Users/nils/Documents/GitHub/MacBrush/MacBrush/MacBrush/GBOptionsHelper.m; sourceTree = "<absolute>"; };
+		29D2B4451B0F5B4200B504F4 /* GBPrint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GBPrint.h; path = /Users/nils/Documents/GitHub/MacBrush/MacBrush/MacBrush/GBPrint.h; sourceTree = "<absolute>"; };
+		29D2B4461B0F5B4200B504F4 /* GBPrint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GBPrint.m; path = /Users/nils/Documents/GitHub/MacBrush/MacBrush/MacBrush/GBPrint.m; sourceTree = "<absolute>"; };
+		29D2B4471B0F5B4200B504F4 /* GBSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GBSettings.h; path = /Users/nils/Documents/GitHub/MacBrush/MacBrush/MacBrush/GBSettings.h; sourceTree = "<absolute>"; };
+		29D2B4481B0F5B4200B504F4 /* GBSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GBSettings.m; path = /Users/nils/Documents/GitHub/MacBrush/MacBrush/MacBrush/GBSettings.m; sourceTree = "<absolute>"; };
+		29D2B44D1B0F5BBB00B504F4 /* main.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = main.h; path = /Users/nils/Documents/GitHub/MacBrush/MacBrush/MacBrush/main.h; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,7 +72,7 @@
 				29D2B4481B0F5B4200B504F4 /* GBSettings.m */,
 			);
 			path = MacBrush;
-			sourceTree = "<group>";
+			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
 
@@ -98,7 +84,6 @@
 				29D2B4321B0F5AEF00B504F4 /* Sources */,
 				29D2B4331B0F5AEF00B504F4 /* Frameworks */,
 				29D2B44E1B107BC800B504F4 /* Run Script */,
-				29D2B4501B108EA800B504F4 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -153,7 +138,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "GIT_RELEASE_VERSION=$(git describe --tags --always --dirty)\nCOMMITS=$(git rev-list HEAD | wc -l)\nCOMMITS=$(($COMMITS))\ndefaults write \"${BUILT_PRODUCTS_DIR}/${INFOPLIST_PATH%.*}\" \"CFBundleShortVersionString\" \"${GIT_RELEASE_VERSION#*v}\"\ndefaults write \"${BUILT_PRODUCTS_DIR}/${INFOPLIST_PATH%.*}\" \"CFBundleVersion\" \"${COMMITS}\"\n";
+			shellScript = "";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -287,6 +272,7 @@
 				29D2B43F1B0F5AEF00B504F4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
