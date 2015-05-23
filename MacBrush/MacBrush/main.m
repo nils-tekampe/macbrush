@@ -67,6 +67,24 @@ int main(int argc, const char * argv[]) {
     
     CFArrayRef pathsToWatch = (__bridge CFArrayRef)arguments;
     
+    if (arguments.count==0)
+    {
+        logger(@"Please provide at least one directory as an argument",false);
+        return 1;
+        
+    }
+    
+    //Check for each argument that the folder is really existing
+    
+    for (NSString *entry in arguments) {
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+       if (![fileManager fileExistsAtPath:entry])
+       {
+            logger([NSString stringWithFormat:@"%@%@" , entry,@" cannot be found. Please only specify folders that are existing."],false);
+           return 1;
+       }
+    }
+    
     
     for (NSString *entry in arguments) {
         cleanDirectory(entry);

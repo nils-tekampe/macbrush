@@ -96,6 +96,7 @@
 				29D2B4321B0F5AEF00B504F4 /* Sources */,
 				29D2B4331B0F5AEF00B504F4 /* Frameworks */,
 				29D2B4341B0F5AEF00B504F4 /* CopyFiles */,
+				29D2B44E1B107BC800B504F4 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -136,6 +137,22 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		29D2B44E1B107BC800B504F4 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "GIT_RELEASE_VERSION=$(git describe --tags --always --dirty)\nCOMMITS=$(git rev-list HEAD | wc -l)\nCOMMITS=$(($COMMITS))\ndefaults write \"${BUILT_PRODUCTS_DIR}/${INFOPLIST_PATH%.*}\" \"CFBundleShortVersionString\" \"${GIT_RELEASE_VERSION#*v}\"\ndefaults write \"${BUILT_PRODUCTS_DIR}/${INFOPLIST_PATH%.*}\" \"CFBundleVersion\" \"${COMMITS}\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		29D2B4321B0F5AEF00B504F4 /* Sources */ = {
@@ -233,14 +250,18 @@
 		29D2B43E1B0F5AEF00B504F4 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CURRENT_PROJECT_VERSION = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				VERSIONING_SYSTEM = "";
 			};
 			name = Debug;
 		};
 		29D2B43F1B0F5AEF00B504F4 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CURRENT_PROJECT_VERSION = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				VERSIONING_SYSTEM = "";
 			};
 			name = Release;
 		};
