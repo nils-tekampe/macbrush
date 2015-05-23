@@ -14,21 +14,26 @@
 bool simulate;
 bool ignoreDotUnderscore;
 bool ignoreDotAPDisk;
+bool ignoreDSStore;
+bool ignoreVolumeIcon;
 bool verbose;
 
 int sumDotUnderscore=0;
 int sumDotAPDisk=0;
+int sumDSStore=0;
+int sumVolumeIcon=0;
 
 
 int main(int argc, const char * argv[]) {
-    
-    
+
     
     NSLog(@"Starting to watch ");
     // Create settings stack.
     GBSettings *factoryDefaults = [GBSettings settingsWithName:@"Factory" parent:nil];
     [factoryDefaults setBool:NO forKey:@"ignore-dot-underscore"];
     [factoryDefaults setBool:NO forKey:@"ignore-apdisk"];
+    [factoryDefaults setBool:NO forKey:@"ignore-dsstore"];
+    [factoryDefaults setBool:NO forKey:@"ignore-volumeicon"];
     [factoryDefaults setBool:NO forKey:@"simulate"];
     [factoryDefaults setBool:NO forKey:@"verbose"];
     
@@ -39,6 +44,8 @@ int main(int argc, const char * argv[]) {
     GBCommandLineParser *parser = [[GBCommandLineParser alloc] init];
     [parser registerOption:@"ignore-dot-underscore" shortcut:'d' requirement:GBValueNone];
     [parser registerOption:@"ignore-apdisk" shortcut:'a' requirement:GBValueNone];
+    [parser registerOption:@"ignore-dsstore" shortcut:'o' requirement:GBValueNone];
+    [parser registerOption:@"ignore-volumeicon" shortcut:'v' requirement:GBValueNone];
     [parser registerOption:@"simulate" shortcut:'s' requirement:GBValueNone];
     [parser registerOption:@"verbose" shortcut:'v' requirement:GBValueNone];
     
@@ -51,6 +58,8 @@ int main(int argc, const char * argv[]) {
     // From here on, just use settings...
     ignoreDotUnderscore=[settings boolForKey:@"ignore-dot-underscore"];
     ignoreDotAPDisk=[settings boolForKey:@"ignore-apdisk"];
+    ignoreDSStore=[settings boolForKey:@"ignore-dsstore"];
+    ignoreVolumeIcon=[settings boolForKey:@"ignore-volumeicon"];
     simulate=[settings boolForKey:@"ignore-dot-underscore"];
     verbose=[settings boolForKey:@"verbose"];
     
@@ -119,15 +128,12 @@ void mycallback(
 {
     int i;
     char **paths = eventPaths;
-    
-    printf("Callback called\n");
+
     for (i=0; i<numEvents; i++) {
+        if (!(eventFlags[i]&kFSEventStreamEventFlagItemRemoved)){
         NSString* file = [NSString stringWithCString:paths[i] encoding:NSASCIIStringEncoding];
-        processFile(file);
-        
+            processFile(file);}
     }
-    
-    
 }
 
 
@@ -157,7 +163,7 @@ int processFile(NSString* file){
             if ([firstThreeChar isEqualToString:pattern])
             {
                 
-                if([[NSFileManager defaultManager] fileExistsAtPath:potentialBaseFile ])
+                if([[NSFileManager defaultManager] fileExistsAtPath:potentialBaseFile])
                 {
                     
                     logger([NSString stringWithFormat:@"%@%@", @"Found the following ._ file:" , file],true);
@@ -203,38 +209,66 @@ int processFile(NSString* file){
             }
         }
     }
+    
+    if (!ignoreDSStore){
+        
+        pattern=@".DS_Store";
+        
+        if ([file rangeOfString:pattern].location != NSNotFound) {
+            
+            logger([NSString stringWithFormat:@"%@%@", @"Found the following .DS_Store file:" , file],true);
+            
+            if (!simulate){
+                
+                if ([manager removeItemAtPath:file error:&error])
+                {
+                    logger(@"Sucesfully removed file",true);
+                    sumDSStore++;
+                }
+                else  {
+                    logger(@"Error removing file",true);
+                }
+                return 3;
+            }
+        }
+    }
+    
+    if (!ignoreDSStore){
+        
+        pattern=@".VolumeIcon.icns";
+        
+        if ([file rangeOfString:pattern].location != NSNotFound) {
+            
+            logger([NSString stringWithFormat:@"%@%@", @"Found the following .VolumeIcon.icns file:" , file],true);
+            
+            if (!simulate){
+                
+                if ([manager removeItemAtPath:file error:&error])
+                {
+                    logger(@"Sucesfully removed file",true);
+                    sumVolumeIcon++;
+                }
+                else  {
+                    logger(@"Error removing file",true);
+                }
+                return 4;
+            }
+        }
+    }
+
     return 0;
 }
 
 void cleanDirectory(NSString *directory)
 {
     logger([NSString stringWithFormat:@"%@%@", @"Starting to clean directory :" , directory],false);
-    
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSURL *url=[NSURL URLWithString:[directory stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-    
-    NSDirectoryEnumerator *enumerator = [fileManager enumeratorAtURL:url
-                                          includingPropertiesForKeys:@[NSURLNameKey, NSURLIsDirectoryKey]
-                                                             options:0
-                                                        errorHandler:^BOOL(NSURL *url, NSError *error)
-                                         {
-                                             if (error) {
-                                                 NSLog(@"[Error] %@ (%@)", error, url);
-                                                 return NO;
-                                             }
-                                             
-                                             return YES;
-                                         }];
-    
-    for (NSURL *fileURL in enumerator) {
-        NSString *filename;
-        [fileURL getResourceValue:&filename forKey:NSURLNameKey error:nil];
-        
-        processFile([fileURL path]);
+    NSDirectoryEnumerator *directoryEnumerator = [[NSFileManager defaultManager] enumeratorAtPath:directory];
 
-        
-        
+    for (NSString *file in directoryEnumerator) {
+        NSString *filename;
+        filename=file;
+       filename= [directory stringByAppendingPathComponent:file];
+        processFile(filename);
     }
-    
 }
 
