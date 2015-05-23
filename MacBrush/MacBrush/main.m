@@ -54,7 +54,6 @@ int main(int argc, const char * argv[]) {
     [parser parseOptionsWithArguments:argv count:argc];
     
     
-    
     // From here on, just use settings...
     ignoreDotUnderscore=[settings boolForKey:@"ignore-dot-underscore"];
     ignoreDotAPDisk=[settings boolForKey:@"ignore-apdisk"];

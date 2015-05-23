@@ -12,17 +12,19 @@
 		29D2B44A1B0F5B4200B504F4 /* GBOptionsHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D2B4441B0F5B4200B504F4 /* GBOptionsHelper.m */; };
 		29D2B44B1B0F5B4200B504F4 /* GBPrint.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D2B4461B0F5B4200B504F4 /* GBPrint.m */; };
 		29D2B44C1B0F5B4200B504F4 /* GBSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D2B4481B0F5B4200B504F4 /* GBSettings.m */; };
+		29D2B4511B10903F00B504F4 /* MacBrush in CopyFiles */ = {isa = PBXBuildFile; fileRef = 29D2B4361B0F5AEF00B504F4 /* MacBrush */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		29D2B4341B0F5AEF00B504F4 /* CopyFiles */ = {
+		29D2B4501B108EA800B504F4 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
-			dstPath = /usr/share/man/man1/;
+			dstPath = /Users/nils/Documents/GitHub/MacBrush/binary;
 			dstSubfolderSpec = 0;
 			files = (
+				29D2B4511B10903F00B504F4 /* MacBrush in CopyFiles */,
 			);
-			runOnlyForDeploymentPostprocessing = 1;
+			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
@@ -95,8 +97,8 @@
 			buildPhases = (
 				29D2B4321B0F5AEF00B504F4 /* Sources */,
 				29D2B4331B0F5AEF00B504F4 /* Frameworks */,
-				29D2B4341B0F5AEF00B504F4 /* CopyFiles */,
-				29D2B44E1B107BC800B504F4 /* ShellScript */,
+				29D2B44E1B107BC800B504F4 /* Run Script */,
+				29D2B4501B108EA800B504F4 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -139,13 +141,14 @@
 /* End PBXProject section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		29D2B44E1B107BC800B504F4 /* ShellScript */ = {
+		29D2B44E1B107BC800B504F4 /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = "Run Script";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
