@@ -23,3 +23,4 @@ void mycallback(
 
 int processFile(NSString* file);
 void cleanDirectory(NSString *directory);
+void resetCounter();

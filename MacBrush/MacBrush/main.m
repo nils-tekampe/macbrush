@@ -127,6 +127,7 @@ void logger(NSString *message, bool verbose_only){
     
     else if (verbose_only){
         if(verbose){
+           
             NSLog(@"%@", message);
             
         }
@@ -279,13 +280,29 @@ int processFile(NSString* file){
 void cleanDirectory(NSString *directory)
 {
     logger([NSString stringWithFormat:@"%@%@", @"Starting to clean directory :" , directory],false);
+    resetCounter();
+    
     NSDirectoryEnumerator *directoryEnumerator = [[NSFileManager defaultManager] enumeratorAtPath:directory];
-
+    
+    
     for (NSString *file in directoryEnumerator) {
         NSString *filename;
         filename=file;
        filename= [directory stringByAppendingPathComponent:file];
         processFile(filename);
     }
+    logger([NSString stringWithFormat:@"%@%@", @"Finished cleaning directory :" , directory],false);
+    logger([NSString stringWithFormat:@"%d%@",sumDotAPDisk, @" .AP_Disk files have been removed"],false);
+    logger([NSString stringWithFormat:@"%d%@",sumDotUnderscore, @" ._ files have been removed"],false);
+    logger([NSString stringWithFormat:@"%d%@",sumDSStore, @" .DS_Store files have been removed"],false);
+    logger([NSString stringWithFormat:@"%d%@",sumVolumeIcon, @" .VolumeIcon.icns files have been removed"],false);
+}
+
+void resetCounter(){
+    sumDotAPDisk=0;
+    sumDotUnderscore=0;
+    sumDSStore=0;
+    sumVolumeIcon=0;
+    
 }
 
