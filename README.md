@@ -3,7 +3,13 @@ This programm cleans a directory and all its subdirectories from a set of hidden
 The programm is of specific use for folders which are shared between OS X and other Operating Systems (e.g. via Dropbox).
 
 #Installation
-coming soon
+Installation is pretty simple and straightforward. Clone this repository or download as an archive. Then copy the file McBrush from the folder /binary to /usr/local/bin on your Mac; afterwards you need to set the execute permission on that file. As an alternative you can use the simple install.sh in the binary folder.
+As an alternative you can use the following set of commands for installation:
+```bash
+wget https://github.com/nils-tekampe/MacBrush/blob/master/binary/MacBrush
+cp ./MacBrush /usr/local/bin
+chmod +x /usr/local/bin/MacBrush
+```
 
 #Manpage 
 ##NAME
