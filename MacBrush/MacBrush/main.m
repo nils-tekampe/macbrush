@@ -7,6 +7,7 @@
 //
 #import <Foundation/Foundation.h>
 #include <CoreServices/CoreServices.h>
+#include <ncurses.h>
 #import "GBCli.h"
 #include "main.h"
 
@@ -330,5 +331,34 @@ void resetCounter(){
     sumDSStore=0;
     sumVolumeIcon=0;
     
+}
+
+void printStatus(){
+    
+    initscr();
+    cbreak();
+    noecho();
+    nonl();
+    move(0,0);
+    scrollok(stdscr, TRUE);
+    keypad(stdscr, TRUE);
+    
+    
+    int x,y;
+    getyx(stdscr,y,x);
+    move(y, 0);
+    /// add loop and push to buffer
+    char values[1024] = {};
+    
+    winnstr(stdscr,values, 1024);
+    move(y+10, 0);
+    printw("buffer was %s", values);
+    move(0,0);
+    printw("buffer was %s", values);
+    
+    refresh();
+    getch();
+    endwin();
+    exit(EXIT_SUCCESS);
 }
 

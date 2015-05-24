@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		292DDDE81B125DBF00E7436C /* libncurses.5.4.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 292DDDE71B125DBF00E7436C /* libncurses.5.4.dylib */; };
 		29D2B43A1B0F5AEF00B504F4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D2B4391B0F5AEF00B504F4 /* main.m */; };
 		29D2B4491B0F5B4200B504F4 /* GBCommandLineParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D2B4421B0F5B4200B504F4 /* GBCommandLineParser.m */; };
 		29D2B44A1B0F5B4200B504F4 /* GBOptionsHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D2B4441B0F5B4200B504F4 /* GBOptionsHelper.m */; };
@@ -15,6 +16,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		292DDDE71B125DBF00E7436C /* libncurses.5.4.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libncurses.5.4.dylib; path = usr/lib/libncurses.5.4.dylib; sourceTree = SDKROOT; };
 		29D2B4361B0F5AEF00B504F4 /* MacBrush */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = MacBrush; sourceTree = BUILT_PRODUCTS_DIR; };
 		29D2B4391B0F5AEF00B504F4 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = main.m; path = /Users/nils/Documents/GitHub/MacBrush/MacBrush/MacBrush/main.m; sourceTree = "<absolute>"; };
 		29D2B4401B0F5B4200B504F4 /* GBCli.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GBCli.h; path = /Users/nils/Documents/GitHub/MacBrush/MacBrush/MacBrush/GBCli.h; sourceTree = "<absolute>"; };
@@ -34,6 +36,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				292DDDE81B125DBF00E7436C /* libncurses.5.4.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -43,6 +46,7 @@
 		29D2B42D1B0F5AEF00B504F4 = {
 			isa = PBXGroup;
 			children = (
+				292DDDE71B125DBF00E7436C /* libncurses.5.4.dylib */,
 				29D2B4381B0F5AEF00B504F4 /* MacBrush */,
 				29D2B4371B0F5AEF00B504F4 /* Products */,
 			);
