@@ -17,6 +17,8 @@ bool ignoreDotAPDisk;
 bool ignoreDSStore;
 bool ignoreVolumeIcon;
 bool verbose;
+bool skipClean;
+bool skipObservation;
 
 int sumDotUnderscore=0;
 int sumDotAPDisk=0;
@@ -25,7 +27,7 @@ int sumVolumeIcon=0;
 
 
 int main(int argc, const char * argv[]) {
-
+    
     
     NSLog(@"Starting to watch ");
     // Create settings stack.
@@ -36,6 +38,9 @@ int main(int argc, const char * argv[]) {
     [factoryDefaults setBool:NO forKey:@"ignore-volumeicon"];
     [factoryDefaults setBool:NO forKey:@"simulate"];
     [factoryDefaults setBool:NO forKey:@"verbose"];
+    [factoryDefaults setBool:NO forKey:@"skip-clean"];
+    [factoryDefaults setBool:NO forKey:@"skip-observation"];
+    [factoryDefaults setBool:NO forKey:@"help"];
     
     [factoryDefaults setInteger:12 forKey:@"optionb"];
     GBSettings *settings = [GBSettings settingsWithName:@"CmdLine" parent:factoryDefaults];
@@ -48,6 +53,9 @@ int main(int argc, const char * argv[]) {
     [parser registerOption:@"ignore-volumeicon" shortcut:'v' requirement:GBValueNone];
     [parser registerOption:@"simulate" shortcut:'s' requirement:GBValueNone];
     [parser registerOption:@"verbose" shortcut:'v' requirement:GBValueNone];
+    [parser registerOption:@"skip-clean" shortcut:'c' requirement:GBValueNone];
+    [parser registerOption:@"skip-observation" shortcut:'o' requirement:GBValueNone];
+    [parser registerOption:@"help" shortcut:'h' requirement:GBValueNone];
     
     // Register settings and then parse command line
     [parser registerSettings:settings];
@@ -61,6 +69,16 @@ int main(int argc, const char * argv[]) {
     ignoreVolumeIcon=[settings boolForKey:@"ignore-volumeicon"];
     simulate=[settings boolForKey:@"ignore-dot-underscore"];
     verbose=[settings boolForKey:@"verbose"];
+    skipClean=[settings boolForKey:@"skip-clean"];
+    skipObservation=[settings boolForKey:@"skip-observation"];
+    
+    
+    if ([settings boolForKey:@"skip-observation"]){
+        
+        logger(@"usage: MacBrush [-f] [-v] targetDirectory", false);
+        return 0;
+    }
+    
     
     NSArray *arguments = parser.arguments;
     
@@ -77,43 +95,52 @@ int main(int argc, const char * argv[]) {
     
     for (NSString *entry in arguments) {
         NSFileManager *fileManager = [NSFileManager defaultManager];
-       if (![fileManager fileExistsAtPath:entry])
-       {
+        if (![fileManager fileExistsAtPath:entry])
+        {
             logger([NSString stringWithFormat:@"%@%@" , entry,@" cannot be found. Please only specify folders that are existing."],false);
-           return 1;
-       }
+            return 1;
+        }
     }
     
-    
-    for (NSString *entry in arguments) {
-        cleanDirectory(entry);
+    if (!skipClean){
+        for (NSString *entry in arguments) {
+            cleanDirectory(entry);
+        }
+    }
+    else
+    {
+        logger(@"Skipping to clean directories. Will continue with observation mode",false);
     }
     
+    if (!skipObservation){
+        void *callbackInfo = NULL; // could put stream-specific data here.
+        FSEventStreamRef stream;
+        CFAbsoluteTime latency = 1.0; /* Latency in seconds */
+        
+        /* Create the stream, passing in a callback */
+        stream = FSEventStreamCreate(NULL,
+                                     &mycallback,
+                                     callbackInfo,
+                                     pathsToWatch,
+                                     kFSEventStreamEventIdSinceNow, /* Or a previous event ID */
+                                     latency,
+                                     kFSEventStreamCreateFlagFileEvents//kFSEventStreamCreateFlagNone /* Flags explained in reference */
+                                     );
+        
+        /* Create the stream before calling this. */
+        FSEventStreamScheduleWithRunLoop(stream, CFRunLoopGetCurrent(),kCFRunLoopDefaultMode);
+        
+        FSEventStreamStart(stream);
+        logger(@"Starting observation mode now. Please press Ctrl+C to interrupt",false);
+        
+        CFRunLoopRun();
+        return 0;
+    }
+    else{
+        
+        logger(@"Skipping observation mode.",false);
+    }
     
-    void *callbackInfo = NULL; // could put stream-specific data here.
-    FSEventStreamRef stream;
-    CFAbsoluteTime latency = 1.0; /* Latency in seconds */
-    
-    /* Create the stream, passing in a callback */
-    stream = FSEventStreamCreate(NULL,
-                                 &mycallback,
-                                 callbackInfo,
-                                 pathsToWatch,
-                                 kFSEventStreamEventIdSinceNow, /* Or a previous event ID */
-                                 latency,
-                                 kFSEventStreamCreateFlagFileEvents//kFSEventStreamCreateFlagNone /* Flags explained in reference */
-                                 );
-    
-    
-    
-    /* Create the stream before calling this. */
-    FSEventStreamScheduleWithRunLoop(stream, CFRunLoopGetCurrent(),kCFRunLoopDefaultMode);
-    
-    FSEventStreamStart(stream);
-    logger(@"Starting observation mode now. Please press Ctrl+C to interrupt",false);
-    
-    CFRunLoopRun();
-    return 0;
 }
 
 
@@ -121,15 +148,12 @@ void logger(NSString *message, bool verbose_only){
     
     if (!verbose_only){
         NSLog(@"%@", message);
-        
     }
     
     
     else if (verbose_only){
         if(verbose){
-           
             NSLog(@"%@", message);
-            
         }
         
     }
@@ -146,12 +170,14 @@ void mycallback(
 {
     int i;
     char **paths = eventPaths;
-
+    
     for (i=0; i<numEvents; i++) {
         if (!(eventFlags[i]&kFSEventStreamEventFlagItemRemoved)){
-        NSString* file = [NSString stringWithCString:paths[i] encoding:NSASCIIStringEncoding];
+            NSString* file = [NSString stringWithCString:paths[i] encoding:NSASCIIStringEncoding];
             processFile(file);}
     }
+ 
+    printf("\r%s",[@"asdfasdfasdf" UTF8String]);
 }
 
 
@@ -180,7 +206,7 @@ int processFile(NSString* file){
             //check that it really starts with ._
             if ([firstThreeChar isEqualToString:pattern])
             {
-                
+                     
                 if([[NSFileManager defaultManager] fileExistsAtPath:potentialBaseFile])
                 {
                     
@@ -188,7 +214,7 @@ int processFile(NSString* file){
                     
                     
                     if (!simulate){
-
+                        
                         if ([manager removeItemAtPath:file error:&error])
                         {
                             logger(@"Sucesfully removed file",true);
@@ -197,12 +223,12 @@ int processFile(NSString* file){
                         else  {
                             logger(@"Error removing file",true);
                         }
-                    return 1;
+                        return 1;
                     }
                 }
             }
         }
-
+        
     }
     
     if (!ignoreDotAPDisk){
@@ -223,7 +249,7 @@ int processFile(NSString* file){
                 else  {
                     logger(@"Error removing file",true);
                 }
-            return 2;
+                return 2;
             }
         }
     }
@@ -273,7 +299,7 @@ int processFile(NSString* file){
             }
         }
     }
-
+    
     return 0;
 }
 
@@ -288,7 +314,7 @@ void cleanDirectory(NSString *directory)
     for (NSString *file in directoryEnumerator) {
         NSString *filename;
         filename=file;
-       filename= [directory stringByAppendingPathComponent:file];
+        filename= [directory stringByAppendingPathComponent:file];
         processFile(filename);
     }
     logger([NSString stringWithFormat:@"%@%@", @"Finished cleaning directory :" , directory],false);
