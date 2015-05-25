@@ -30,10 +30,10 @@ int DotUnderScoreX=0;
 int DotUnderScoreY=0;
 int DotAPDiskX=0;
 int DotAPDiskY=0;
-int DSStoreX=0;
-int DSStoreY=0;
-int VolumeIconX=0;
-int VolumeIconY=0;
+int DotDSStoreX=0;
+int DotDSStoreY=0;
+int DotVolumeIconX=0;
+int DotVolumeIconY=0;
 
 
 
@@ -62,7 +62,7 @@ int main(int argc, const char * argv[]) {
     [parser registerOption:@"ignore-dot-underscore" shortcut:'d' requirement:GBValueNone];
     [parser registerOption:@"ignore-apdisk" shortcut:'a' requirement:GBValueNone];
     [parser registerOption:@"ignore-dsstore" shortcut:'o' requirement:GBValueNone];
-    [parser registerOption:@"ignore-volumeicon" shortcut:'v' requirement:GBValueNone];
+    [parser registerOption:@"ignore-volumeicon" shortcut:'i' requirement:GBValueNone];
     [parser registerOption:@"simulate" shortcut:'s' requirement:GBValueNone];
     [parser registerOption:@"verbose" shortcut:'v' requirement:GBValueNone];
     [parser registerOption:@"skip-clean" shortcut:'c' requirement:GBValueNone];
@@ -105,6 +105,7 @@ int main(int argc, const char * argv[]) {
     
     //Check for each argument that the folder is really existing
     
+    @try {
     for (NSString *entry in arguments) {
         NSFileManager *fileManager = [NSFileManager defaultManager];
         if (![fileManager fileExistsAtPath:entry])
@@ -112,6 +113,13 @@ int main(int argc, const char * argv[]) {
             logger([NSString stringWithFormat:@"%@%@" , entry,@" cannot be found. Please only specify folders that are existing."],false);
             return 1;
         }
+    }
+        
+    }
+    @catch(NSException *e){
+        logger(@"Error while checking the arguments. May be due to a lack of permissions? Will exit now",false);
+        return 1;
+    
     }
     
     if (!skipClean){
@@ -125,6 +133,8 @@ int main(int argc, const char * argv[]) {
     }
     
     if (!skipObservation){
+        
+        @try{
         void *callbackInfo = NULL; // could put stream-specific data here.
         FSEventStreamRef stream;
         CFAbsoluteTime latency = 1.0; /* Latency in seconds */
@@ -144,9 +154,13 @@ int main(int argc, const char * argv[]) {
         
         FSEventStreamStart(stream);
         printStatus(arguments);
-        // logger(@"Starting observation mode now. Please press Ctrl+C to interrupt",false);
-        
+            
         CFRunLoopRun();
+        }
+        @catch(NSException *e){
+            logger(@"Error during observation mode. Will now exit",false);
+            return 1;
+        }
         return 0;
     }
     else{
@@ -190,7 +204,6 @@ void mycallback(
             processFile(file);}
     }
  
-    printf("\r%s",[@"asdfasdfasdf" UTF8String]);
 }
 
 
@@ -393,16 +406,19 @@ void printStatus(NSArray *arguments){
     
     move(y+arguments.count+4,2);
     printw(".APDisk files removed so far....................");
+    DotAPDiskY=y+arguments.count+4;
+    DotAPDiskX=49;
     
     move(y+arguments.count+5,2);
     printw(".DS_Store files removed so far..................");
+    DotDSStoreY=y+arguments.count+5;
+    DotDSStoreX=49;
     
     move(y+arguments.count+6,2);
     printw(".VolumeIcon.icns files removed so far...........");
-    
-    printf("%d%d", DotUnderScoreX,DotUnderScoreY);
-    move(DotUnderScoreY,DotUnderScoreX);
-    printw("0");
+    DotVolumeIconY=y+arguments.count+6;
+    DotVolumeIconX=49;
+
     
     
     move (y,x);
