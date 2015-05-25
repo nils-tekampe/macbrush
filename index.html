@@ -49,15 +49,95 @@ $ chmod +x /usr/local/bin/MacBrush
 
 <p>A brew formular is under development and will be added soon. </p>
 
-<h3>
-<a id="authors-and-contributors" class="anchor" href="#authors-and-contributors" aria-hidden="true"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
+<h2>
+<a id="options" class="anchor" href="#options" aria-hidden="true"><span class="octicon octicon-link"></span></a>OPTIONS</h2>
 
-<p>The tool has been developed by <a href="https://github.com/nils-tekampe" class="user-mention">@nils-tekampe</a>.</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Long option</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-d</td>
+<td>--ignore-dot-underscore</td>
+<td>Do not remove ._ files</td>
+</tr>
+<tr>
+<td>-a</td>
+<td>--ignore-apdisk</td>
+<td>Do not remove .APDisk files</td>
+</tr>
+<tr>
+<td>-o</td>
+<td>--ignore-dsstore</td>
+<td>Do not remove .DS_Store files</td>
+</tr>
+<tr>
+<td>-i</td>
+<td>--ignore-volumeicon</td>
+<td>Do not remove VolumeIcon.icns files</td>
+</tr>
+<tr>
+<td>-s</td>
+<td>--simluate</td>
+<td>Do not remove any files at all. Should be used togehter with --verbose for reporting of identified files</td>
+</tr>
+<tr>
+<td>-v</td>
+<td>--verbose</td>
+<td>Verbose reporting</td>
+</tr>
+<tr>
+<td>-c</td>
+<td>--skip-clean</td>
+<td>Do not clean folders. Directly enter observation mode</td>
+</tr>
+<tr>
+<td>-o</td>
+<td>--skip-observation</td>
+<td>Do not enter observation mode. Only clean folders once.</td>
+</tr>
+<tr>
+<td>-h</td>
+<td>--help</td>
+<td>Print help message</td>
+</tr>
+</tbody>
+</table>
 
-<h3>
-<a id="support-or-contact" class="anchor" href="#support-or-contact" aria-hidden="true"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
+<h2>
+<a id="bugs" class="anchor" href="#bugs" aria-hidden="true"><span class="octicon octicon-link"></span></a>BUGS</h2>
 
-<p>Please contact me via github in case you run into any trouble using this tool.</p>
+<p>nothing known </p>
+
+<h2>
+<a id="examples" class="anchor" href="#examples" aria-hidden="true"><span class="octicon octicon-link"></span></a>Examples</h2>
+
+<p>Clean /home/Users/user1/test and enter observation mode afterwards.</p>
+
+<div class="highlight highlight-bash"><pre>MacBrush /home/Users/user1/test</pre></div>
+
+<p>Clean /home/Users/user1/test and /home/Users/user1/test2 and enter observation mode afterwards.</p>
+
+<div class="highlight highlight-bash"><pre>MacBrush /home/Users/user1/test /home/Users/user1/test2</pre></div>
+
+<p>Clean /home/Users/user1/test only. No observation mode.</p>
+
+<div class="highlight highlight-bash"><pre>MacBrush --skip-observation /home/Users/user1/test</pre></div>
+
+<p>Simulate cleaning /home/Users/user1/test and use verbose reporting. </p>
+
+<div class="highlight highlight-bash"><pre>MacBrush --verbose --simulate /home/Users/user1/test
+
+<span class="pl-c">### Authors and Contributors</span>
+The tool has been developed by @nils-tekampe.
+
+<span class="pl-c">### Support or Contact</span>
+Please contact me via github <span class="pl-k">in</span> <span class="pl-k">case</span> you run into any trouble using this tool.</pre></div>
       </section>
       <footer>
         <p>This project is maintained by <a href="https://github.com/nils-tekampe">nils-tekampe</a></p>
