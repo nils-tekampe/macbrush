@@ -40,6 +40,22 @@ The programm is of specific use for folders which are shared between OS X and ot
 nothing known 
 
 ##Examples
+Clean /home/Users/user1/test and enter observation mode afterwards.
+```bash
+MacBrush /home/Users/user1/test
+```
+Clean /home/Users/user1/test and /home/Users/user1/test2 and enter observation mode afterwards.
+```bash
+MacBrush /home/Users/user1/test /home/Users/user1/test2
+```
+Clean /home/Users/user1/test only. No observation mode.
+```bash
+MacBrush --skip-observation /home/Users/user1/test
+```
+Simulate cleaning /home/Users/user1/test and use verbose reporting. 
+```bash
+MacBrush --verbose --simulate /home/Users/user1/test
+```
 
 ##AUTHOR
 nils@tekampe.org
