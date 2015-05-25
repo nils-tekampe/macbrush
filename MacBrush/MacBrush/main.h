@@ -24,3 +24,5 @@ void mycallback(
 int processFile(NSString* file);
 void cleanDirectory(NSString *directory);
 void resetCounter();
+void printStatus(NSArray *arguments);
+unsigned int countdigits(unsigned int x);

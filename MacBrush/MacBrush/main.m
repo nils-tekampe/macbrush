@@ -26,6 +26,17 @@ int sumDotAPDisk=0;
 int sumDSStore=0;
 int sumVolumeIcon=0;
 
+int DotUnderScoreX=0;
+int DotUnderScoreY=0;
+int DotAPDiskX=0;
+int DotAPDiskY=0;
+int DSStoreX=0;
+int DSStoreY=0;
+int VolumeIconX=0;
+int VolumeIconY=0;
+
+
+
 
 int main(int argc, const char * argv[]) {
     
@@ -132,7 +143,8 @@ int main(int argc, const char * argv[]) {
         FSEventStreamScheduleWithRunLoop(stream, CFRunLoopGetCurrent(),kCFRunLoopDefaultMode);
         
         FSEventStreamStart(stream);
-        logger(@"Starting observation mode now. Please press Ctrl+C to interrupt",false);
+        printStatus(arguments);
+        // logger(@"Starting observation mode now. Please press Ctrl+C to interrupt",false);
         
         CFRunLoopRun();
         return 0;
@@ -333,7 +345,7 @@ void resetCounter(){
     
 }
 
-void printStatus(){
+void printStatus(NSArray *arguments){
     
     initscr();
     cbreak();
@@ -347,18 +359,71 @@ void printStatus(){
     int x,y;
     getyx(stdscr,y,x);
     move(y, 0);
-    /// add loop and push to buffer
-    char values[1024] = {};
+    printw("***************************************************");
     
-    winnstr(stdscr,values, 1024);
-    move(y+10, 0);
-    printw("buffer was %s", values);
-    move(0,0);
-    printw("buffer was %s", values);
+    for (int i=1; i<arguments.count+7;i++){
+        move (y+i,0);
+        printw("*");
+        move (y+i,50);
+        printw("*");
+    }
+    
+    move(y+arguments.count+2,0);
+    printw("***************************************************");
+   
+    move(y+arguments.count+7,0);
+    printw("***************************************************");
+    
+    move(y+1,1);
+    printw("Observation mode for:");
+
+    int offset=2;
+    
+    for (NSString *entry in arguments) {
+        
+        move(y+offset,1);
+        printw([entry UTF8String]);
+        offset++;
+    }
+    
+    move(y+arguments.count+3,2);
+    printw("._ files removed so far.........................");
+    DotUnderScoreY=y+arguments.count+3;
+    DotUnderScoreX=49;
+    
+    move(y+arguments.count+4,2);
+    printw(".APDisk files removed so far....................");
+    
+    move(y+arguments.count+5,2);
+    printw(".DS_Store files removed so far..................");
+    
+    move(y+arguments.count+6,2);
+    printw(".VolumeIcon.icns files removed so far...........");
+    
+    printf("%d%d", DotUnderScoreX,DotUnderScoreY);
+    move(DotUnderScoreY,DotUnderScoreX);
+    printw("0");
+    
+    
+    move (y,x);
+    
     
     refresh();
     getch();
     endwin();
     exit(EXIT_SUCCESS);
 }
+
+unsigned int countdigits(unsigned int x)
+{
+    unsigned count=1;
+    unsigned int value= 10;
+    while (x>=value)
+    {
+        value*=10;
+        count++;
+    }
+    return count;
+}
+
 
