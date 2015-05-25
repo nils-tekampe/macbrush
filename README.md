@@ -2,6 +2,10 @@
 This programm cleans a directory and all its subdirectories from a set of hidden files that OS X creates and enters an observation mode afterwards. Within the observation mode, each hidden file that is created by OS X is directly deleted after it has been create by the OS.
 The programm is of specific use for folders which are shared between OS X and other Operating Systems (e.g. via Dropbox).
 
+_This program is currently in alpha state. Please use it with care!_
+
+_It should be noted that OSX usually creates the temporary files that are removed by the program for a certain reason. Please only use this program if you know what you are doing and if you are sure that no important information will get lost._
+
 #Installation
 Installation is pretty simple and straightforward. Clone this repository or download as an archive. Then copy the file McBrush from the folder /binary to /usr/local/bin on your Mac; afterwards you need to set the execute permission on that file. As an alternative you can use the simple install.sh in the binary folder.
 As an alternative you can use the following set of commands for installation:
