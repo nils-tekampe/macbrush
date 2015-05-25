@@ -46,6 +46,8 @@ The programm is of specific use for folders which are shared between OS X and ot
 ##BUGS
 nothing known 
 
+##Examples
+
 ##AUTHOR
 nils@tekampe.org
 
