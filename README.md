@@ -28,19 +28,12 @@ The programm is of specific use for folders which are shared between OS X and ot
 | -d|--ignore-dot-underscore  | Do not remove ._ files |
 | -a | --ignore-apdisk|Do not remove .APDisk files|
 | -o | --ignore-dsstore|Do not remove .DS_Store files|
-| -a | --ignore-apdisk|Do not remove .APDisk files|
-| -a | --ignore-apdisk|Do not remove .APDisk files|
-
-
- [parser registerOption:@"ignore-dot-underscore" shortcut:'d' requirement:GBValueNone];
-    [parser registerOption:@"ignore-apdisk" shortcut:'a' requirement:GBValueNone];
-    [parser registerOption:@"ignore-dsstore" shortcut:'o' requirement:GBValueNone];
-    [parser registerOption:@"ignore-volumeicon" shortcut:'v' requirement:GBValueNone];
-    [parser registerOption:@"simulate" shortcut:'s' requirement:GBValueNone];
-    [parser registerOption:@"verbose" shortcut:'v' requirement:GBValueNone];
-    [parser registerOption:@"skip-clean" shortcut:'c' requirement:GBValueNone];
-    [parser registerOption:@"skip-observation" shortcut:'o' requirement:GBValueNone];
-    [parser registerOption:@"help" shortcut:'h' requirement:GBValueNone];
+| -i | --ignore-volumeicon|Do not remove VolumeIcon.icns files|
+| -s | --simluate|Do not remove any files at all. Should be used togehter with --verbose for reporting of identified files|
+| -v | --verbose|Verbose reporting|
+| -c | --skip-clean|Do not clean folders. Directly enter observation mode|
+| -o | --skip-observation|Do not enter observation mode. Only clean folders once.|
+| -h | --ehlp|Print help message|
 
 
 ##BUGS
