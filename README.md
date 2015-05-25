@@ -23,6 +23,22 @@ This programm cleans a directory and all its subdirectories from a set of hidden
 The programm is of specific use for folders which are shared between OS X and other Operating Systems (e.g. via Dropbox).
 
 ##OPTIONS
+| Option | Description |
+| ------------- | ------------- |
+| -d/--ignore-dot-underscore  | Do not remove ._ files |
+| Content Cell  | Content Cell  |
+
+
+ [parser registerOption:@"ignore-dot-underscore" shortcut:'d' requirement:GBValueNone];
+    [parser registerOption:@"ignore-apdisk" shortcut:'a' requirement:GBValueNone];
+    [parser registerOption:@"ignore-dsstore" shortcut:'o' requirement:GBValueNone];
+    [parser registerOption:@"ignore-volumeicon" shortcut:'v' requirement:GBValueNone];
+    [parser registerOption:@"simulate" shortcut:'s' requirement:GBValueNone];
+    [parser registerOption:@"verbose" shortcut:'v' requirement:GBValueNone];
+    [parser registerOption:@"skip-clean" shortcut:'c' requirement:GBValueNone];
+    [parser registerOption:@"skip-observation" shortcut:'o' requirement:GBValueNone];
+    [parser registerOption:@"help" shortcut:'h' requirement:GBValueNone];
+
 
 ##BUGS
 nothing known 
