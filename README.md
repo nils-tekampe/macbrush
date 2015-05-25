@@ -24,7 +24,7 @@ The programm is of specific use for folders which are shared between OS X and ot
 
 ##OPTIONS
 | Option | Long option |Description|
-| ------------- | ------------- |
+| ------------- | ------------- |-----------------|
 | -d|--ignore-dot-underscore  | Do not remove ._ files |
 | -a | --ignore-apdisk|Do not remove .APDisk files|
 | -o | --ignore-dsstore|Do not remove .DS_Store files|
