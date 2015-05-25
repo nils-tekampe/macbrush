@@ -24,7 +24,7 @@ The programm is of specific use for folders which are shared between OS X and ot
 
 ##OPTIONS
 | Option | Long option |Description|
-| ------------- | ------------- |-----------------|
+| ------------- | ------------------------- |-----------------|
 | -d|--ignore-dot-underscore  | Do not remove ._ files |
 | -a | --ignore-apdisk|Do not remove .APDisk files|
 | -o | --ignore-dsstore|Do not remove .DS_Store files|
@@ -33,7 +33,7 @@ The programm is of specific use for folders which are shared between OS X and ot
 | -v | --verbose|Verbose reporting|
 | -c | --skip-clean|Do not clean folders. Directly enter observation mode|
 | -o | --skip-observation|Do not enter observation mode. Only clean folders once.|
-| -h | --ehlp|Print help message|
+| -h | --help|Print help message|
 
 
 ##BUGS
