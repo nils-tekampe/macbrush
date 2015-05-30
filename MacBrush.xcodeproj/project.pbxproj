@@ -1,0 +1,285 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		292DDDE81B125DBF00E7436C /* libncurses.5.4.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 292DDDE71B125DBF00E7436C /* libncurses.5.4.dylib */; };
+		29D2B43A1B0F5AEF00B504F4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D2B4391B0F5AEF00B504F4 /* main.m */; };
+		29D2B4491B0F5B4200B504F4 /* GBCommandLineParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D2B4421B0F5B4200B504F4 /* GBCommandLineParser.m */; };
+		29D2B44A1B0F5B4200B504F4 /* GBOptionsHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D2B4441B0F5B4200B504F4 /* GBOptionsHelper.m */; };
+		29D2B44B1B0F5B4200B504F4 /* GBPrint.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D2B4461B0F5B4200B504F4 /* GBPrint.m */; };
+		29D2B44C1B0F5B4200B504F4 /* GBSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D2B4481B0F5B4200B504F4 /* GBSettings.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		292DDDE71B125DBF00E7436C /* libncurses.5.4.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libncurses.5.4.dylib; path = usr/lib/libncurses.5.4.dylib; sourceTree = SDKROOT; };
+		29D2B4361B0F5AEF00B504F4 /* MacBrush */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = MacBrush; sourceTree = BUILT_PRODUCTS_DIR; };
+		29D2B4391B0F5AEF00B504F4 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = main.m; path = /Users/nils/Documents/GitHub/MacBrush/MacBrush/MacBrush/main.m; sourceTree = "<absolute>"; };
+		29D2B4401B0F5B4200B504F4 /* GBCli.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GBCli.h; path = /Users/nils/Documents/GitHub/MacBrush/MacBrush/MacBrush/GBCli.h; sourceTree = "<absolute>"; };
+		29D2B4411B0F5B4200B504F4 /* GBCommandLineParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GBCommandLineParser.h; path = /Users/nils/Documents/GitHub/MacBrush/MacBrush/MacBrush/GBCommandLineParser.h; sourceTree = "<absolute>"; };
+		29D2B4421B0F5B4200B504F4 /* GBCommandLineParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GBCommandLineParser.m; path = /Users/nils/Documents/GitHub/MacBrush/MacBrush/MacBrush/GBCommandLineParser.m; sourceTree = "<absolute>"; };
+		29D2B4431B0F5B4200B504F4 /* GBOptionsHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GBOptionsHelper.h; path = /Users/nils/Documents/GitHub/MacBrush/MacBrush/MacBrush/GBOptionsHelper.h; sourceTree = "<absolute>"; };
+		29D2B4441B0F5B4200B504F4 /* GBOptionsHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GBOptionsHelper.m; path = /Users/nils/Documents/GitHub/MacBrush/MacBrush/MacBrush/GBOptionsHelper.m; sourceTree = "<absolute>"; };
+		29D2B4451B0F5B4200B504F4 /* GBPrint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GBPrint.h; path = /Users/nils/Documents/GitHub/MacBrush/MacBrush/MacBrush/GBPrint.h; sourceTree = "<absolute>"; };
+		29D2B4461B0F5B4200B504F4 /* GBPrint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GBPrint.m; path = /Users/nils/Documents/GitHub/MacBrush/MacBrush/MacBrush/GBPrint.m; sourceTree = "<absolute>"; };
+		29D2B4471B0F5B4200B504F4 /* GBSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GBSettings.h; path = /Users/nils/Documents/GitHub/MacBrush/MacBrush/MacBrush/GBSettings.h; sourceTree = "<absolute>"; };
+		29D2B4481B0F5B4200B504F4 /* GBSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GBSettings.m; path = /Users/nils/Documents/GitHub/MacBrush/MacBrush/MacBrush/GBSettings.m; sourceTree = "<absolute>"; };
+		29D2B44D1B0F5BBB00B504F4 /* main.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = main.h; path = /Users/nils/Documents/GitHub/MacBrush/MacBrush/MacBrush/main.h; sourceTree = "<absolute>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		29D2B4331B0F5AEF00B504F4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				292DDDE81B125DBF00E7436C /* libncurses.5.4.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		29D2B42D1B0F5AEF00B504F4 = {
+			isa = PBXGroup;
+			children = (
+				292DDDE71B125DBF00E7436C /* libncurses.5.4.dylib */,
+				29D2B4381B0F5AEF00B504F4 /* MacBrush */,
+				29D2B4371B0F5AEF00B504F4 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		29D2B4371B0F5AEF00B504F4 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				29D2B4361B0F5AEF00B504F4 /* MacBrush */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		29D2B4381B0F5AEF00B504F4 /* MacBrush */ = {
+			isa = PBXGroup;
+			children = (
+				29D2B4391B0F5AEF00B504F4 /* main.m */,
+				29D2B44D1B0F5BBB00B504F4 /* main.h */,
+				29D2B4401B0F5B4200B504F4 /* GBCli.h */,
+				29D2B4411B0F5B4200B504F4 /* GBCommandLineParser.h */,
+				29D2B4421B0F5B4200B504F4 /* GBCommandLineParser.m */,
+				29D2B4431B0F5B4200B504F4 /* GBOptionsHelper.h */,
+				29D2B4441B0F5B4200B504F4 /* GBOptionsHelper.m */,
+				29D2B4451B0F5B4200B504F4 /* GBPrint.h */,
+				29D2B4461B0F5B4200B504F4 /* GBPrint.m */,
+				29D2B4471B0F5B4200B504F4 /* GBSettings.h */,
+				29D2B4481B0F5B4200B504F4 /* GBSettings.m */,
+			);
+			path = MacBrush;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		29D2B4351B0F5AEF00B504F4 /* MacBrush */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 29D2B43D1B0F5AEF00B504F4 /* Build configuration list for PBXNativeTarget "MacBrush" */;
+			buildPhases = (
+				29D2B4321B0F5AEF00B504F4 /* Sources */,
+				29D2B4331B0F5AEF00B504F4 /* Frameworks */,
+				29D2B44E1B107BC800B504F4 /* Run Script */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MacBrush;
+			productName = MacBrush;
+			productReference = 29D2B4361B0F5AEF00B504F4 /* MacBrush */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		29D2B42E1B0F5AEF00B504F4 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0630;
+				ORGANIZATIONNAME = "Nils Tekampe";
+				TargetAttributes = {
+					29D2B4351B0F5AEF00B504F4 = {
+						CreatedOnToolsVersion = 6.3.1;
+					};
+				};
+			};
+			buildConfigurationList = 29D2B4311B0F5AEF00B504F4 /* Build configuration list for PBXProject "MacBrush" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 29D2B42D1B0F5AEF00B504F4;
+			productRefGroup = 29D2B4371B0F5AEF00B504F4 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				29D2B4351B0F5AEF00B504F4 /* MacBrush */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		29D2B44E1B107BC800B504F4 /* Run Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Run Script";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		29D2B4321B0F5AEF00B504F4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				29D2B43A1B0F5AEF00B504F4 /* main.m in Sources */,
+				29D2B44C1B0F5B4200B504F4 /* GBSettings.m in Sources */,
+				29D2B44A1B0F5B4200B504F4 /* GBOptionsHelper.m in Sources */,
+				29D2B44B1B0F5B4200B504F4 /* GBPrint.m in Sources */,
+				29D2B4491B0F5B4200B504F4 /* GBCommandLineParser.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		29D2B43B1B0F5AEF00B504F4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		29D2B43C1B0F5AEF00B504F4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		29D2B43E1B0F5AEF00B504F4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CURRENT_PROJECT_VERSION = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				VERSIONING_SYSTEM = "";
+			};
+			name = Debug;
+		};
+		29D2B43F1B0F5AEF00B504F4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CURRENT_PROJECT_VERSION = "";
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				VERSIONING_SYSTEM = "";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		29D2B4311B0F5AEF00B504F4 /* Build configuration list for PBXProject "MacBrush" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				29D2B43B1B0F5AEF00B504F4 /* Debug */,
+				29D2B43C1B0F5AEF00B504F4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		29D2B43D1B0F5AEF00B504F4 /* Build configuration list for PBXNativeTarget "MacBrush" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				29D2B43E1B0F5AEF00B504F4 /* Debug */,
+				29D2B43F1B0F5AEF00B504F4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 29D2B42E1B0F5AEF00B504F4 /* Project object */;
+}
