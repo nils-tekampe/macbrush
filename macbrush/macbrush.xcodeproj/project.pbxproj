@@ -39,6 +39,7 @@
 		294BF1A51B1A141800506C50 /* GBSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBSettings.h; sourceTree = "<group>"; };
 		294BF1A61B1A141800506C50 /* GBSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBSettings.m; sourceTree = "<group>"; };
 		294BF1A71B1A141800506C50 /* main.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = main.h; sourceTree = "<group>"; };
+		29D42FF31B1A26E6003C4D11 /* macbrush.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = macbrush.rb; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +72,7 @@
 		294BF1951B1A13CD00506C50 /* macbrush */ = {
 			isa = PBXGroup;
 			children = (
+				29D42FF31B1A26E6003C4D11 /* macbrush.rb */,
 				294BF19E1B1A141800506C50 /* GBCli.h */,
 				294BF19F1B1A141800506C50 /* GBCommandLineParser.h */,
 				294BF1A01B1A141800506C50 /* GBCommandLineParser.m */,
@@ -263,6 +265,7 @@
 				294BF19C1B1A13CD00506C50 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

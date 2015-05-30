@@ -7,9 +7,14 @@ class Macbrush < Formula
   depends_on :xcode => :build
 
   def install
-    cd "MacBrush"
+    cd "macbrush"
     xcodebuild  "clean"
     xcodebuild 
     bin.install "./build/Release"
-  end   
+  end
+  test do
+  mkdir "test"
+  touch "./test/.DS_Store"
+  macbrush "--verbose --no-observation ./test"
+  end
 end
