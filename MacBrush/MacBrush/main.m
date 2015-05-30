@@ -159,8 +159,7 @@ int main(int argc, const char * argv[]) {
                 logger(entry,false);
                 
             }
-            
-            updateStat(true);
+
             
             CFRunLoopRun();
         }
@@ -175,31 +174,6 @@ int main(int argc, const char * argv[]) {
         logger(@"Skipping observation mode.",false);
     }
     
-}
-
-
-void updateStat(BOOL firstRun){
-    
-    if (firstRun){
-        initscr();
-        cbreak();
-        noecho();
-        nonl();
-        
-        logger(@"._ files removed so far",false );
-        logger(@".APDisk files removed so far",false );
-        logger(@".DS_Store removed so far",false );
-        logger(@".VolumeIcon.icns removed so far",false );
-        
-        
-        
-    }
-    else{
-        
-        
-        
-        
-    }
 }
 
 void logger(NSString *message, bool verbose_only){
