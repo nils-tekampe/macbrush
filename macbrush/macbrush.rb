@@ -15,6 +15,6 @@ class Macbrush < Formula
   test do
   mkdir "test"
   touch "./test/.DS_Store"
-  macbrush "--verbose --no-observation ./test"
+  macbrush "--verbose --skip-observation ./test"
   end
 end
