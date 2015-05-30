@@ -1,6 +1,6 @@
 //
 //  main.m
-//  MacBrush
+//  macbrush
 //
 //  Created by Nils Tekampe on 22.05.15.
 //  Copyright (c) 2015 Nils Tekampe. All rights reserved.
@@ -85,7 +85,7 @@ int main(int argc, const char * argv[]) {
     
     if ([settings boolForKey:@"skip-observation"]){
         
-        logger(@"usage: MacBrush [-f] [-v] targetDirectory", false);
+        logger(@"usage: macbrush [-f] [-v] targetDirectory", false);
         return 0;
     }
     

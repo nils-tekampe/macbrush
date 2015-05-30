@@ -10,9 +10,9 @@ The programm is of specific use for folders which are shared between OS X and ot
 Installation is pretty simple and straightforward. Clone this repository or download as an archive. Then copy the file McBrush from the folder /binary to /usr/local/bin on your Mac; afterwards you need to set the execute permission on that file. As an alternative you can use the simple install.sh in the binary folder.
 As an alternative you can use the following set of commands for installation:
 ```bash
-wget https://github.com/nils-tekampe/MacBrush/blob/master/binary/MacBrush
-cp ./MacBrush /usr/local/bin
-chmod +x /usr/local/bin/MacBrush
+wget https://github.com/nils-tekampe/macbrush/blob/master/binary/macbrush
+cp ./macbrush /usr/local/bin
+chmod +x /usr/local/bin/macbrush
 ```
 
 #Manpage 
@@ -46,19 +46,19 @@ nothing known
 ##Examples
 Clean /home/Users/user1/test and enter observation mode afterwards.
 ```bash
-MacBrush /home/Users/user1/test
+macbrush /home/Users/user1/test
 ```
 Clean /home/Users/user1/test and /home/Users/user1/test2 and enter observation mode afterwards.
 ```bash
-MacBrush /home/Users/user1/test /home/Users/user1/test2
+macbrush /home/Users/user1/test /home/Users/user1/test2
 ```
 Clean /home/Users/user1/test only. No observation mode.
 ```bash
-MacBrush --skip-observation /home/Users/user1/test
+macbrush --skip-observation /home/Users/user1/test
 ```
 Simulate cleaning /home/Users/user1/test and use verbose reporting. 
 ```bash
-MacBrush --verbose --simulate /home/Users/user1/test
+macbrush --verbose --simulate /home/Users/user1/test
 ```
 
 ##AUTHOR
