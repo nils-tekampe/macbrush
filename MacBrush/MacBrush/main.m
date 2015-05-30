@@ -40,8 +40,6 @@ int DotVolumeIconY=0;
 
 int main(int argc, const char * argv[]) {
     
-    
-    NSLog(@"Starting to watch ");
     // Create settings stack.
     GBSettings *factoryDefaults = [GBSettings settingsWithName:@"Factory" parent:nil];
     [factoryDefaults setBool:NO forKey:@"ignore-dot-underscore"];
@@ -106,20 +104,20 @@ int main(int argc, const char * argv[]) {
     //Check for each argument that the folder is really existing
     
     @try {
-    for (NSString *entry in arguments) {
-        NSFileManager *fileManager = [NSFileManager defaultManager];
-        if (![fileManager fileExistsAtPath:entry])
-        {
-            logger([NSString stringWithFormat:@"%@%@" , entry,@" cannot be found. Please only specify folders that are existing."],false);
-            return 1;
+        for (NSString *entry in arguments) {
+            NSFileManager *fileManager = [NSFileManager defaultManager];
+            if (![fileManager fileExistsAtPath:entry])
+            {
+                logger([NSString stringWithFormat:@"%@%@" , entry,@" cannot be found. Please only specify folders that are existing."],false);
+                return 1;
+            }
         }
-    }
         
     }
     @catch(NSException *e){
         logger(@"Error while checking the arguments. May be due to a lack of permissions? Will exit now",false);
         return 1;
-    
+        
     }
     
     if (!skipClean){
@@ -135,27 +133,36 @@ int main(int argc, const char * argv[]) {
     if (!skipObservation){
         
         @try{
-        void *callbackInfo = NULL; // could put stream-specific data here.
-        FSEventStreamRef stream;
-        CFAbsoluteTime latency = 1.0; /* Latency in seconds */
-        
-        /* Create the stream, passing in a callback */
-        stream = FSEventStreamCreate(NULL,
-                                     &mycallback,
-                                     callbackInfo,
-                                     pathsToWatch,
-                                     kFSEventStreamEventIdSinceNow, /* Or a previous event ID */
-                                     latency,
-                                     kFSEventStreamCreateFlagFileEvents//kFSEventStreamCreateFlagNone /* Flags explained in reference */
-                                     );
-        
-        /* Create the stream before calling this. */
-        FSEventStreamScheduleWithRunLoop(stream, CFRunLoopGetCurrent(),kCFRunLoopDefaultMode);
-        
-        FSEventStreamStart(stream);
-        printStatus(arguments);
+            void *callbackInfo = NULL; // could put stream-specific data here.
+            FSEventStreamRef stream;
+            CFAbsoluteTime latency = 1.0; /* Latency in seconds */
             
-        CFRunLoopRun();
+            /* Create the stream, passing in a callback */
+            stream = FSEventStreamCreate(NULL,
+                                         &mycallback,
+                                         callbackInfo,
+                                         pathsToWatch,
+                                         kFSEventStreamEventIdSinceNow, /* Or a previous event ID */
+                                         latency,
+                                         kFSEventStreamCreateFlagFileEvents//kFSEventStreamCreateFlagNone /* Flags explained in reference */
+                                         );
+            
+            /* Create the stream before calling this. */
+            FSEventStreamScheduleWithRunLoop(stream, CFRunLoopGetCurrent(),kCFRunLoopDefaultMode);
+            
+            FSEventStreamStart(stream);
+            
+            //printStatus(arguments);
+            logger(@"Starting observation mode for the following directories:",false);
+            
+            for (NSString *entry in arguments) {
+                logger(entry,false);
+                
+            }
+            
+            updateStat(true);
+            
+            CFRunLoopRun();
         }
         @catch(NSException *e){
             logger(@"Error during observation mode. Will now exit",false);
@@ -171,10 +178,36 @@ int main(int argc, const char * argv[]) {
 }
 
 
+void updateStat(BOOL firstRun){
+    
+    if (firstRun){
+        initscr();
+        cbreak();
+        noecho();
+        nonl();
+        
+        logger(@"._ files removed so far",false );
+        logger(@".APDisk files removed so far",false );
+        logger(@".DS_Store removed so far",false );
+        logger(@".VolumeIcon.icns removed so far",false );
+        
+        
+        
+    }
+    else{
+        
+        
+        
+        
+    }
+}
+
 void logger(NSString *message, bool verbose_only){
     
     if (!verbose_only){
-        NSLog(@"%@", message);
+        printf("%s\n", [message UTF8String]);
+       // printf("%s", @"\n");
+
     }
     
     
@@ -203,7 +236,7 @@ void mycallback(
             NSString* file = [NSString stringWithCString:paths[i] encoding:NSASCIIStringEncoding];
             processFile(file);}
     }
- 
+    
 }
 
 
@@ -232,7 +265,7 @@ int processFile(NSString* file){
             //check that it really starts with ._
             if ([firstThreeChar isEqualToString:pattern])
             {
-                     
+                
                 if([[NSFileManager defaultManager] fileExistsAtPath:potentialBaseFile])
                 {
                     
@@ -357,89 +390,4 @@ void resetCounter(){
     sumVolumeIcon=0;
     
 }
-
-void printStatus(NSArray *arguments){
-    
-    initscr();
-    cbreak();
-    noecho();
-    nonl();
-    move(0,0);
-    scrollok(stdscr, TRUE);
-    keypad(stdscr, TRUE);
-    
-    
-    int x,y;
-    getyx(stdscr,y,x);
-    move(y, 0);
-    printw("***************************************************");
-    
-    for (int i=1; i<arguments.count+7;i++){
-        move (y+i,0);
-        printw("*");
-        move (y+i,50);
-        printw("*");
-    }
-    
-    move(y+arguments.count+2,0);
-    printw("***************************************************");
-   
-    move(y+arguments.count+7,0);
-    printw("***************************************************");
-    
-    move(y+1,1);
-    printw("Observation mode for:");
-
-    int offset=2;
-    
-    for (NSString *entry in arguments) {
-        
-        move(y+offset,1);
-        printw([entry UTF8String]);
-        offset++;
-    }
-    
-    move(y+arguments.count+3,2);
-    printw("._ files removed so far.........................");
-    DotUnderScoreY=y+arguments.count+3;
-    DotUnderScoreX=49;
-    
-    move(y+arguments.count+4,2);
-    printw(".APDisk files removed so far....................");
-    DotAPDiskY=y+arguments.count+4;
-    DotAPDiskX=49;
-    
-    move(y+arguments.count+5,2);
-    printw(".DS_Store files removed so far..................");
-    DotDSStoreY=y+arguments.count+5;
-    DotDSStoreX=49;
-    
-    move(y+arguments.count+6,2);
-    printw(".VolumeIcon.icns files removed so far...........");
-    DotVolumeIconY=y+arguments.count+6;
-    DotVolumeIconX=49;
-
-    
-    
-    move (y,x);
-    
-    
-    refresh();
-    getch();
-    endwin();
-    exit(EXIT_SUCCESS);
-}
-
-unsigned int countdigits(unsigned int x)
-{
-    unsigned count=1;
-    unsigned int value= 10;
-    while (x>=value)
-    {
-        value*=10;
-        count++;
-    }
-    return count;
-}
-
 
