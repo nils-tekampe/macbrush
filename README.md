@@ -7,13 +7,12 @@ The programm is of specific use for folders which are shared between OS X and ot
 **It should be noted that OSX usually creates the temporary files that are removed by the program for a certain reason. Please only use this program if you know what you are doing and if you are sure that no important information will get lost.**
 
 #Installation
-Installation is pretty simple and straightforward. Clone this repository or download as an archive. Then copy the file McBrush from the folder /binary to /usr/local/bin on your Mac; afterwards you need to set the execute permission on that file. As an alternative you can use the simple install.sh in the binary folder.
-As an alternative you can use the following set of commands for installation:
+Installation is pretty simple and straightforward. Clone this repository or download as an archive. Open the XCode project and compile. As an alternative you may use
 ```bash
-wget https://github.com/nils-tekampe/macbrush/blob/master/binary/macbrush
-cp ./macbrush /usr/local/bin
-chmod +x /usr/local/bin/macbrush
+xcodebuild
 ```
+from the command line tools to compile (Should work without any furhter options. 
+**A brew formula is planned to be distributed soon.**
 
 #Manpage 
 ##NAME
