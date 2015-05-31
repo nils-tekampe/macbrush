@@ -12,6 +12,14 @@ Installation is pretty simple and straightforward. Clone this repository or down
 xcodebuild
 ```
 from the command line tools to compile (Should work without any furhter options. 
+
+As an alternative you can use the following set of commands for installation:
+```bash
+wget https://github.com/nils-tekampe/macbrush/releases/download/0.5/macbrush
+cp ./macbrush /usr/local/bin
+chmod +x /usr/local/bin/macbrush
+```
+
 **A brew formula is planned to be distributed soon.**
 
 #Manpage 
