@@ -250,6 +250,7 @@ bool processFile(NSString* file){
     
     NSString* pattern=@"";
     
+    logger(file, true);
     ///First we look for ´._ files
     ///._ files will only be removed if a corresponding base file is existing
     //Example: _.test.txt will be removed if a file name test.txt is existing in the same folder.
