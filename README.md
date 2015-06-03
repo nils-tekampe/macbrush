@@ -13,14 +13,11 @@ xcodebuild
 ```
 from the command line tools to compile (Should work without any furhter options. 
 
-As an alternative you can use the following set of commands for installation:
+As an alternative you can use brew for installation:
 ```bash
-wget https://github.com/nils-tekampe/macbrush/releases/download/0.5/macbrush
-cp ./macbrush /usr/local/bin
-chmod +x /usr/local/bin/macbrush
+brew tap nils-tekampe/tap
+brew install macbrush
 ```
-
-**A brew formula is planned to be distributed soon.**
 
 #Manpage 
 ##NAME
