@@ -61,6 +61,7 @@ int main(int argc, const char * argv[]) {
     [parser registerOption:@"skip-clean" shortcut:'c' requirement:GBValueNone];
     [parser registerOption:@"skip-observation" shortcut:'o' requirement:GBValueNone];
     [parser registerOption:@"help" shortcut:'h' requirement:GBValueNone];
+    [parser registerOption:@"version" shortcut:0 requirement:GBValueNone];
     
     // Register settings and then parse command line
     [parser registerSettings:settings];
