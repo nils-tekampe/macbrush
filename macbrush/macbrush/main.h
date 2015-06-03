@@ -12,6 +12,8 @@
 
 #endif
 
+#define USAGE @"usage: macbrush [-d] [-a] [-o] [-i] [-s] [-v] [-c] [-o] [-h] targetDirectory"
+
 void logger(NSString *message, bool verbose_only);
 void mycallback(
                 ConstFSEventStreamRef streamRef,
@@ -21,6 +23,6 @@ void mycallback(
                 const FSEventStreamEventFlags eventFlags[],
                 const FSEventStreamEventId eventIds[]);
 
-int processFile(NSString* file);
+bool processFile(NSString* file);
 void cleanDirectory(NSString *directory);
-void resetCounter();
+
