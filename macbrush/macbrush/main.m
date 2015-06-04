@@ -250,7 +250,7 @@ bool processFile(NSString* file){
     
     NSString* pattern=@"";
     
-    logger(file, true);
+ 
     ///First we look for ´._ files
     ///._ files will only be removed if a corresponding base file is existing
     //Example: _.test.txt will be removed if a file name test.txt is existing in the same folder.
@@ -259,28 +259,24 @@ bool processFile(NSString* file){
         
         pattern=@"._";
         
-        if ([file rangeOfString:pattern].location != NSNotFound) {
+        if ([file rangeOfString:pattern].location == NSNotFound) {
             
             //let's build the name of the potentially corresponding file
             NSString* theFileName = file.lastPathComponent;
-            NSString *firstThreeChar = [theFileName substringToIndex:2];
-            NSString *cuttedFileName = [theFileName substringFromIndex:2];
-            NSString *path = file.stringByDeletingLastPathComponent;
-            NSString *potentialBaseFile=[NSString stringWithFormat:@"%@/%@", path,cuttedFileName];
+                  NSString *path = file.stringByDeletingLastPathComponent;
+            NSString *potentialTmpFile=[NSString stringWithFormat:@"%@/%@%@", path,@"._",theFileName];
             
-            //check that it really starts with ._
-            if ([firstThreeChar isEqualToString:pattern])
-            {
                 
-                if([[NSFileManager defaultManager] fileExistsAtPath:potentialBaseFile])
+                if([[NSFileManager defaultManager] fileExistsAtPath:potentialTmpFile])
                 {
-                    
+            if (isFile(potentialTmpFile)){
+                
                     logger([NSString stringWithFormat:@"%@%@", @"Found the following ._ file:" , file],true);
                     
                     
                     if (!simulate){
                         
-                        if ([manager removeItemAtPath:file error:&error])
+                        if ([manager removeItemAtPath:potentialTmpFile error:&error])
                         {
                             logger(@"Sucesfully removed file",true);
                             sumDotUnderscore++;
@@ -291,11 +287,11 @@ bool processFile(NSString* file){
                             return false;
                         }
                         
-                    }
+                    
                 }
             }
         }
-        
+        }
     }
     
     ///Now looking for .APDisk files. They should be removed as long as the user did not choose the option
@@ -403,32 +399,16 @@ void cleanDirectory(NSString *directory)
     sumDSStore=0;
     sumVolumeIcon=0;
     
- ///   NSDirectoryEnumerator *directoryEnumerator = [[NSFileManager defaultManager] enumeratorAtPath:directory];
+ NSDirectoryEnumerator *directoryEnumerator = [[NSFileManager defaultManager] enumeratorAtPath:directory];
     
     
-   /// for (NSString *file in directoryEnumerator) {
-     ///   NSString *filename;
-      ///  filename=file;
-       /// filename= [directory stringByAppendingPathComponent:file];
-       /// processFile(filename);
-   /// }
-    
-    
-   // NSString *directory = @"/private/tmp";
-    
-    NSDirectoryEnumerator *directoryEnumerator = [[NSFileManager defaultManager] enumeratorAtURL:[NSURL fileURLWithPath:directory isDirectory:YES] includingPropertiesForKeys:nil options:0 errorHandler:^BOOL(NSURL *url, NSError *error) {
-        
-        if(error)
-        {
-            NSLog(@"error at file URL %@ - %@", [url absoluteString], [error localizedDescription]);
-        }
-        
-        return NO;
-    }];
-    
-    for (NSURL *file in directoryEnumerator) {
-        processFile(file.path);
+    for (NSString *file in directoryEnumerator) {
+        NSString *filename=file;
+        filename= [directory stringByAppendingPathComponent:file];
+        processFile(filename);
     }
+    
+
     
     
     logger([NSString stringWithFormat:@"%@%@", @"Finished cleaning directory :" , directory],false);
@@ -436,6 +416,14 @@ void cleanDirectory(NSString *directory)
     logger([NSString stringWithFormat:@"%d%@",sumDotUnderscore, @" ._ files have been removed"],false);
     logger([NSString stringWithFormat:@"%d%@",sumDSStore, @" .DS_Store files have been removed"],false);
     logger([NSString stringWithFormat:@"%d%@",sumVolumeIcon, @" .VolumeIcon.icns files have been removed"],false);
+}
+
+bool isFile(NSString *file){
+BOOL isDir = NO;
+if([[NSFileManager defaultManager]fileExistsAtPath:file isDirectory:&isDir] && isDir)
+    return false;
+    else
+        return true;
 }
 
 

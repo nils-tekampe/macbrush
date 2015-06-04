@@ -25,4 +25,5 @@ void mycallback(
 
 bool processFile(NSString* file);
 void cleanDirectory(NSString *directory);
+bool isFile(NSString *file);
 
