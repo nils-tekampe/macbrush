@@ -403,15 +403,34 @@ void cleanDirectory(NSString *directory)
     sumDSStore=0;
     sumVolumeIcon=0;
     
-    NSDirectoryEnumerator *directoryEnumerator = [[NSFileManager defaultManager] enumeratorAtPath:directory];
+ ///   NSDirectoryEnumerator *directoryEnumerator = [[NSFileManager defaultManager] enumeratorAtPath:directory];
     
     
-    for (NSString *file in directoryEnumerator) {
-        NSString *filename;
-        filename=file;
-        filename= [directory stringByAppendingPathComponent:file];
-        processFile(filename);
+   /// for (NSString *file in directoryEnumerator) {
+     ///   NSString *filename;
+      ///  filename=file;
+       /// filename= [directory stringByAppendingPathComponent:file];
+       /// processFile(filename);
+   /// }
+    
+    
+   // NSString *directory = @"/private/tmp";
+    
+    NSDirectoryEnumerator *directoryEnumerator = [[NSFileManager defaultManager] enumeratorAtURL:[NSURL fileURLWithPath:directory isDirectory:YES] includingPropertiesForKeys:nil options:0 errorHandler:^BOOL(NSURL *url, NSError *error) {
+        
+        if(error)
+        {
+            NSLog(@"error at file URL %@ - %@", [url absoluteString], [error localizedDescription]);
+        }
+        
+        return NO;
+    }];
+    
+    for (NSURL *file in directoryEnumerator) {
+        processFile(file.path);
     }
+    
+    
     logger([NSString stringWithFormat:@"%@%@", @"Finished cleaning directory :" , directory],false);
     logger([NSString stringWithFormat:@"%d%@",sumDotAPDisk, @" .AP_Disk files have been removed"],false);
     logger([NSString stringWithFormat:@"%d%@",sumDotUnderscore, @" ._ files have been removed"],false);
