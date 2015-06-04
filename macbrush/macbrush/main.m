@@ -10,25 +10,21 @@
 #include <ncurses.h>
 #import "GBCli.h"
 #include "main.h"
+#include "PatternMatchingString.h"
 
 // I know that global variables are not the best style but for some purposes they are just the easiest way :-)
 
 //variables as representatives for command line options
 bool simulate;
 bool ignoreDotUnderscore;
-bool ignoreDotAPDisk;
-bool ignoreDSStore;
-bool ignoreVolumeIcon;
 bool verbose;
 bool skipClean;
 bool skipObservation;
 
 //variables for some statistics
 int sumDotUnderscore=0;
-int sumDotAPDisk=0;
-int sumDSStore=0;
-int sumVolumeIcon=0;
 
+NSMutableArray *patternMatchingArray;
 
 int main(int argc, const char * argv[]) {
     
@@ -71,9 +67,6 @@ int main(int argc, const char * argv[]) {
     
     // From here on, just use settings...
     ignoreDotUnderscore=[settings boolForKey:@"ignore-dot-underscore"];
-    ignoreDotAPDisk=[settings boolForKey:@"ignore-apdisk"];
-    ignoreDSStore=[settings boolForKey:@"ignore-dsstore"];
-    ignoreVolumeIcon=[settings boolForKey:@"ignore-volumeicon"];
     simulate=[settings boolForKey:@"ignore-dot-underscore"];
     verbose=[settings boolForKey:@"verbose"];
     skipClean=[settings boolForKey:@"skip-clean"];
@@ -93,7 +86,7 @@ int main(int argc, const char * argv[]) {
         logger(VERSION, false);
         return 0;
     }
-
+    
     
     
     NSArray *arguments = parser.arguments;
@@ -125,6 +118,38 @@ int main(int argc, const char * argv[]) {
         return 1;
         
     }
+    
+    //********************************************************
+    //Building an array for match patterns
+    //********************************************************
+    
+    
+    
+    //PatternMatchingString *tmp =[PatternMatchingString];
+    
+    PatternMatchingString *patternAPDisk = [[PatternMatchingString alloc] init];
+    patternAPDisk=@".apdisk";
+    patternAPDisk.matchCount=0;
+    patternAPDisk.ignore=[settings boolForKey:@"ignore-apdisk"];
+    
+    PatternMatchingString *patternDSStore = [[PatternMatchingString alloc] init];
+    patternDSStore=@".DS_Store";
+    patternDSStore.matchCount=0;
+    patternDSStore.ignore=[settings boolForKey:@"ignore-dsstore"];
+    
+    PatternMatchingString *patternVolumeIcon = [[PatternMatchingString alloc] init];
+    patternVolumeIcon=@".VolumeIcon.icns";
+    patternVolumeIcon.matchCount=0;
+    patternVolumeIcon.ignore=[settings boolForKey:@"ignore-volumeicon"];
+    
+    
+    
+    patternMatchingArray = [NSMutableArray arrayWithObjects:patternAPDisk,patternDSStore,patternVolumeIcon];
+    
+    
+    
+    ///[matchPatternArray addObject:patternAPDisk,patternDSStore,patternVolumeIcon];
+    
     
     //********************************************************
     //Starting main functionality. 1st step: Clean directories
@@ -201,9 +226,9 @@ void logger(NSString *message, bool verbose_only){
         //--verbose
         
         if (verbose)
-        NSLog(@"%@", message);
+            NSLog(@"%@", message);
         else
-        printf("%s\n", [message UTF8String]);
+            printf("%s\n", [message UTF8String]);
     }
     
     
@@ -250,135 +275,67 @@ bool processFile(NSString* file){
     
     NSString* pattern=@"";
     
- 
+    
     ///First we look for ´._ files
     ///._ files will only be removed if a corresponding base file is existing
     //Example: _.test.txt will be removed if a file name test.txt is existing in the same folder.
     
-    if (!ignoreDotAPDisk){
+    
+    if ([file rangeOfString:pattern].location == NSNotFound) {
         
-        pattern=@"._";
+        //let's build the name of the potentially corresponding file
+        NSString* theFileName = file.lastPathComponent;
+        NSString *path = file.stringByDeletingLastPathComponent;
+        NSString *potentialTmpFile=[NSString stringWithFormat:@"%@/%@%@", path,@"._",theFileName];
         
-        if ([file rangeOfString:pattern].location == NSNotFound) {
-            
-            //let's build the name of the potentially corresponding file
-            NSString* theFileName = file.lastPathComponent;
-                  NSString *path = file.stringByDeletingLastPathComponent;
-            NSString *potentialTmpFile=[NSString stringWithFormat:@"%@/%@%@", path,@"._",theFileName];
-            
-                
-                if([[NSFileManager defaultManager] fileExistsAtPath:potentialTmpFile])
-                {
+        
+        if([[NSFileManager defaultManager] fileExistsAtPath:potentialTmpFile])
+        {
             if (isFile(potentialTmpFile)){
                 
-                    logger([NSString stringWithFormat:@"%@%@", @"Found the following ._ file:" , file],true);
+                logger([NSString stringWithFormat:@"%@%@", @"Found the following ._ file:" , file],true);
+                
+                if (!simulate){
                     
-                    
-                    if (!simulate){
-                        
-                        if ([manager removeItemAtPath:potentialTmpFile error:&error])
-                        {
-                            logger(@"Sucesfully removed file",true);
-                            sumDotUnderscore++;
-                            return true;
-                        }
-                        else  {
-                            logger(@"Error removing file",true);
-                            return false;
-                        }
-                        
-                    
+                    if ([manager removeItemAtPath:potentialTmpFile error:&error])
+                    {
+                        logger(@"Sucesfully removed file",true);
+                        sumDotUnderscore++;
+                        return true;
+                    }
+                    else  {
+                        logger(@"Error removing file",true);
+                        return false;
+                    }
                 }
-            }
         }
         }
     }
     
-    ///Now looking for .APDisk files. They should be removed as long as the user did not choose the option
-    ///to ignore these files
+    ///Now looking for the other patterns
     
-    if (!ignoreDotAPDisk){
-        
-        pattern=@".apdisk";
-        
+    for(PatternMatchingString *pattern in patternMatchingArray)
+    {
         if ([file rangeOfString:pattern].location != NSNotFound) {
             
-            logger([NSString stringWithFormat:@"%@%@", @"Found the following .apdisk file:" , file],true);
+            logger([NSString stringWithFormat:@"%@%@", @"Found the following file:" , file],true);
             
-            if (!simulate){
-                
-                if ([manager removeItemAtPath:file error:&error])
-                {
-                    logger(@"Sucesfully removed file",true);
-                    sumDotAPDisk++;
-                    return true;
-                }
-                else  {
-                    logger(@"Error removing file",true);
-                    return false;
-                }
+            if (!simulate && !pattern.ignore){
+                    if ([manager removeItemAtPath:file error:&error])
+                    {
+                        logger(@"Sucesfully removed file",true);
+                        pattern.matchCount++;
+                        return true;
+                    }
+                    else  {
+                        logger(@"Error removing file",true);
+                        return false;
+                    }
                 
             }
+            
         }
     }
-    
-    ///Now looking for .DS_Store files. They should be removed as long as the user did not choose the option
-    ///to ignore these files
-    
-    if (!ignoreDSStore){
-        
-        pattern=@".DS_Store";
-        
-        if ([file rangeOfString:pattern].location != NSNotFound) {
-            
-            logger([NSString stringWithFormat:@"%@%@", @"Found the following .DS_Store file:" , file],true);
-            
-            if (!simulate){
-                
-                if ([manager removeItemAtPath:file error:&error])
-                {
-                    logger(@"Sucesfully removed file",true);
-                    sumDSStore++;
-                    return true;
-                    return true;
-                }
-                else  {
-                    logger(@"Error removing file",true);
-                    return false;
-                }
-                
-            }
-        }
-    }
-    
-    ///Now looking for .VolumeIcon.icns files. They should be removed as long as the user did not choose the
-    ///otpion to ignore these files
-    
-    if (!ignoreDSStore){
-        
-        pattern=@".VolumeIcon.icns";
-        
-        if ([file rangeOfString:pattern].location != NSNotFound) {
-            
-            logger([NSString stringWithFormat:@"%@%@", @"Found the following .VolumeIcon.icns file:" , file],true);
-            
-            if (!simulate){
-                
-                if ([manager removeItemAtPath:file error:&error])
-                {
-                    logger(@"Sucesfully removed file",true);
-                    sumVolumeIcon++;
-                    return true;
-                }
-                else  {
-                    logger(@"Error removing file",true);
-                    return false;
-                }
-                
-            }
-        }
-    }
-    
     return false;
 }
 
@@ -392,14 +349,14 @@ bool processFile(NSString* file){
 void cleanDirectory(NSString *directory)
 {
     logger([NSString stringWithFormat:@"%@%@", @"Starting to clean directory :" , directory],false);
-  
-    //reset statistics
-    sumDotAPDisk=0;
-    sumDotUnderscore=0;
-    sumDSStore=0;
-    sumVolumeIcon=0;
     
- NSDirectoryEnumerator *directoryEnumerator = [[NSFileManager defaultManager] enumeratorAtPath:directory];
+    //reset statistics
+    for(PatternMatchingString *pattern in patternMatchingArray)
+    {
+        pattern.matchCount=0;
+    }
+    
+    NSDirectoryEnumerator *directoryEnumerator = [[NSFileManager defaultManager] enumeratorAtPath:directory];
     
     
     for (NSString *file in directoryEnumerator) {
@@ -407,19 +364,19 @@ void cleanDirectory(NSString *directory)
         filename= [directory stringByAppendingPathComponent:file];
         processFile(filename);
     }
-
+    
     
     logger([NSString stringWithFormat:@"%@%@", @"Finished cleaning directory :" , directory],false);
-    logger([NSString stringWithFormat:@"%d%@",sumDotAPDisk, @" .AP_Disk files have been removed"],false);
-    logger([NSString stringWithFormat:@"%d%@",sumDotUnderscore, @" ._ files have been removed"],false);
-    logger([NSString stringWithFormat:@"%d%@",sumDSStore, @" .DS_Store files have been removed"],false);
-    logger([NSString stringWithFormat:@"%d%@",sumVolumeIcon, @" .VolumeIcon.icns files have been removed"],false);
+   // logger([NSString stringWithFormat:@"%d%@",sumDotAPDisk, @" .AP_Disk files have been removed"],false);
+   // logger([NSString stringWithFormat:@"%d%@",sumDotUnderscore, @" ._ files have been removed"],false);
+    //logger([NSString stringWithFormat:@"%d%@",sumDSStore, @" .DS_Store files have been removed"],false);
+  //  logger([NSString stringWithFormat:@"%d%@",sumVolumeIcon, @" .VolumeIcon.icns files have been removed"],false);
 }
 
 bool isFile(NSString *file){
-BOOL isDir = NO;
-if([[NSFileManager defaultManager]fileExistsAtPath:file isDirectory:&isDir] && isDir)
-    return false;
+    BOOL isDir = NO;
+    if([[NSFileManager defaultManager]fileExistsAtPath:file isDirectory:&isDir] && isDir)
+        return false;
     else
         return true;
 }

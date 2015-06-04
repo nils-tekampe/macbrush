@@ -1,28 +1,37 @@
 .TH MACBRUSH, "1" "Juni 2015" "macbrush, Version 0.7" "User Commands"
 .SH NAME
-macbrush, \- Keep OS X folders clean of temporary files
+macbrush, \- Keeping OSX folders clean of temporary files
 .SH DESCRIPTION
 usage: macbrush [\-d] [\-a] [\-o] [\-i] [\-s] [\-v] [\-c] [\-o] [\-h] targetDirectory
 .SH OPTIONS
 .TP
 .BR \-d ", " \-\-ignore\-dot\underscore
 Do not remove ._ files.
+.TP
 .BR \-a ", " \-\-ignore\-apdisk
 Do not remove .apdisk\-files.
+.TP
 .BR \-s ", " \-\-ignore\-dsstore
 Do not remove .DS_Store\-files.
+.TP
 .BR \-i ", " \-\-ignore\-volumeicon
 Do not remove .VolumeIcon.icnds\-files.
+.TP
 .BR \-s ", " \-\-silmulate
 Do not remove any files. Simulation only. Pleaes use in combination with \-\-verbose.
+.TP
 .BR \-V ", " \-\-verbose
 Verbose logging.
+.TP
 .BR \-c ", " \-\-skip\-clean
 Do not clean folders. Directly enter observation mode.
+.TP
 .BR \-o ", " \-\-skip\-observation
 Do not enter observation mode. Only clean folders once.
+.TP
 .BR \-h ", " \-\-help
 Print help message.
+.TP
 .BR \-v ", " \-\-version
 Print version information.
 .SH AUTHOR
