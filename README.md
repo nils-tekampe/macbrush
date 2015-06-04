@@ -66,6 +66,4 @@ macbrush --verbose --simulate /home/Users/user1/test
 ##AUTHOR
 nils@tekampe.org
 
-SEE ALSO
--
 
