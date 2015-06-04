@@ -52,16 +52,17 @@ int main(int argc, const char * argv[]) {
     
     // Create parser and register all options.
     GBCommandLineParser *parser = [[GBCommandLineParser alloc] init];
+    [parser registerOption:@"help" shortcut:'h' requirement:GBValueNone];
+    [parser registerOption:@"version" shortcut:'v' requirement:GBValueNone];
     [parser registerOption:@"ignore-dot-underscore" shortcut:'d' requirement:GBValueNone];
     [parser registerOption:@"ignore-apdisk" shortcut:'a' requirement:GBValueNone];
-    [parser registerOption:@"ignore-dsstore" shortcut:'o' requirement:GBValueNone];
+    [parser registerOption:@"ignore-dsstore" shortcut:'s' requirement:GBValueNone];
     [parser registerOption:@"ignore-volumeicon" shortcut:'i' requirement:GBValueNone];
     [parser registerOption:@"simulate" shortcut:'s' requirement:GBValueNone];
-    [parser registerOption:@"verbose" shortcut:'v' requirement:GBValueNone];
+    [parser registerOption:@"verbose" shortcut:'V' requirement:GBValueNone];
     [parser registerOption:@"skip-clean" shortcut:'c' requirement:GBValueNone];
     [parser registerOption:@"skip-observation" shortcut:'o' requirement:GBValueNone];
-    [parser registerOption:@"help" shortcut:'h' requirement:GBValueNone];
-    [parser registerOption:@"version" shortcut:0 requirement:GBValueNone];
+    
     
     // Register settings and then parse command line
     [parser registerSettings:settings];
@@ -83,14 +84,13 @@ int main(int argc, const char * argv[]) {
     //***********************************************
     
     if ([settings boolForKey:@"help"]){
-        
+        logger(INFO, false);
         logger(USAGE, false);
         return 0;
     }
     
     if ([settings boolForKey:@"version"]){
-        
-        logger(@"macbrush, Version 0.6", false);
+        logger(VERSION, false);
         return 0;
     }
 
@@ -407,9 +407,7 @@ void cleanDirectory(NSString *directory)
         filename= [directory stringByAppendingPathComponent:file];
         processFile(filename);
     }
-    
 
-    
     
     logger([NSString stringWithFormat:@"%@%@", @"Finished cleaning directory :" , directory],false);
     logger([NSString stringWithFormat:@"%d%@",sumDotAPDisk, @" .AP_Disk files have been removed"],false);

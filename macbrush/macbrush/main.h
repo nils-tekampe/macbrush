@@ -13,6 +13,8 @@
 #endif
 
 #define USAGE @"usage: macbrush [-d] [-a] [-o] [-i] [-s] [-v] [-c] [-o] [-h] targetDirectory"
+#define VERSION @"macbrush, Version 0.7"
+#define INFO @"macbrush - Keep OS X folders clean of temporary files"
 
 void logger(NSString *message, bool verbose_only);
 void mycallback(
