@@ -19,10 +19,10 @@ brew install macbrush
 
 #Manpage 
 ##NAME
-MCBrush 
+MCBrush - Keeping OS X folders clean of temporary files
 
 #SYNOPSIS
-McBrush [options] [folder to watch|
+usage: macbrush [\-d] [\-a] [\-o] [\-i] [\-s] [\-v] [\-c] [\-o] [\-h] targetDirectory
 
 ##DESCRIPTION
 This programm cleans a directory and all its subdirectories from a set of hidden files that OS X creates and enters an observation mode afterwards. Within the observation mode, each hidden file that is created by OS X is directly deleted after it has been create by the OS.
