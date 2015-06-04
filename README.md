@@ -2,8 +2,6 @@
 This programm cleans a directory and all its subdirectories from a set of hidden files that OS X creates and enters an observation mode afterwards. Within the observation mode, each hidden file that is created by OS X is directly deleted after it has been create by the OS.
 The programm is of specific use for folders which are shared between OS X and other Operating Systems (e.g. via Dropbox).
 
-**This program is currently in alpha state. Please use it with care!**
-
 **It should be noted that OSX usually creates the temporary files that are removed by the program for a certain reason. Please only use this program if you know what you are doing and if you are sure that no important information will get lost.**
 
 #Installation
@@ -21,10 +19,10 @@ brew install macbrush
 
 #Manpage 
 ##NAME
-MCBrush 
+MCBrush - Keeping OS X folders clean of temporary files
 
 #SYNOPSIS
-McBrush [options] [folder to watch|
+usage: macbrush [\-d] [\-a] [\-o] [\-i] [\-s] [\-v] [\-c] [\-o] [\-h] targetDirectory
 
 ##DESCRIPTION
 This programm cleans a directory and all its subdirectories from a set of hidden files that OS X creates and enters an observation mode afterwards. Within the observation mode, each hidden file that is created by OS X is directly deleted after it has been create by the OS.
