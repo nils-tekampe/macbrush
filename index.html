@@ -29,13 +29,11 @@
       </header>
       <section>
         <h3>
-<a id="macbrush" class="anchor" href="#macbrush" aria-hidden="true"><span class="octicon octicon-link"></span></a>MacBrush</h3>
+<a id="macbrush" class="anchor" href="#macbrush" aria-hidden="true"><span class="octicon octicon-link"></span></a>macbrush</h3>
 
 <p>This command line tool cleans a directory and all its subdirectories from a set of hidden files that OS X creates and enters an observation mode afterwards. Within the observation mode, each hidden file that is created by OS X is directly deleted after it has been create by the OS. The programm is of specific use for folders which are shared between OS X and other Operating Systems (e.g. via Dropbox).</p>
 
 <p>The tool provides more or less the same functionality as some commercial tools (e.g. BlueHarvest) but works heedlessly (i.e. without a graphical user interface).</p>
-
-<p><strong>The tool is currently in alpha stage. There is quite some work to be done. So use it with care!</strong></p>
 
 <p><strong>It should be noted that OSX usually creates the temporary files that are removed by the program for a certain reason. Please only use this program if you know what you are doing and if you are sure that no important information will get lost.</strong></p>
 
@@ -118,19 +116,19 @@ brew install macbrush</pre></div>
 
 <p>Clean /home/Users/user1/test and enter observation mode afterwards.</p>
 
-<div class="highlight highlight-bash"><pre>MacBrush /home/Users/user1/test</pre></div>
+<div class="highlight highlight-bash"><pre>macbrush /home/Users/user1/test</pre></div>
 
 <p>Clean /home/Users/user1/test and /home/Users/user1/test2 and enter observation mode afterwards.</p>
 
-<div class="highlight highlight-bash"><pre>MacBrush /home/Users/user1/test /home/Users/user1/test2</pre></div>
+<div class="highlight highlight-bash"><pre>macbrush /home/Users/user1/test /home/Users/user1/test2</pre></div>
 
 <p>Clean /home/Users/user1/test only. No observation mode.</p>
 
-<div class="highlight highlight-bash"><pre>MacBrush --skip-observation /home/Users/user1/test</pre></div>
+<div class="highlight highlight-bash"><pre>macbrush --skip-observation /home/Users/user1/test</pre></div>
 
 <p>Simulate cleaning /home/Users/user1/test and use verbose reporting. </p>
 
-<div class="highlight highlight-bash"><pre>MacBrush --verbose --simulate /home/Users/user1/test</pre></div>
+<div class="highlight highlight-bash"><pre>macbrush --verbose --simulate /home/Users/user1/test</pre></div>
 
 <h3>
 <a id="authors-and-contributors" class="anchor" href="#authors-and-contributors" aria-hidden="true"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
