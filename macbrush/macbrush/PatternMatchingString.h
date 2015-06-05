@@ -10,6 +10,7 @@
 
 @interface PatternMatchingString : NSString
 
+@property (readwrite) NSString *pattern;
 @property (readwrite) NSUInteger matchCount;
 @property (readwrite) bool ignore;
 

@@ -24,7 +24,7 @@ bool skipObservation;
 //variables for some statistics
 int sumDotUnderscore=0;
 
-NSMutableArray *patternMatchingArray;
+NSArray *patternMatchingArray;
 
 int main(int argc, const char * argv[]) {
     
@@ -128,28 +128,24 @@ int main(int argc, const char * argv[]) {
     //PatternMatchingString *tmp =[PatternMatchingString];
     
     PatternMatchingString *patternAPDisk = [[PatternMatchingString alloc] init];
-    patternAPDisk=@".apdisk";
+    patternAPDisk.pattern=@".apdisk";
     patternAPDisk.matchCount=0;
     patternAPDisk.ignore=[settings boolForKey:@"ignore-apdisk"];
     
     PatternMatchingString *patternDSStore = [[PatternMatchingString alloc] init];
-    patternDSStore=@".DS_Store";
+    patternDSStore.pattern=@".DS_Store";
     patternDSStore.matchCount=0;
     patternDSStore.ignore=[settings boolForKey:@"ignore-dsstore"];
     
     PatternMatchingString *patternVolumeIcon = [[PatternMatchingString alloc] init];
-    patternVolumeIcon=@".VolumeIcon.icns";
+    patternVolumeIcon.pattern=@".VolumeIcon.icns";
     patternVolumeIcon.matchCount=0;
     patternVolumeIcon.ignore=[settings boolForKey:@"ignore-volumeicon"];
     
     
     
-    patternMatchingArray = [NSMutableArray arrayWithObjects:patternAPDisk,patternDSStore,patternVolumeIcon];
-    
-    
-    
-    ///[matchPatternArray addObject:patternAPDisk,patternDSStore,patternVolumeIcon];
-    
+    patternMatchingArray = [NSArray arrayWithObjects:patternAPDisk,patternDSStore,patternVolumeIcon,nil];
+
     
     //********************************************************
     //Starting main functionality. 1st step: Clean directories
@@ -316,7 +312,7 @@ bool processFile(NSString* file){
     
     for(PatternMatchingString *pattern in patternMatchingArray)
     {
-        if ([file rangeOfString:pattern].location != NSNotFound) {
+        if ([file rangeOfString:pattern.pattern].location != NSNotFound) {
             
             logger([NSString stringWithFormat:@"%@%@", @"Found the following file:" , file],true);
             
@@ -367,7 +363,16 @@ void cleanDirectory(NSString *directory)
     
     
     logger([NSString stringWithFormat:@"%@%@", @"Finished cleaning directory :" , directory],false);
-   // logger([NSString stringWithFormat:@"%d%@",sumDotAPDisk, @" .AP_Disk files have been removed"],false);
+   
+    
+    for(PatternMatchingString *pattern in patternMatchingArray)
+    {
+
+        logger([NSString stringWithFormat:@"%d%@%@%@",pattern.matchCount, @" " ,pattern.pattern, @" files have been removed"],false);
+
+    }
+    
+    // logger([NSString stringWithFormat:@"%d%@",sumDotAPDisk, @" .AP_Disk files have been removed"],false);
    // logger([NSString stringWithFormat:@"%d%@",sumDotUnderscore, @" ._ files have been removed"],false);
     //logger([NSString stringWithFormat:@"%d%@",sumDSStore, @" .DS_Store files have been removed"],false);
   //  logger([NSString stringWithFormat:@"%d%@",sumVolumeIcon, @" .VolumeIcon.icns files have been removed"],false);
