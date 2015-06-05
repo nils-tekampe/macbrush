@@ -145,7 +145,7 @@ int main(int argc, const char * argv[]) {
     
     
     patternMatchingArray = [NSArray arrayWithObjects:patternAPDisk,patternDSStore,patternVolumeIcon,nil];
-
+    
     
     //********************************************************
     //Starting main functionality. 1st step: Clean directories
@@ -304,7 +304,7 @@ bool processFile(NSString* file){
                         return false;
                     }
                 }
-        }
+            }
         }
     }
     
@@ -317,16 +317,16 @@ bool processFile(NSString* file){
             logger([NSString stringWithFormat:@"%@%@", @"Found the following file:" , file],true);
             
             if (!simulate && !pattern.ignore){
-                    if ([manager removeItemAtPath:file error:&error])
-                    {
-                        logger(@"Sucesfully removed file",true);
-                        pattern.matchCount++;
-                        return true;
-                    }
-                    else  {
-                        logger(@"Error removing file",true);
-                        return false;
-                    }
+                if ([manager removeItemAtPath:file error:&error])
+                {
+                    logger(@"Sucesfully removed file",true);
+                    pattern.matchCount++;
+                    return true;
+                }
+                else  {
+                    logger(@"Error removing file",true);
+                    return false;
+                }
                 
             }
             
@@ -363,19 +363,14 @@ void cleanDirectory(NSString *directory)
     
     
     logger([NSString stringWithFormat:@"%@%@", @"Finished cleaning directory :" , directory],false);
-   
+    
     
     for(PatternMatchingString *pattern in patternMatchingArray)
     {
-
+        
         logger([NSString stringWithFormat:@"%d%@%@%@",pattern.matchCount, @" " ,pattern.pattern, @" files have been removed"],false);
-
+        
     }
-    
-    // logger([NSString stringWithFormat:@"%d%@",sumDotAPDisk, @" .AP_Disk files have been removed"],false);
-   // logger([NSString stringWithFormat:@"%d%@",sumDotUnderscore, @" ._ files have been removed"],false);
-    //logger([NSString stringWithFormat:@"%d%@",sumDSStore, @" .DS_Store files have been removed"],false);
-  //  logger([NSString stringWithFormat:@"%d%@",sumVolumeIcon, @" .VolumeIcon.icns files have been removed"],false);
 }
 
 bool isFile(NSString *file){
