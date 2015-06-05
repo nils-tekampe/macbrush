@@ -124,9 +124,6 @@ int main(int argc, const char * argv[]) {
     //********************************************************
     
     
-    
-    //PatternMatchingString *tmp =[PatternMatchingString];
-    
     PatternMatchingString *patternAPDisk = [[PatternMatchingString alloc] init];
     patternAPDisk.pattern=@".apdisk";
     patternAPDisk.matchCount=0;
@@ -276,7 +273,6 @@ bool processFile(NSString* file){
     ///._ files will only be removed if a corresponding base file is existing
     //Example: _.test.txt will be removed if a file name test.txt is existing in the same folder.
     
-    
     if ([file rangeOfString:pattern].location == NSNotFound) {
         
         //let's build the name of the potentially corresponding file
@@ -291,7 +287,7 @@ bool processFile(NSString* file){
                 
                 logger([NSString stringWithFormat:@"%@%@", @"Found the following ._ file:" , file],true);
                 
-                if (!simulate){
+                if (!simulate && !ignoreDotUnderscore){
                     
                     if ([manager removeItemAtPath:potentialTmpFile error:&error])
                     {
