@@ -191,6 +191,7 @@ int main(int argc, const char * argv[]) {
             //When the loop runs, the program can only be exited via Ctrl+C
             logger(@"Please press Ctrl+C to end program",false);
             CFRunLoopRun();
+           
         }
         @catch(NSException *e){
             logger(@"Error during observation mode. Will now exit",false);
