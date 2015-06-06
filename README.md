@@ -36,7 +36,7 @@ The programm is of specific use for folders which are shared between OS X and ot
 | -o | --ignore-dsstore|Do not remove .DS_Store files|
 | -i | --ignore-volumeicon|Do not remove VolumeIcon.icns files|
 | -s | --simluate|Do not remove any files at all. Should be used togehter with --verbose for reporting of identified files|
-| -v | --verbose|Verbose reporting|
+| -V | --verbose|Verbose reporting|
 | -c | --skip-clean|Do not clean folders. Directly enter observation mode|
 | -o | --skip-observation|Do not enter observation mode. Only clean folders once.|
 | -h | --help|Print help message|
