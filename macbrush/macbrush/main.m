@@ -26,7 +26,7 @@ int sumDotUnderscore=0;
 
 NSArray *patternMatchingArray;
 
-int main(int argc, const char * argv[]) {
+int main(int argc, char * argv[]) {
     
     //****************************************
     //Take care of options and arguments
@@ -305,7 +305,7 @@ bool processFile(NSString* file){
         }
     }
     
-    ///Now looking for the other patterns
+    ///Now looking for the other patterns in a loop
     
     for(PatternMatchingString *pattern in patternMatchingArray)
     {
@@ -365,7 +365,7 @@ void cleanDirectory(NSString *directory)
     for(PatternMatchingString *pattern in patternMatchingArray)
     {
         
-        logger([NSString stringWithFormat:@"%d%@%@%@",pattern.matchCount, @" " ,pattern.pattern, @" files have been removed"],false);
+        logger([NSString stringWithFormat:@"%d%@%@%@",(int)pattern.matchCount, @" " ,pattern.pattern, @" files have been removed"],false);
         
     }
 }
