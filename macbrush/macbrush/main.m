@@ -286,7 +286,7 @@ bool processFile(NSString* file){
         {
             if (isFile(potentialTmpFile)){
                 
-                logger([NSString stringWithFormat:@"%@%@", @"Found the following ._ file:" , file],true);
+                logger([NSString stringWithFormat:@"%@%@", @"Found the following ._ file:" , potentialTmpFile],true);
                 
                 if (!simulate && !ignoreDotUnderscore){
                     
