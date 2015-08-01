@@ -13,6 +13,7 @@
 		294BF1A91B1A141800506C50 /* GBOptionsHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 294BF1A21B1A141800506C50 /* GBOptionsHelper.m */; };
 		294BF1AA1B1A141800506C50 /* GBPrint.m in Sources */ = {isa = PBXBuildFile; fileRef = 294BF1A41B1A141800506C50 /* GBPrint.m */; };
 		294BF1AB1B1A141800506C50 /* GBSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 294BF1A61B1A141800506C50 /* GBSettings.m */; };
+		29BE67FF1B6CDAC900A6E00C /* MacBrush.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BE67FE1B6CDAC900A6E00C /* MacBrush.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -43,6 +44,8 @@
 		294BF1A51B1A141800506C50 /* GBSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBSettings.h; sourceTree = "<group>"; };
 		294BF1A61B1A141800506C50 /* GBSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBSettings.m; sourceTree = "<group>"; };
 		294BF1A71B1A141800506C50 /* main.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = main.h; sourceTree = "<group>"; };
+		29BE67FD1B6CDAC900A6E00C /* MacBrush.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MacBrush.h; sourceTree = "<group>"; };
+		29BE67FE1B6CDAC900A6E00C /* MacBrush.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MacBrush.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +92,8 @@
 				294BF1A61B1A141800506C50 /* GBSettings.m */,
 				294BF1A71B1A141800506C50 /* main.h */,
 				294BF1961B1A13CD00506C50 /* main.m */,
+				29BE67FD1B6CDAC900A6E00C /* MacBrush.h */,
+				29BE67FE1B6CDAC900A6E00C /* MacBrush.m */,
 			);
 			path = macbrush;
 			sourceTree = "<group>";
@@ -153,6 +158,7 @@
 				294BF1AB1B1A141800506C50 /* GBSettings.m in Sources */,
 				2912BF7F1B20DD8500FAC05E /* PatternMatchingString.m in Sources */,
 				294BF1A91B1A141800506C50 /* GBOptionsHelper.m in Sources */,
+				29BE67FF1B6CDAC900A6E00C /* MacBrush.m in Sources */,
 				294BF1AA1B1A141800506C50 /* GBPrint.m in Sources */,
 				294BF1A81B1A141800506C50 /* GBCommandLineParser.m in Sources */,
 			);
