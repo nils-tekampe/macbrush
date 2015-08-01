@@ -11,10 +11,22 @@
 @interface MacBrush : NSObject{
     bool ignore_dot_underscore;
     bool ignore_apdisk;
+    bool ignore_dsstore;
+    bool ignore_volumeicon;
+    bool simulate;
+    bool verbose;
+//Statisticcx
+    CFArrayRef pathsToWatch;
+    
+
+    PatternMatchingString *patternAPDisk ;
+    PatternMatchingString *patternDSStore ;
+    PatternMatchingString *patternVolumeIcon ;
+    NSArray *patternMatchingArray;
     
 }
-
-- (id) initWithValue:(bool)_ignore_dot_underscore:(bool)_ignore_apdisk ;
+-(id) initWithValue:(bool)_ignore_dot_underscore:(bool)_ignore_apdisk:(bool)_ignore_dsstore:(bool)_ignore_volumeicon:(bool)_simulate:(bool)_verbose:(NSArray*) _pathesToWatch;
+- (void) clean;
 - (void) start;
 - (void) stop;
 - (void) restart;
