@@ -8,6 +8,16 @@
 
 #import <Foundation/Foundation.h>
 
-@interface MacBrush : NSObject
+@interface MacBrush : NSObject{
+    bool ignore_dot_underscore;
+    bool ignore_apdisk;
+    
+}
+
+- (id) initWithValue:(bool)_ignore_dot_underscore:(bool)_ignore_apdisk ;
+- (void) start;
+- (void) stop;
+- (void) restart;
 
 @end
+
