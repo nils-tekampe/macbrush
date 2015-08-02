@@ -7,6 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "PatternMatchingString.h"
+
 
 @interface MacBrush : NSObject{
     bool ignore_dot_underscore;
@@ -15,9 +17,11 @@
     bool ignore_volumeicon;
     bool simulate;
     bool verbose;
-//Statisticcx
-    CFArrayRef pathsToWatch;
     
+    int sum_dotunderscore;
+
+
+    CFArrayRef pathsToWatch;
 
     PatternMatchingString *patternAPDisk ;
     PatternMatchingString *patternDSStore ;
@@ -30,6 +34,10 @@
 - (void) start;
 - (void) stop;
 - (void) restart;
+- (void) logger:(NSString*)message:(bool)verbose_only;
+-(void) cleanDirectory:(NSString*) directory;
+
++(bool) isFile:(NSString*)file;
 
 @end
 
