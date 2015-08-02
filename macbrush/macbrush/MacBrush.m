@@ -8,6 +8,7 @@
 
 #import "MacBrush.h"
 #import "PatternMatchingString.h"
+#import "callback.h"
 
 @implementation MacBrush
 
@@ -46,6 +47,32 @@
         patternMatchingArray = [NSArray arrayWithObjects:patternAPDisk,patternDSStore,patternVolumeIcon,nil];
         
         sum_dotunderscore=0;
+        
+        
+        CFAbsoluteTime latency = 1.0; /* Latency in seconds */
+        
+        FSEventStreamContext context;
+        context.info = (__bridge void *)(self);
+        context.version = 0;
+        context.retain = NULL;
+        context.release = NULL;
+        context.copyDescription = NULL;
+        
+        //********************************************************
+        //Create the stream, passing in a callback
+        //********************************************************
+        
+        stream = FSEventStreamCreate(NULL,
+                                     &mycallback,
+                                     &context,
+                                     pathsToWatch,
+                                     kFSEventStreamEventIdSinceNow, /* Or a previous event ID */
+                                     latency,
+                                     kFSEventStreamCreateFlagFileEvents//kFSEventStreamCreateFlagNone /* Flags explained in reference */
+                                     );
+        
+        /* Create the stream before calling this. */
+        FSEventStreamScheduleWithRunLoop(stream, CFRunLoopGetCurrent(),kCFRunLoopDefaultMode);
 
         
     }
@@ -108,7 +135,7 @@
     for (NSString *file in directoryEnumerator) {
         NSString *filename=file;
         filename= [directory stringByAppendingPathComponent:file];
-        processFile(filename);
+    [self processFile:filename];
     }
     
     
@@ -202,40 +229,55 @@
     return false;
 }
 
-
-
-+(bool) isFile:(NSString*)file{
-    BOOL isDir = NO;
-    if([[NSFileManager defaultManager]fileExistsAtPath:file isDirectory:&isDir] && isDir)
-        return false;
-    else
-        return true;
+- (void) start{
+    
+    @try{
+       
+        
+        FSEventStreamStart(stream);
+        
+        logger(@"Starting observation mode for the following directories:",false);
+        
+        NSArray *tmp = (__bridge NSArray*)pathsToWatch;
+        for (NSString *entry in tmp) {
+            logger(entry,false);
+        }
+        
+    }
+    @catch(NSException *e){
+        logger(@"Error during observation mode.",false);
+    }
+    
 }
+
+
+- (void) stop{
+    
+    @try{
+        
+        
+        FSEventStreamStop(stream);
+        
+        logger(@"Now stopping observation mode for the following directories:",false);
+        
+        NSArray *tmp = (__bridge NSArray*)pathsToWatch;
+        for (NSString *entry in tmp) {
+            logger(entry,false);
+        }
+        
+    }
+    @catch(NSException *e){
+        logger(@"Error during stopping observation mode.",false);
+    }
+    
+}
+
+
 
 
 
 @end
 
-/**
- Callback function that is called if a change to a files in one of the observed folders has been detected
- */
-void mycallback2(
-                ConstFSEventStreamRef streamRef,
-                void *clientCallBackInfo,
-                size_t numEvents,
-                void *eventPaths,
-                const FSEventStreamEventFlags eventFlags[],
-                const FSEventStreamEventId eventIds[])
-{
-    int i;
-    char **paths = eventPaths;
-    
-    for (i=0; i<numEvents; i++) {
-        if (!(eventFlags[i]&kFSEventStreamEventFlagItemRemoved)){
-            NSString* file = [NSString stringWithCString:paths[i] encoding:NSASCIIStringEncoding];
-            processFile(file);}
-    }
-    
-}
+
 
 

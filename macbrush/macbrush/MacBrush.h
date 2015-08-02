@@ -28,6 +28,8 @@
     PatternMatchingString *patternVolumeIcon ;
     NSArray *patternMatchingArray;
     
+    FSEventStreamRef stream;
+    
 }
 -(id) initWithValue:(bool)_ignore_dot_underscore:(bool)_ignore_apdisk:(bool)_ignore_dsstore:(bool)_ignore_volumeicon:(bool)_simulate:(bool)_verbose:(NSArray*) _pathesToWatch;
 - (void) clean;
