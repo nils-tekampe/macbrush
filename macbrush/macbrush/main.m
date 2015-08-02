@@ -11,6 +11,7 @@
 #import "GBCli.h"
 #include "main.h"
 #include "PatternMatchingString.h"
+#import "MacBrush.h"
 
 // I know that global variables are not the best style but for some purposes they are just the easiest way :-)
 
@@ -119,29 +120,9 @@ int main(int argc, char * argv[]) {
         
     }
     
-    //********************************************************
-    //Building an array for match patterns
-    //********************************************************
+    //-(id) initWithValue:(bool)_ignore_dot_underscore:(bool)_ignore_apdisk:(bool)_ignore_dsstore:(bool)_ignore_volumeicon:(bool)_simulate:(bool)_verbose:(NSArray*) _pathesToWatch;
     
-    
-    PatternMatchingString *patternAPDisk = [[PatternMatchingString alloc] init];
-    patternAPDisk.pattern=@".apdisk";
-    patternAPDisk.matchCount=0;
-    patternAPDisk.ignore=[settings boolForKey:@"ignore-apdisk"];
-    
-    PatternMatchingString *patternDSStore = [[PatternMatchingString alloc] init];
-    patternDSStore.pattern=@".DS_Store";
-    patternDSStore.matchCount=0;
-    patternDSStore.ignore=[settings boolForKey:@"ignore-dsstore"];
-    
-    PatternMatchingString *patternVolumeIcon = [[PatternMatchingString alloc] init];
-    patternVolumeIcon.pattern=@".VolumeIcon.icns";
-    patternVolumeIcon.matchCount=0;
-    patternVolumeIcon.ignore=[settings boolForKey:@"ignore-volumeicon"];
-    
-    
-    
-    patternMatchingArray = [NSArray arrayWithObjects:patternAPDisk,patternDSStore,patternVolumeIcon,nil];
+    MacBrush *brusher = [[MacBrush alloc] initWithValue:[settings boolForKey:@"ignore-dot-underscore"] :[settings boolForKey:@"ignore-apdisk"]:[settings boolForKey:@"ignore-dsstore"] :[settings boolForKey:@"ignore-volumeicon"] :[settings boolForKey:@"simulate"] :[settings boolForKey:@"verbose"]:arguments];
     
     
     //********************************************************
@@ -149,9 +130,8 @@ int main(int argc, char * argv[]) {
     //********************************************************
     
     if (!skipClean){
-        for (NSString *entry in arguments) {
-            cleanDirectory(entry);
-        }
+        [brusher clean];
+        
     }
     else
     {
@@ -162,42 +142,7 @@ int main(int argc, char * argv[]) {
     //Starting main functionality. 2nd step: observe directories
     //**********************************************************
     if (!skipObservation){
-        
-        @try{
-            void *callbackInfo = NULL; // could put stream-specific data here.
-            FSEventStreamRef stream;
-            CFAbsoluteTime latency = 1.0; /* Latency in seconds */
-            
-            /* Create the stream, passing in a callback */
-            stream = FSEventStreamCreate(NULL,
-                                         &mycallback,
-                                         callbackInfo,
-                                         pathsToWatch,
-                                         kFSEventStreamEventIdSinceNow, /* Or a previous event ID */
-                                         latency,
-                                         kFSEventStreamCreateFlagFileEvents//kFSEventStreamCreateFlagNone /* Flags explained in reference */
-                                         );
-            
-            /* Create the stream before calling this. */
-            FSEventStreamScheduleWithRunLoop(stream, CFRunLoopGetCurrent(),kCFRunLoopDefaultMode);
-            FSEventStreamStart(stream);
-            
-            logger(@"Starting observation mode for the following directories:",false);
-            
-            for (NSString *entry in arguments) {
-                logger(entry,false);
-            }
-            
-            //When the loop runs, the program can only be exited via Ctrl+C
-            logger(@"Please press Ctrl+C to end program",false);
-            CFRunLoopRun();
-           
-        }
-        @catch(NSException *e){
-            logger(@"Error during observation mode. Will now exit",false);
-            return 1;
-        }
-        return 0;
+        [brusher start];
     }
     else{
         
@@ -235,148 +180,28 @@ void logger(NSString *message, bool verbose_only){
     }
     
 }
-/**
- Callback function that is called if a change to a files in one of the observed folders has been detected
- */
-void mycallback(
-                ConstFSEventStreamRef streamRef,
-                void *clientCallBackInfo,
-                size_t numEvents,
-                void *eventPaths,
-                const FSEventStreamEventFlags eventFlags[],
-                const FSEventStreamEventId eventIds[])
-{
-    int i;
-    char **paths = eventPaths;
-    
-    for (i=0; i<numEvents; i++) {
-        if (!(eventFlags[i]&kFSEventStreamEventFlagItemRemoved)){
-            NSString* file = [NSString stringWithCString:paths[i] encoding:NSASCIIStringEncoding];
-            processFile(file);}
-    }
-    
-}
+///**
+// Callback function that is called if a change to a files in one of the observed folders has been detected
+// */
+//void mycallback(
+//                ConstFSEventStreamRef streamRef,
+//                void *clientCallBackInfo,
+//                size_t numEvents,
+//                void *eventPaths,
+//                const FSEventStreamEventFlags eventFlags[],
+//                const FSEventStreamEventId eventIds[])
+//{
+//    int i;
+//    char **paths = eventPaths;
+//    
+//    for (i=0; i<numEvents; i++) {
+//        if (!(eventFlags[i]&kFSEventStreamEventFlagItemRemoved)){
+//            NSString* file = [NSString stringWithCString:paths[i] encoding:NSASCIIStringEncoding];
+//            processFile(file);}
+//    }
+//    
+//}
 
-/**
- This function processes a file/folder and determines whether it should be removed. If the file has been identified for removal, the function also tries to remove the file.
- @param file The file to be processed
- @returns true if the file has been removed sucesfully Returns false if the file has not been identified to be removed or could not be removed (e.g. due to a lack of permissions.
- */
-bool processFile(NSString* file){
-    
-    NSFileManager *manager = [NSFileManager defaultManager];
-    NSError *error = nil;
-    
-    NSString* pattern=@"";
-    
-    
-    ///First we look for ´._ files
-    ///._ files will only be removed if a corresponding base file is existing
-    //Example: _.test.txt will be removed if a file name test.txt is existing in the same folder.
-    
-    if ([file rangeOfString:pattern].location == NSNotFound) {
-        
-        //let's build the name of the potentially corresponding file
-        NSString* theFileName = file.lastPathComponent;
-        NSString *path = file.stringByDeletingLastPathComponent;
-        NSString *potentialTmpFile=[NSString stringWithFormat:@"%@/%@%@", path,@"._",theFileName];
-        
-        
-        if([[NSFileManager defaultManager] fileExistsAtPath:potentialTmpFile])
-        {
-            if (isFile(potentialTmpFile)){
-                
-                logger([NSString stringWithFormat:@"%@%@", @"Found the following ._ file:" , potentialTmpFile],true);
-                
-                if (!simulate && !ignoreDotUnderscore){
-                    
-                    if ([manager removeItemAtPath:potentialTmpFile error:&error])
-                    {
-                        logger(@"Sucesfully removed file",true);
-                        sumDotUnderscore++;
-                        return true;
-                    }
-                    else  {
-                        logger(@"Error removing file",true);
-                        return false;
-                    }
-                }
-            }
-        }
-    }
-    
-    ///Now looking for the other patterns in a loop
-    
-    for(PatternMatchingString *pattern in patternMatchingArray)
-    {
-        if ([file rangeOfString:pattern.pattern].location != NSNotFound) {
-            
-            logger([NSString stringWithFormat:@"%@%@", @"Found the following file:" , file],true);
-            
-            if (!simulate && !pattern.ignore){
-                if ([manager removeItemAtPath:file error:&error])
-                {
-                    logger(@"Sucesfully removed file",true);
-                    pattern.matchCount++;
-                    return true;
-                }
-                else  {
-                    logger(@"Error removing file",true);
-                    return false;
-                }
-                
-            }
-            
-        }
-    }
-    return false;
-}
-
-
-/**
- This function processes a complete directory. It lists all the files and subfolder of the dir and
- calls processFile(..) for each of the files/folders in the directory.
- @param *directory NSString pointing to the directory to be processesd.
- */
-//Todo: function could use some error handling
-void cleanDirectory(NSString *directory)
-{
-    logger([NSString stringWithFormat:@"%@%@", @"Starting to clean directory :" , directory],false);
-    
-    //reset statistics
-    for(PatternMatchingString *pattern in patternMatchingArray)
-    {
-        pattern.matchCount=0;
-    }
-    
-    NSDirectoryEnumerator *directoryEnumerator = [[NSFileManager defaultManager] enumeratorAtPath:directory];
-    
-    
-    for (NSString *file in directoryEnumerator) {
-        NSString *filename=file;
-        filename= [directory stringByAppendingPathComponent:file];
-        processFile(filename);
-    }
-    
-    
-    logger([NSString stringWithFormat:@"%@%@", @"Finished cleaning directory :" , directory],false);
-    
-    
-    for(PatternMatchingString *pattern in patternMatchingArray)
-    {
-        
-        logger([NSString stringWithFormat:@"%d%@%@%@",(int)pattern.matchCount, @" " ,pattern.pattern, @" files have been removed"],false);
-        
-    }
-}
-
-bool isFile(NSString *file){
-    BOOL isDir = NO;
-    if([[NSFileManager defaultManager]fileExistsAtPath:file isDirectory:&isDir] && isDir)
-        return false;
-    else
-        return true;
-}
 
 
 
