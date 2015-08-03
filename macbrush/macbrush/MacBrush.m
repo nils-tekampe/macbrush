@@ -112,6 +112,16 @@
     
     
 }
+- (void) clean{
+    
+    NSArray *array = (__bridge NSArray*)pathsToWatch;
+    
+    for (NSString *entry in array) {
+        [self cleanDirectory:entry];
+    }
+}
+
+
 
 /**
  This function processes a complete directory. It lists all the files and subfolder of the dir and
@@ -242,6 +252,8 @@
         for (NSString *entry in tmp) {
             logger(entry,false);
         }
+        
+    
         
     }
     @catch(NSException *e){

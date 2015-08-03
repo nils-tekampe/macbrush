@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "MacBrush.h"
 
 /**
  Callback function that is called if a change to a files in one of the observed folders has been detected
@@ -25,10 +26,12 @@ void mycallback(
     for (i=0; i<numEvents; i++) {
         if (!(eventFlags[i]&kFSEventStreamEventFlagItemRemoved)){
             NSString* file = [NSString stringWithCString:paths[i] encoding:NSASCIIStringEncoding];
-        clientCallBackInfo
+        
             
- //           >processFile(file);
-   //         clientc
+            MacBrush *brush = (__bridge MacBrush *)clientCallBackInfo;
+            [brush processFile:file];
+        
+            
         }
     }
     

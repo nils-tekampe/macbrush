@@ -120,7 +120,7 @@ int main(int argc, char * argv[]) {
         
     }
     
-    //-(id) initWithValue:(bool)_ignore_dot_underscore:(bool)_ignore_apdisk:(bool)_ignore_dsstore:(bool)_ignore_volumeicon:(bool)_simulate:(bool)_verbose:(NSArray*) _pathesToWatch;
+    logger([NSString stringWithFormat:@"%@" ,@" test."],false);
     
     MacBrush *brusher = [[MacBrush alloc] initWithValue:[settings boolForKey:@"ignore-dot-underscore"] :[settings boolForKey:@"ignore-apdisk"]:[settings boolForKey:@"ignore-dsstore"] :[settings boolForKey:@"ignore-volumeicon"] :[settings boolForKey:@"simulate"] :[settings boolForKey:@"verbose"]:arguments];
     
@@ -143,6 +143,8 @@ int main(int argc, char * argv[]) {
     //**********************************************************
     if (!skipObservation){
         [brusher start];
+        CFRunLoopRun();
+        
     }
     else{
         

@@ -37,6 +37,7 @@
 - (void) stop;
 - (void) restart;
 - (void) logger:(NSString*)message:(bool)verbose_only;
+-(bool) processFile:(NSString*) file;
 -(void) cleanDirectory:(NSString*) directory;
 
 +(bool) isFile:(NSString*)file;
