@@ -12,6 +12,7 @@
 
 @property (readwrite) NSString *pattern;
 @property (readwrite) NSUInteger matchCount;
+@property (readwrite) NSUInteger cleanCount;
 @property (readwrite) bool ignore;
 
 @end

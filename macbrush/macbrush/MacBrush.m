@@ -31,16 +31,19 @@
         patternAPDisk = [[PatternMatchingString alloc] init];
         patternAPDisk.pattern=@".apdisk";
         patternAPDisk.matchCount=0;
+        patternAPDisk.cleanCount=0;
         patternAPDisk.ignore=ignore_apdisk;
         
         patternDSStore = [[PatternMatchingString alloc] init];
         patternDSStore.pattern=@".DS_Store";
         patternDSStore.matchCount=0;
+        patternDSStore.cleanCount=0;
         patternDSStore.ignore=ignore_dsstore;
         
         patternVolumeIcon = [[PatternMatchingString alloc] init];
         patternVolumeIcon.pattern=@".VolumeIcon.icns";
         patternVolumeIcon.matchCount=0;
+        patternVolumeIcon.cleanCount=0;
         patternVolumeIcon.ignore=ignore_volumeicon;
         
         
@@ -64,7 +67,7 @@
         
         stream = FSEventStreamCreate(NULL,
                                      &mycallback,
-                                     &context,
+                                     &context, //<- This is used to keep track of the current object
                                      pathsToWatch,
                                      kFSEventStreamEventIdSinceNow, /* Or a previous event ID */
                                      latency,
@@ -87,9 +90,6 @@
  */
 -(void) logger:(NSString*)message:(bool)verbose_only
 {
-    int a;
-    a=5;
-    
     
     if (!verbose_only){
         //These messages will have to be printed in any way. However, the way of printing depend on
@@ -136,7 +136,7 @@
     //reset statistics
     for(PatternMatchingString *pattern in patternMatchingArray)
     {
-        pattern.matchCount=0;
+        pattern.cleanCount=0;
     }
     
     NSDirectoryEnumerator *directoryEnumerator = [[NSFileManager defaultManager] enumeratorAtPath:directory];
@@ -155,7 +155,7 @@
     for(PatternMatchingString *pattern in patternMatchingArray)
     {
         
-        logger([NSString stringWithFormat:@"%d%@%@%@",(int)pattern.matchCount, @" " ,pattern.pattern, @" files have been removed"],false);
+        logger([NSString stringWithFormat:@"%d%@%@%@",(int)pattern.cleanCount, @" " ,pattern.pattern, @" files have been removed"],false);
         
     }
 }
@@ -194,7 +194,7 @@
                 logger([NSString stringWithFormat:@"%@%@", @"Found the following ._ file:" , potentialTmpFile],true);
                 
                 if (!simulate && !ignore_dot_underscore){
-                    
+                
                     
                     if ([manager removeItemAtPath:potentialTmpFile error:&error])
                     {
