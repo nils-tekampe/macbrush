@@ -139,6 +139,7 @@
         pattern.cleanCount=0;
     }
     
+    
     NSDirectoryEnumerator *directoryEnumerator = [[NSFileManager defaultManager] enumeratorAtPath:directory];
     
     
@@ -151,6 +152,7 @@
     
     logger([NSString stringWithFormat:@"%@%@", @"Finished cleaning directory :" , directory],false);
     
+    logger([NSString stringWithFormat:@"%d%@%@%@",(int)sum_dotunderscore, @" " ,@"._", @" files have been removed"],false);
     
     for(PatternMatchingString *pattern in patternMatchingArray)
     {
