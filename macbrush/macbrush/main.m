@@ -120,7 +120,6 @@ int main(int argc, char * argv[]) {
         
     }
     
-    logger([NSString stringWithFormat:@"%@" ,@" test."],false);
     
     MacBrush *brusher = [[MacBrush alloc] initWithValue:[settings boolForKey:@"ignore-dot-underscore"] :[settings boolForKey:@"ignore-apdisk"]:[settings boolForKey:@"ignore-dsstore"] :[settings boolForKey:@"ignore-volumeicon"] :[settings boolForKey:@"simulate"] :[settings boolForKey:@"verbose"]:arguments];
     
