@@ -22,6 +22,10 @@ bool verbose;
 bool skipClean;
 bool skipObservation;
 
+//Variables for ncurses
+int col;
+int row;
+
 //variables for some statistics
 int sumDotUnderscore=0;
 
@@ -32,6 +36,9 @@ int main(int argc, char * argv[]) {
     //****************************************
     //Take care of options and arguments
     //****************************************
+    
+    col=-99;
+    row=-99;
     
     // Create settings stack.
     GBSettings *factoryDefaults = [GBSettings settingsWithName:@"Factory" parent:nil];
@@ -141,14 +148,27 @@ int main(int argc, char * argv[]) {
     //Starting main functionality. 2nd step: observe directories
     //**********************************************************
     if (!skipObservation){
-        [brusher start];
-        CFRunLoopRun();
+        
+        [brusher performSelectorInBackground:@selector(start) withObject:nil];
+        
+        //[brusher start];
+        //CFRunLoopRun();
         
     }
     else{
         
         logger(@"Skipping observation mode.",false);
     }
+    
+    logger(@"Tesdsfgsdfgsdfgsdfgsdgt",false);
+    char ch;
+    
+    while( (ch = getch()) != @"q")
+        
+        ;
+    
+    return 0;
+    
     
 }
 
@@ -181,6 +201,28 @@ void logger(NSString *message, bool verbose_only){
     }
     
 }
+
+/**
+ Function for printing the summary during observation mode.
+ Utilizes ncurses
+ Only used if not in verbose mode
+ */
+void printSummary(int _sumDotUnderscore){
+    if (col==-99)
+        {
+            initscr();
+            raw();
+            getyx(stdscr,row,col);
+            
+            
+}
+    
+    mvprintw(row,col,"%d files have been removed", _sumDotUnderscore);
+    
+
+    
+}
+
 
 
 

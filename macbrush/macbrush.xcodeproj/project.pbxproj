@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2912BF7F1B20DD8500FAC05E /* PatternMatchingString.m in Sources */ = {isa = PBXBuildFile; fileRef = 2912BF7E1B20DD8500FAC05E /* PatternMatchingString.m */; };
+		2949AD961C9557A700F9F009 /* libncurses.5.4.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 2949AD951C9557A700F9F009 /* libncurses.5.4.tbd */; };
 		294BF1971B1A13CD00506C50 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 294BF1961B1A13CD00506C50 /* main.m */; };
 		294BF1A81B1A141800506C50 /* GBCommandLineParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 294BF1A01B1A141800506C50 /* GBCommandLineParser.m */; };
 		294BF1A91B1A141800506C50 /* GBOptionsHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 294BF1A21B1A141800506C50 /* GBOptionsHelper.m */; };
@@ -33,6 +34,7 @@
 		2912BF7C1B2084FB00FAC05E /* macbrush.1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.man; name = macbrush.1; path = macbrush/macbrush.1; sourceTree = "<group>"; };
 		2912BF7D1B20DD8500FAC05E /* PatternMatchingString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PatternMatchingString.h; sourceTree = "<group>"; };
 		2912BF7E1B20DD8500FAC05E /* PatternMatchingString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PatternMatchingString.m; sourceTree = "<group>"; };
+		2949AD951C9557A700F9F009 /* libncurses.5.4.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libncurses.5.4.tbd; path = usr/lib/libncurses.5.4.tbd; sourceTree = SDKROOT; };
 		294BF1931B1A13CD00506C50 /* macbrush */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = macbrush; sourceTree = BUILT_PRODUCTS_DIR; };
 		294BF1961B1A13CD00506C50 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		294BF19E1B1A141800506C50 /* GBCli.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBCli.h; sourceTree = "<group>"; };
@@ -56,6 +58,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2949AD961C9557A700F9F009 /* libncurses.5.4.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +68,7 @@
 		294BF18A1B1A13CD00506C50 = {
 			isa = PBXGroup;
 			children = (
+				2949AD951C9557A700F9F009 /* libncurses.5.4.tbd */,
 				2912BF7C1B2084FB00FAC05E /* macbrush.1 */,
 				294BF1951B1A13CD00506C50 /* macbrush */,
 				294BF1941B1A13CD00506C50 /* Products */,

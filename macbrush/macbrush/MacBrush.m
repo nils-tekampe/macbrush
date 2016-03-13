@@ -22,6 +22,7 @@
         simulate=_simulate;
         verbose=_verbose;
         pathsToWatch = (__bridge CFArrayRef)_pathesToWatch;
+    
  
         //********************************************************
         //Building an array for match patterns
@@ -75,7 +76,8 @@
                                      );
         
         /* Create the stream before calling this. */
-        FSEventStreamScheduleWithRunLoop(stream, CFRunLoopGetCurrent(),kCFRunLoopDefaultMode);
+      FSEventStreamScheduleWithRunLoop(stream, CFRunLoopGetCurrent(),kCFRunLoopDefaultMode);
+
 
         
     }
@@ -154,11 +156,14 @@
     
     logger([NSString stringWithFormat:@"%d%@%@%@",(int)sum_dotunderscore, @" " ,@"._", @" files have been removed"],false);
     
+    sum_dotunderscore=0; //Resetting coutner for observation mode
+    
+    
     for(PatternMatchingString *pattern in patternMatchingArray)
     {
         
         logger([NSString stringWithFormat:@"%d%@%@%@",(int)pattern.cleanCount, @" " ,pattern.pattern, @" files have been removed"],false);
-        
+        pattern.cleanCount=0; //Restting counter for observation mode
     }
 }
 
@@ -242,7 +247,7 @@
 }
 
 - (void) start{
-    
+     logger(@"Start method",false);
     @try{
        
         
@@ -254,7 +259,7 @@
         for (NSString *entry in tmp) {
             logger(entry,false);
         }
-        
+        CFRunLoopRun();
     
         
     }
