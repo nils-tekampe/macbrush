@@ -149,10 +149,15 @@ int main(int argc, char * argv[]) {
     //**********************************************************
     if (!skipObservation){
         
-        [brusher performSelectorInBackground:@selector(start) withObject:nil];
+   //     [brusher performSelectorInBackground:@selector(start) withObject:nil];
+        //[brusher performSelectorOnMainThread:@selector(start) withObject:nil waitUntilDone:NO];
+
+        //[self performSelectorOnMainThread:@selector(start) withObject:brusher waitUntilDone:NO];
+        [brusher start];
         
-        //[brusher start];
-        //CFRunLoopRun();
+
+        
+        CFRunLoopRun();
         
     }
     else{
@@ -163,13 +168,19 @@ int main(int argc, char * argv[]) {
     logger(@"Tesdsfgsdfgsdfgsdfgsdgt",false);
     char ch;
     
-    while( (ch = getch()) != @"q")
+    while( (ch = getch()) != @"z")
         
         ;
     
     return 0;
     
     
+}
+
+void startFunktionFuerNils(MacBrush *_brush){
+
+    [_brush start];
+
 }
 
 /**

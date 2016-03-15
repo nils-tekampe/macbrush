@@ -259,7 +259,7 @@
         for (NSString *entry in tmp) {
             logger(entry,false);
         }
-        CFRunLoopRun();
+       
     
         
     }
