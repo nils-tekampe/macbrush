@@ -37,6 +37,33 @@ void mycallback(
     
 }
 
+CGEventRef
+myCGEventCallback(CGEventTapProxy proxy, CGEventType type,
+                  CGEventRef event, void *refcon)
+{
+    // Paranoid sanity check.
+    if ((type != kCGEventKeyDown) && (type != kCGEventKeyUp))
+        return event;
+    
+    // The incoming keycode.
+    CGKeyCode keycode = (CGKeyCode)CGEventGetIntegerValueField(
+                                                               event, kCGKeyboardEventKeycode);
+    
+    // Swap 'a' (keycode=0) and 'z' (keycode=6).
+    if (keycode == (CGKeyCode)0)
+        keycode = (CGKeyCode)6;
+    else if (keycode == (CGKeyCode)6)
+        keycode = (CGKeyCode)0;
+    
+    // Set the modified keycode field in the event.
+    CGEventSetIntegerValueField(
+                                event, kCGKeyboardEventKeycode, (int64_t)keycode);
+    
+    // We must return the event for it to be useful.
+    return event;
+}
+
+
 bool isFile(NSString *file){
     BOOL isDir = NO;
     if([[NSFileManager defaultManager]fileExistsAtPath:file isDirectory:&isDir] && isDir)

@@ -151,7 +151,7 @@ int main(int argc, char * argv[]) {
         
         [brusher start];
         
-        NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(printSummary) userInfo:nil repeats:YES];
+     //   NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(printSummary) userInfo:nil repeats:YES];
         
         CFRunLoopRun();
         
@@ -206,31 +206,6 @@ void logger(NSString *message, bool verbose_only){
         }
         
     }
-    
-}
-
-/**
- Function for printing the summary during observation mode.
- Utilizes ncurses
- Only used if not in verbose mode
- */
-- (void) printSummary:(NSTimer *)timer
-{
-   
-
-    
-    if (col==-99)
-        {
-            initscr();
-            raw();
-            getyx(stdscr,row,col);
-            
-            
-}
-    
-    mvprintw(row,col,"%d files have been removed", _sumDotUnderscore);
-    
-
     
 }
 

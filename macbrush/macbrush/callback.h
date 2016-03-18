@@ -17,6 +17,10 @@ void mycallback(
                 const FSEventStreamEventFlags eventFlags[],
                 const FSEventStreamEventId eventIds[]);
 
+CGEventRef
+myCGEventCallback(CGEventTapProxy proxy, CGEventType type,
+                  CGEventRef event, void *refcon);
+
 bool isFile(NSString *file);
     
 #endif

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		2912BF7F1B20DD8500FAC05E /* PatternMatchingString.m in Sources */ = {isa = PBXBuildFile; fileRef = 2912BF7E1B20DD8500FAC05E /* PatternMatchingString.m */; };
 		2949AD961C9557A700F9F009 /* libncurses.5.4.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 2949AD951C9557A700F9F009 /* libncurses.5.4.tbd */; };
+		2949AD991C9C96C000F9F009 /* MainController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2949AD981C9C96C000F9F009 /* MainController.m */; };
 		294BF1971B1A13CD00506C50 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 294BF1961B1A13CD00506C50 /* main.m */; };
 		294BF1A81B1A141800506C50 /* GBCommandLineParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 294BF1A01B1A141800506C50 /* GBCommandLineParser.m */; };
 		294BF1A91B1A141800506C50 /* GBOptionsHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 294BF1A21B1A141800506C50 /* GBOptionsHelper.m */; };
@@ -35,6 +36,8 @@
 		2912BF7D1B20DD8500FAC05E /* PatternMatchingString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PatternMatchingString.h; sourceTree = "<group>"; };
 		2912BF7E1B20DD8500FAC05E /* PatternMatchingString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PatternMatchingString.m; sourceTree = "<group>"; };
 		2949AD951C9557A700F9F009 /* libncurses.5.4.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libncurses.5.4.tbd; path = usr/lib/libncurses.5.4.tbd; sourceTree = SDKROOT; };
+		2949AD971C9C96C000F9F009 /* MainController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainController.h; sourceTree = "<group>"; };
+		2949AD981C9C96C000F9F009 /* MainController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainController.m; sourceTree = "<group>"; };
 		294BF1931B1A13CD00506C50 /* macbrush */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = macbrush; sourceTree = BUILT_PRODUCTS_DIR; };
 		294BF1961B1A13CD00506C50 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		294BF19E1B1A141800506C50 /* GBCli.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBCli.h; sourceTree = "<group>"; };
@@ -86,6 +89,8 @@
 		294BF1951B1A13CD00506C50 /* macbrush */ = {
 			isa = PBXGroup;
 			children = (
+				2949AD971C9C96C000F9F009 /* MainController.h */,
+				2949AD981C9C96C000F9F009 /* MainController.m */,
 				2912BF7D1B20DD8500FAC05E /* PatternMatchingString.h */,
 				2912BF7E1B20DD8500FAC05E /* PatternMatchingString.m */,
 				294BF19E1B1A141800506C50 /* GBCli.h */,
@@ -164,6 +169,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				294BF1971B1A13CD00506C50 /* main.m in Sources */,
+				2949AD991C9C96C000F9F009 /* MainController.m in Sources */,
 				294BF1AB1B1A141800506C50 /* GBSettings.m in Sources */,
 				29BE68041B6E642E00A6E00C /* callback.m in Sources */,
 				2912BF7F1B20DD8500FAC05E /* PatternMatchingString.m in Sources */,
