@@ -25,6 +25,7 @@ bool skipObservation;
 //Variables for ncurses
 int col;
 int row;
+   
 
 //variables for some statistics
 int sumDotUnderscore=0;
