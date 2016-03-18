@@ -179,8 +179,9 @@
     NSFileManager *manager = [NSFileManager defaultManager];
     NSError *error = nil;
     
-    NSString* pattern=@"";
+    NSString* pattern=@"._";
     
+     logger([NSString stringWithFormat:@"%@%@", @" Processing file: " , file],true);
     
     ///First we look for ´._ files
     ///._ files will only be removed if a corresponding base file is existing
@@ -193,6 +194,7 @@
         NSString *path = file.stringByDeletingLastPathComponent;
         NSString *potentialTmpFile=[NSString stringWithFormat:@"%@/%@%@", path,@"._",theFileName];
         
+         logger([NSString stringWithFormat:@"%@%@", @"Potential ._ file:" , potentialTmpFile],true);
         
         if([[NSFileManager defaultManager] fileExistsAtPath:potentialTmpFile])
         {
@@ -217,6 +219,9 @@
                 }
             }
         }
+  
+            
+            
     }
     
     ///Now looking for the other patterns in a loop

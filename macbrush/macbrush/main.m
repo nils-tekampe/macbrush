@@ -149,13 +149,9 @@ int main(int argc, char * argv[]) {
     //**********************************************************
     if (!skipObservation){
         
-   //     [brusher performSelectorInBackground:@selector(start) withObject:nil];
-        //[brusher performSelectorOnMainThread:@selector(start) withObject:nil waitUntilDone:NO];
-
-        //[self performSelectorOnMainThread:@selector(start) withObject:brusher waitUntilDone:NO];
         [brusher start];
         
-
+        NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(printSummary) userInfo:nil repeats:YES];
         
         CFRunLoopRun();
         
@@ -218,7 +214,11 @@ void logger(NSString *message, bool verbose_only){
  Utilizes ncurses
  Only used if not in verbose mode
  */
-void printSummary(int _sumDotUnderscore){
+- (void) printSummary:(NSTimer *)timer
+{
+   
+
+    
     if (col==-99)
         {
             initscr();
