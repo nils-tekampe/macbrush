@@ -9,8 +9,14 @@
 #import "MacBrush.h"
 #import "PatternMatchingString.h"
 #import "callback.h"
+#include <ncurses.h>
 
 @implementation MacBrush
+
+//variables for some statistics
+int sumDotUnderscore=0;
+int col=-99;
+int row=-99;
 
 - (id) initWithValue:(bool)_ignore_dot_underscore:(bool)_ignore_apdisk:(bool)_ignore_dsstore:(bool)_ignore_volumeicon:(bool)_simulate:(bool)_verbose:(NSArray*) _pathesToWatch {
     self = [self init];
@@ -258,14 +264,8 @@
         
         FSEventStreamStart(stream);
         
-        logger(@"Starting observation mode for the following directories:",false);
         
-        NSArray *tmp = (__bridge NSArray*)pathsToWatch;
-        for (NSString *entry in tmp) {
-            logger(entry,false);
-        }
-       
-           NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(printSummary) userInfo:nil repeats:YES];
+           NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(printSummary) userInfo:nil repeats:YES];
     
         
     }
@@ -296,6 +296,37 @@
     }
     
 }
+
+- (void) printSummary{
+    logger(@"Print summary",false);
+
+   
+    
+    if (col==-99)
+    {
+        initscr();
+      //  raw();
+      //  getyx(stdscr,row,col);
+        
+        logger(@"Starting observation mode for the following directories:",false);
+        
+     //   NSArray *tmp = (__bridge NSArray*)pathsToWatch;
+       // for (NSString *entry in tmp) {
+         //   logger(entry,false);
+            
+           // getyx(stdscr,row,col);
+            
+       // }
+
+        
+    }
+    
+    //mvprintw(row,col,"%d files have been removed", sumDotUnderscore);
+    
+    
+    
+}
+
 
 
 

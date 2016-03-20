@@ -25,12 +25,8 @@ bool verbose;
 bool skipClean;
 bool skipObservation;
 
-//Variables for ncurses
-int col;
-int row;
 
-//variables for some statistics
-int sumDotUnderscore=0;
+
 
 NSArray *patternMatchingArray;
 
@@ -39,9 +35,7 @@ int main(int argc, char * argv[]) {
     //****************************************
     //Take care of options and arguments
     //****************************************
-    
-    col=-99;
-    row=-99;
+
     
     // Create settings stack.
     GBSettings *factoryDefaults = [GBSettings settingsWithName:@"Factory" parent:nil];
@@ -182,13 +176,7 @@ int main(int argc, char * argv[]) {
         logger(@"Skipping observation mode.",false);
     }
     
-    logger(@"Tesdsfgsdfgsdfgsdfgsdgt",false);
-    char ch;
-    
-    while( (ch = getch()) != @"z")
         
-        ;
-    
     return 0;
     
     
