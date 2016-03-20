@@ -7,8 +7,11 @@
 //
 
 #import "MainController.h"
-#include <ApplicationServices/ApplicationServices.h>
+//#include <ApplicationServices/ApplicationServices.h>
 #import "callback.h"
+#import "Main.h"
+#import <Foundation/Foundation.h>
+#import <Cocoa/Cocoa.h>
 
 @implementation MainController
 
@@ -17,32 +20,13 @@
 {
     
     
+
     
-    //we need to register for keyboard events on the runloop
-    CFMachPortRef      eventTap;
-    CGEventMask        eventMask;
-    CFRunLoopSourceRef runLoopSource;
+    [NSEvent addLocalMonitorForEventsMatchingMask:NSKeyDownMask handler:^(NSEvent *event){logger(@"Test keystroke",false); return event;}];
     
-    // Create an event tap. We are interested in key presses.
-    eventMask = ((1 << kCGEventKeyDown) | (1 << kCGEventKeyUp));
-    eventTap = CGEventTapCreate(kCGSessionEventTap, kCGHeadInsertEventTap, 0,
-                                eventMask, myCGEventCallback, NULL);
-    if (!eventTap) {
-        fprintf(stderr, "failed to create event tap\n");
-        exit(1);
-    }
+      //  NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(printSummary) userInfo:nil repeats:YES];
     
-    // Create a run loop source.
-    runLoopSource = CFMachPortCreateRunLoopSource(
-                                                  kCFAllocatorDefault, eventTap, 0);
-    
-    // Add to the current run loop.
-    CFRunLoopAddSource(CFRunLoopGetCurrent(), runLoopSource,
-                       kCFRunLoopCommonModes);
-    
-    // Enable the event tap.
-    CGEventTapEnable(eventTap, true);
-    
+
 }
 
 /**

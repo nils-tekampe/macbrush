@@ -265,6 +265,7 @@
             logger(entry,false);
         }
        
+           NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(printSummary) userInfo:nil repeats:YES];
     
         
     }

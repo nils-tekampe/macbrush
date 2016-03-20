@@ -12,6 +12,9 @@
 #include "main.h"
 #include "PatternMatchingString.h"
 #import "MacBrush.h"
+#import "MainController.h"
+#import <Foundation/Foundation.h>
+#import <Cocoa/Cocoa.h>
 
 // I know that global variables are not the best style but for some purposes they are just the easiest way :-)
 
@@ -130,6 +133,24 @@ int main(int argc, char * argv[]) {
     
     MacBrush *brusher = [[MacBrush alloc] initWithValue:[settings boolForKey:@"ignore-dot-underscore"] :[settings boolForKey:@"ignore-apdisk"]:[settings boolForKey:@"ignore-dsstore"] :[settings boolForKey:@"ignore-volumeicon"] :[settings boolForKey:@"simulate"] :[settings boolForKey:@"verbose"]:arguments];
     
+    //********************************************************
+    //Setting up the main controller
+    //********************************************************
+    
+    
+
+    
+    
+    
+    
+    
+    
+    MainController *mainer = [[MainController alloc] init];
+    [mainer setup];
+    
+    
+    [NSEvent addLocalMonitorForEventsMatchingMask:NSKeyDownMask handler:^(NSEvent *event){NSLog(@"Key pressed"); return event;}];
+
     
     //********************************************************
     //Starting main functionality. 1st step: Clean directories
@@ -151,7 +172,7 @@ int main(int argc, char * argv[]) {
         
         [brusher start];
         
-     //   NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(printSummary) userInfo:nil repeats:YES];
+   
         
         CFRunLoopRun();
         
