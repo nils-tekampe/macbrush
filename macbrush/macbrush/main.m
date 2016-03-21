@@ -32,6 +32,9 @@ NSArray *patternMatchingArray;
 
 int main(int argc, char * argv[]) {
     
+
+    
+    
     //****************************************
     //Take care of options and arguments
     //****************************************
@@ -93,7 +96,17 @@ int main(int argc, char * argv[]) {
     }
     
     
+    //****************************************
+    //For the case that we are running in XCode debugger we only can run in verbose mode (as ncurse does not work)
+    //****************************************
+    char *term = getenv("TERM");
     
+    bool IsTerminalAvailable = (term != NULL);
+    
+    if (!IsTerminalAvailable)
+        verbose=true;
+                               
+                               
     NSArray *arguments = parser.arguments;
     
     CFArrayRef pathsToWatch = (__bridge CFArrayRef)arguments;

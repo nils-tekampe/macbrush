@@ -300,7 +300,7 @@ int row=-99;
 - (void) printSummary{
     logger(@"Print summary",false);
 
-   
+    if (verbose) return;
     
     if (col==-99)
     {
