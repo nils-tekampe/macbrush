@@ -17,6 +17,7 @@
 int sumDotUnderscore=0;
 int col=-99;
 int row=-99;
+int counterPrinter=0;
 
 - (id) initWithValue:(bool)_ignore_dot_underscore:(bool)_ignore_apdisk:(bool)_ignore_dsstore:(bool)_ignore_volumeicon:(bool)_simulate:(bool)_verbose:(NSArray*) _pathesToWatch {
     self = [self init];
@@ -298,31 +299,46 @@ int row=-99;
 }
 
 - (void) printSummary{
-    logger(@"Print summary",false);
+   // logger(@"Print summary",false);
 
-    if (verbose) return;
+    if (verbose) {
+        
+        if (counterPrinter>=10)
+        {}
+        counterPrinter++;
+        return;
+    }
+    
     
     if (col==-99)
     {
+        raw();
         initscr();
-      //  raw();
+       
       //  getyx(stdscr,row,col);
+        mvaddch(0,0,[[NSString stringWithFormat:@"Starting observation mode for the following directories:"] cStringUsingEncoding:NSUTF8StringEncoding ]);
+       
         
-        logger(@"Starting observation mode for the following directories:",false);
+        NSArray *tmp = (__bridge NSArray*)pathsToWatch;
+        for (NSString *entry in tmp) {
+            logger(entry,false);
+            
+            
+        }
         
-     //   NSArray *tmp = (__bridge NSArray*)pathsToWatch;
-       // for (NSString *entry in tmp) {
-         //   logger(entry,false);
-            
-           // getyx(stdscr,row,col);
-            
-       // }
+        getyx(stdscr,row,col);
 
         
     }
     
-    //mvprintw(row,col,"%d files have been removed", sumDotUnderscore);
-    
+    NSString *tmp=[NSString stringWithFormat:@"%ld",(long)col];
+    //const char *c = [tmp cStringUsingEncoding:NSUTF8StringEncoding];
+    const char arr[]="Hello There";
+    mvaddch(row,col,arr[0]);
+    //logger(c,false);
+
+    mvaddch(row+1,col,[[NSString stringWithFormat:@"Test"] cStringUsingEncoding:NSUTF8StringEncoding ]);
+    refresh();
     
     
 }

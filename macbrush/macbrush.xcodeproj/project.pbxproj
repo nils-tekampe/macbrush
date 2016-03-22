@@ -15,6 +15,8 @@
 		294BF1A91B1A141800506C50 /* GBOptionsHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 294BF1A21B1A141800506C50 /* GBOptionsHelper.m */; };
 		294BF1AA1B1A141800506C50 /* GBPrint.m in Sources */ = {isa = PBXBuildFile; fileRef = 294BF1A41B1A141800506C50 /* GBPrint.m */; };
 		294BF1AB1B1A141800506C50 /* GBSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 294BF1A61B1A141800506C50 /* GBSettings.m */; };
+		298CBC261CA1E60D007D4EE8 /* OCCurses.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 298CBC251CA1E60D007D4EE8 /* OCCurses.framework */; };
+		298CBC2B1CA1E717007D4EE8 /* OCCurses.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 298CBC2A1CA1E717007D4EE8 /* OCCurses.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		29BE67FF1B6CDAC900A6E00C /* MacBrush.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BE67FE1B6CDAC900A6E00C /* MacBrush.m */; };
 		29BE68041B6E642E00A6E00C /* callback.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BE68031B6E642E00A6E00C /* callback.m */; };
 /* End PBXBuildFile section */
@@ -22,12 +24,13 @@
 /* Begin PBXCopyFilesBuildPhase section */
 		294BF1911B1A13CD00506C50 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = /usr/share/man/man1/;
-			dstSubfolderSpec = 0;
+			buildActionMask = 12;
+			dstPath = "";
+			dstSubfolderSpec = 10;
 			files = (
+				298CBC2B1CA1E717007D4EE8 /* OCCurses.framework in CopyFiles */,
 			);
-			runOnlyForDeploymentPostprocessing = 1;
+			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
@@ -50,6 +53,10 @@
 		294BF1A51B1A141800506C50 /* GBSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBSettings.h; sourceTree = "<group>"; };
 		294BF1A61B1A141800506C50 /* GBSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBSettings.m; sourceTree = "<group>"; };
 		294BF1A71B1A141800506C50 /* main.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = main.h; sourceTree = "<group>"; };
+		298CBC231CA1E5FA007D4EE8 /* Debug */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Debug; path = ../../OCCurses/Build/Products/Debug; sourceTree = "<group>"; };
+		298CBC251CA1E60D007D4EE8 /* OCCurses.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OCCurses.framework; path = ../../OCCurses/Build/Products/Release/OCCurses.framework; sourceTree = "<group>"; };
+		298CBC281CA1E6EE007D4EE8 /* OCCurses.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = OCCurses.framework; sourceTree = "<group>"; };
+		298CBC2A1CA1E717007D4EE8 /* OCCurses.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = OCCurses.framework; sourceTree = "<group>"; };
 		29BE67FD1B6CDAC900A6E00C /* MacBrush.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MacBrush.h; sourceTree = "<group>"; };
 		29BE67FE1B6CDAC900A6E00C /* MacBrush.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MacBrush.m; sourceTree = "<group>"; };
 		29BE68031B6E642E00A6E00C /* callback.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = callback.m; sourceTree = "<group>"; };
@@ -61,6 +68,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				298CBC261CA1E60D007D4EE8 /* OCCurses.framework in Frameworks */,
 				2949AD9B1C9E9EA400F9F009 /* libncurses.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -71,6 +79,10 @@
 		294BF18A1B1A13CD00506C50 = {
 			isa = PBXGroup;
 			children = (
+				298CBC2A1CA1E717007D4EE8 /* OCCurses.framework */,
+				298CBC281CA1E6EE007D4EE8 /* OCCurses.framework */,
+				298CBC251CA1E60D007D4EE8 /* OCCurses.framework */,
+				298CBC231CA1E5FA007D4EE8 /* Debug */,
 				2949AD9A1C9E9EA400F9F009 /* libncurses.tbd */,
 				2912BF7C1B2084FB00FAC05E /* macbrush.1 */,
 				294BF1951B1A13CD00506C50 /* macbrush */,
@@ -138,7 +150,7 @@
 		294BF18B1B1A13CD00506C50 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0630;
+				LastUpgradeCheck = 0730;
 				ORGANIZATIONNAME = "Nils Tekampe";
 				TargetAttributes = {
 					294BF1921B1A13CD00506C50 = {
@@ -203,6 +215,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -263,6 +276,7 @@
 		294BF19B1B1A13CD00506C50 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				"FRAMEWORK_SEARCH_PATHS[arch=*]" = "$(SRCROOT)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -270,6 +284,7 @@
 		294BF19C1B1A13CD00506C50 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				"FRAMEWORK_SEARCH_PATHS[arch=*]" = "$(SRCROOT)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
