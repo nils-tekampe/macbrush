@@ -278,6 +278,7 @@
 			buildSettings = {
 				"FRAMEWORK_SEARCH_PATHS[arch=*]" = "$(SRCROOT)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				"USER_HEADER_SEARCH_PATHS[arch=*]" = "$(BUILD_ROOT)/../IntermediateBuildFilesPath/UninstalledProducts /Users/nils/Documents/GitHub/OCCurses/OCCurses/Source";
 			};
 			name = Debug;
 		};
@@ -286,6 +287,7 @@
 			buildSettings = {
 				"FRAMEWORK_SEARCH_PATHS[arch=*]" = "$(SRCROOT)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				"USER_HEADER_SEARCH_PATHS[arch=*]" = "/Users/nils/Documents/GitHub/OCCurses/OCCurses/Source $(BUILD_ROOT)/../IntermediateBuildFilesPath/UninstalledProducts";
 			};
 			name = Release;
 		};

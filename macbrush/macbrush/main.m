@@ -15,6 +15,8 @@
 #import "MainController.h"
 #import <Foundation/Foundation.h>
 #import <Cocoa/Cocoa.h>
+#import "OCCursesFramework.h"
+
 
 // I know that global variables are not the best style but for some purposes they are just the easiest way :-)
 
@@ -231,7 +233,36 @@ void logger(NSString *message, bool verbose_only){
     
 }
 
+/**
+ Function for logging/user interaction via commandline
+ Will output text to stdout
+ @param *message The message to print
+ @param verbose_only If set to true, the message will only be printed if --verbose==true
+ */
+void initCurses(){
+    const unsigned int array[] = {0,0,0,0,0,0,0,0,}; //Border 0
+    NSSize tSize = [OCCursesManager terminalSize];
+    NSRect wFrame = NSMakeRect(0, 0, tSize.width, tSize.height);
+    
+    OCWindow* mainWindow = [[OCWindow alloc] initWithTitle:@"Main" frame:wFrame];
+    OCBorderComponents borderComp = OCBorderComponentsFromArray(array);
+    
+    OCBorder* mwBorder = [[OCBorder alloc] initWithComponents:borderComp];
+    
+    //OCColorPair* mwColor = [OCColorPair colorPairWithForegroundColor:[OCColor whiteColor]
+    //   backgroundColor:[OCColor blackColor]];
+    
+    NSPoint point = NSMakePoint(2,2); // Our first line
+    
+    if(![OCCursesManager hasColors]){
+        [mainWindow writeToWindowAtLocation:point
+                                     format:NSLocalizedStringFromTable(@"errorColors", @"Localizable", @"Comment") ];
+    }
+    
+    [OCCursesManager startColors];
 
+    
+}
 
 
 
