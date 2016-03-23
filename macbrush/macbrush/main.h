@@ -26,6 +26,7 @@ void mycallback(
                 const FSEventStreamEventId eventIds[]);
 
 bool processFile(NSString* file);
+void initMyCurses();
 void cleanDirectory(NSString *directory);
 bool isFile(NSString *file);
 

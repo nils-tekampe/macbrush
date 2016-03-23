@@ -36,7 +36,6 @@ int main(int argc, char * argv[]) {
     
 
     
-    
     //****************************************
     //Take care of options and arguments
     //****************************************
@@ -107,7 +106,7 @@ int main(int argc, char * argv[]) {
     
     if (!IsTerminalAvailable)
         verbose=true;
-                               
+
                                
     NSArray *arguments = parser.arguments;
     
@@ -142,17 +141,8 @@ int main(int argc, char * argv[]) {
     
     MacBrush *brusher = [[MacBrush alloc] initWithValue:[settings boolForKey:@"ignore-dot-underscore"] :[settings boolForKey:@"ignore-apdisk"]:[settings boolForKey:@"ignore-dsstore"] :[settings boolForKey:@"ignore-volumeicon"] :[settings boolForKey:@"simulate"] :[settings boolForKey:@"verbose"]:arguments];
     
-    //********************************************************
-    //Setting up the main controller
-    //********************************************************
-    
-    
 
-    
-    
-    
-    
-    
+
     
     MainController *mainer = [[MainController alloc] init];
     [mainer setup];
@@ -181,7 +171,7 @@ int main(int argc, char * argv[]) {
         
         [brusher start];
         
-   
+        initMyCurses();
         
         CFRunLoopRun();
         
@@ -239,29 +229,32 @@ void logger(NSString *message, bool verbose_only){
  @param *message The message to print
  @param verbose_only If set to true, the message will only be printed if --verbose==true
  */
-void initCurses(){
-    const unsigned int array[] = {0,0,0,0,0,0,0,0,}; //Border 0
-    NSSize tSize = [OCCursesManager terminalSize];
-    NSRect wFrame = NSMakeRect(0, 0, tSize.width, tSize.height);
+void initMyCurses(){
+//    if (!verbose){
+//    const unsigned int array[] = {0,0,0,0,0,0,0,0,}; //Border 0
+//    NSSize tSize = [OCCursesManager terminalSize];
+//    NSRect wFrame = NSMakeRect(0, 0, tSize.width, tSize.height);
+//    
+//    OCWindow* mainWindow = [[OCWindow alloc] initWithTitle:@"Main" frame:wFrame];
+    //OCBorderComponents borderComp = OCBorderComponentsFromArray(array);
     
-    OCWindow* mainWindow = [[OCWindow alloc] initWithTitle:@"Main" frame:wFrame];
-    OCBorderComponents borderComp = OCBorderComponentsFromArray(array);
-    
-    OCBorder* mwBorder = [[OCBorder alloc] initWithComponents:borderComp];
+   // OCBorder* mwBorder = [[OCBorder alloc] initWithComponents:borderComp];
     
     //OCColorPair* mwColor = [OCColorPair colorPairWithForegroundColor:[OCColor whiteColor]
     //   backgroundColor:[OCColor blackColor]];
     
-    NSPoint point = NSMakePoint(2,2); // Our first line
-    
-    if(![OCCursesManager hasColors]){
-        [mainWindow writeToWindowAtLocation:point
-                                     format:NSLocalizedStringFromTable(@"errorColors", @"Localizable", @"Comment") ];
-    }
-    
-    [OCCursesManager startColors];
-
-    
+//    NSPoint point = NSMakePoint(2,2); // Our first line
+//    
+//    if(![OCCursesManager hasColors]){
+//        [mainWindow writeToWindowAtLocation:point
+//                                     format:NSLocalizedStringFromTable(@"errorColors", @"Localizable", @"Comment") ];
+//    }
+//    
+//    [OCCursesManager startColors];
+//
+//    [mainWindow writeToWindowAtLocation:NSMakePoint(2,4) format:NSLocalizedStringFromTable(@"Zallo, dies ist ein Test",@"Localizable", @"Comment")];
+//    [mainWindow writeToWindowAtLocation:NSMakePoint(4,6) format:NSLocalizedStringFromTable(@"menuStart",@"Localizable", @"Comment")];
+    //}
 }
 
 

@@ -22,7 +22,7 @@
     
 
     
-    [NSEvent addLocalMonitorForEventsMatchingMask:NSKeyDownMask handler:^(NSEvent *event){logger(@"Test keystroke",false); return event;}];
+  //  [NSEvent addLocalMonitorForEventsMatchingMask:NSKeyDownMask handler:^(NSEvent *event){logger(@"Test keystroke",false); return event;}];
     
       //  NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(printSummary) userInfo:nil repeats:YES];
     

@@ -29,8 +29,8 @@ int counterPrinter=0;
         simulate=_simulate;
         verbose=_verbose;
         pathsToWatch = (__bridge CFArrayRef)_pathesToWatch;
-    
- 
+        
+        
         //********************************************************
         //Building an array for match patterns
         //********************************************************
@@ -83,9 +83,9 @@ int counterPrinter=0;
                                      );
         
         /* Create the stream before calling this. */
-      FSEventStreamScheduleWithRunLoop(stream, CFRunLoopGetCurrent(),kCFRunLoopDefaultMode);
-
-
+        FSEventStreamScheduleWithRunLoop(stream, CFRunLoopGetCurrent(),kCFRunLoopDefaultMode);
+        
+        
         
     }
     return self;
@@ -155,7 +155,7 @@ int counterPrinter=0;
     for (NSString *file in directoryEnumerator) {
         NSString *filename=file;
         filename= [directory stringByAppendingPathComponent:file];
-    [self processFile:filename];
+        [self processFile:filename];
     }
     
     
@@ -188,7 +188,7 @@ int counterPrinter=0;
     
     NSString* pattern=@"._";
     
-     logger([NSString stringWithFormat:@"%@%@", @" Processing file: " , file],true);
+    logger([NSString stringWithFormat:@"%@%@", @" Processing file: " , file],true);
     
     ///First we look for ´._ files
     ///._ files will only be removed if a corresponding base file is existing
@@ -201,7 +201,7 @@ int counterPrinter=0;
         NSString *path = file.stringByDeletingLastPathComponent;
         NSString *potentialTmpFile=[NSString stringWithFormat:@"%@/%@%@", path,@"._",theFileName];
         
-         logger([NSString stringWithFormat:@"%@%@", @"Potential ._ file:" , potentialTmpFile],true);
+        logger([NSString stringWithFormat:@"%@%@", @"Potential ._ file:" , potentialTmpFile],true);
         
         if([[NSFileManager defaultManager] fileExistsAtPath:potentialTmpFile])
         {
@@ -210,7 +210,7 @@ int counterPrinter=0;
                 logger([NSString stringWithFormat:@"%@%@", @"Found the following ._ file:" , potentialTmpFile],true);
                 
                 if (!simulate && !ignore_dot_underscore){
-                
+                    
                     
                     if ([manager removeItemAtPath:potentialTmpFile error:&error])
                     {
@@ -226,9 +226,9 @@ int counterPrinter=0;
                 }
             }
         }
-  
-            
-            
+        
+        
+        
     }
     
     ///Now looking for the other patterns in a loop
@@ -259,15 +259,15 @@ int counterPrinter=0;
 }
 
 - (void) start{
-     logger(@"Start method",false);
+    logger(@"Start method",false);
     @try{
-       
+        
         
         FSEventStreamStart(stream);
         
         
-           NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(printSummary) userInfo:nil repeats:YES];
-    
+        NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(printSummary) userInfo:nil repeats:YES];
+        
         
     }
     @catch(NSException *e){
@@ -299,25 +299,20 @@ int counterPrinter=0;
 }
 
 - (void) printSummary{
-   // logger(@"Print summary",false);
-
-    if (verbose) {
-        
-        if (counterPrinter>=10)
-        {}
-        counterPrinter++;
-        return;
-    }
-    
-    
     if (col==-99)
     {
+      
         raw();
         initscr();
-       
-      //  getyx(stdscr,row,col);
-        mvaddch(0,0,[[NSString stringWithFormat:@"Starting observation mode for the following directories:"] cStringUsingEncoding:NSUTF8StringEncoding ]);
-       
+        
+        getyx(stdscr,row,col);
+        move(0,0);
+        printw("************************************");
+        move(1,0);
+        printw("*****Starting observation mode******");
+        move(2,0);
+        printw("************************************");
+        
         
         NSArray *tmp = (__bridge NSArray*)pathsToWatch;
         for (NSString *entry in tmp) {
@@ -327,17 +322,12 @@ int counterPrinter=0;
         }
         
         getyx(stdscr,row,col);
-
+        
         
     }
     
-    NSString *tmp=[NSString stringWithFormat:@"%ld",(long)col];
-    //const char *c = [tmp cStringUsingEncoding:NSUTF8StringEncoding];
-    const char arr[]="Hello There";
-    mvaddch(row,col,arr[0]);
-    //logger(c,false);
-
-    mvaddch(row+1,col,[[NSString stringWithFormat:@"Test"] cStringUsingEncoding:NSUTF8StringEncoding ]);
+    //move(0,0);
+   // printw("test3");
     refresh();
     
     
