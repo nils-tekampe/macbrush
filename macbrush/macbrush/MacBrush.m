@@ -86,7 +86,8 @@ int counterPrinter=0;
         FSEventStreamScheduleWithRunLoop(stream, CFRunLoopGetCurrent(),kCFRunLoopDefaultMode);
         
         
-        
+       
+        if (!verbose) [self initCurses];
     }
     return self;
 }
@@ -266,7 +267,7 @@ int counterPrinter=0;
         FSEventStreamStart(stream);
         
         
-        NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(printSummary) userInfo:nil repeats:YES];
+        NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(printSummary1) userInfo:nil repeats:YES];
         
         
     }
@@ -297,37 +298,44 @@ int counterPrinter=0;
     }
     
 }
+- (void) initCurses
 
-- (void) printSummary{
-    if (col==-99)
-    {
-      
-        raw();
-        initscr();
-        
-        getyx(stdscr,row,col);
-        move(0,0);
-        printw("************************************");
-        move(1,0);
-        printw("*****Starting observation mode******");
-        move(2,0);
-        printw("************************************");
-        
-        
-        NSArray *tmp = (__bridge NSArray*)pathsToWatch;
-        for (NSString *entry in tmp) {
-            logger(entry,false);
-            
-            
-        }
-        
-        getyx(stdscr,row,col);
-        
-        
-    }
+{
+    raw();
+    initscr();
     
-    //move(0,0);
-   // printw("test3");
+    getyx(stdscr,row,col);
+    move(0,0);
+    
+    
+    
+}
+
+
+- (void) printSummary1{
+    
+    int i=0;
+    move(0,0);
+    printw("************************************");
+    move(1,0);
+    printw("*****Starting macbrush**************");
+    move(2,0);
+    printw("************************************");
+    move(3,0);
+    printw("Starting to clean the following directories");
+    move(4,0);
+    
+    NSArray *tmp = (__bridge NSArray*)pathsToWatch;
+    for (NSString *entry in tmp) {
+        const char* tmpString  = [entry UTF8String];
+        printw(tmpString);
+        i++;
+        move(4+i,0);
+ 
+    }
+    move(4+i,0);
+    printw("************************************");
+    
     refresh();
     
     

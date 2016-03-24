@@ -15,7 +15,6 @@
 #import "MainController.h"
 #import <Foundation/Foundation.h>
 #import <Cocoa/Cocoa.h>
-#import "OCCursesFramework.h"
 
 
 // I know that global variables are not the best style but for some purposes they are just the easiest way :-)
@@ -171,8 +170,7 @@ int main(int argc, char * argv[]) {
         
         [brusher start];
         
-        initMyCurses();
-        
+
         CFRunLoopRun();
         
     }
@@ -222,41 +220,6 @@ void logger(NSString *message, bool verbose_only){
     }
     
 }
-
-/**
- Function for logging/user interaction via commandline
- Will output text to stdout
- @param *message The message to print
- @param verbose_only If set to true, the message will only be printed if --verbose==true
- */
-void initMyCurses(){
-//    if (!verbose){
-//    const unsigned int array[] = {0,0,0,0,0,0,0,0,}; //Border 0
-//    NSSize tSize = [OCCursesManager terminalSize];
-//    NSRect wFrame = NSMakeRect(0, 0, tSize.width, tSize.height);
-//    
-//    OCWindow* mainWindow = [[OCWindow alloc] initWithTitle:@"Main" frame:wFrame];
-    //OCBorderComponents borderComp = OCBorderComponentsFromArray(array);
-    
-   // OCBorder* mwBorder = [[OCBorder alloc] initWithComponents:borderComp];
-    
-    //OCColorPair* mwColor = [OCColorPair colorPairWithForegroundColor:[OCColor whiteColor]
-    //   backgroundColor:[OCColor blackColor]];
-    
-//    NSPoint point = NSMakePoint(2,2); // Our first line
-//    
-//    if(![OCCursesManager hasColors]){
-//        [mainWindow writeToWindowAtLocation:point
-//                                     format:NSLocalizedStringFromTable(@"errorColors", @"Localizable", @"Comment") ];
-//    }
-//    
-//    [OCCursesManager startColors];
-//
-//    [mainWindow writeToWindowAtLocation:NSMakePoint(2,4) format:NSLocalizedStringFromTable(@"Zallo, dies ist ein Test",@"Localizable", @"Comment")];
-//    [mainWindow writeToWindowAtLocation:NSMakePoint(4,6) format:NSLocalizedStringFromTable(@"menuStart",@"Localizable", @"Comment")];
-    //}
-}
-
 
 
 
