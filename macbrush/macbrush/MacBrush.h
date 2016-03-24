@@ -38,12 +38,14 @@
 - (void) restart;
 - (void) printSummary;
 - (void) printIntroduction;
-- (void) initCurses;
+- (int) initCurses;
 - (void) curseLine:(NSString *)_text;
 - (void) curseLineWithoutLineFeed:(NSString *)_text;
+- (void) curseLineWithTab:(NSString *)_text;
 - (void) logger:(NSString*)message:(bool)verbose_only;
 -(bool) processFile:(NSString*) file;
 -(void) cleanDirectory:(NSString*) directory;
+- (NSString *) stripDirectoryForPrinting:(NSString *)_directory;
 
 +(bool) isFile:(NSString*)file;
 

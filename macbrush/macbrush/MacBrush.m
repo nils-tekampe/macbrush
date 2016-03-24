@@ -87,8 +87,12 @@ int offsetSummary=0;
         FSEventStreamScheduleWithRunLoop(stream, CFRunLoopGetCurrent(),kCFRunLoopDefaultMode);
         
         
-        
-        if (!verbose){ [self initCurses];}
+        //Todo: diesen Teil würde ich eher in Main.m sehen. auch die initfunktion 
+        if ([self initCurses]!=0) {
+            
+        verbose=true;
+            logger(@"Your terminal is below 80 characters in width. Switching to verbose mode as standard mode will need more than 80 characters");
+        }
         
         [self printIntroduction];
     }
@@ -152,265 +156,307 @@ int offsetSummary=0;
     }
     else
     {
-        move (row,0);
-        printw("Starting to clean directory :");
-        printw([directory UTF8String]);
+        
+        [self curseLineWithoutLineFeed:@"Cleaning directory: "];
+         printw([directory UTF8String]);
         row++;
         
+         }
+         
+         //reset statistics
+         for(PatternMatchingString *pattern in patternMatchingArray)
+         {
+             pattern.cleanCount=0;
+         }
+         
+         NSDirectoryEnumerator *directoryEnumerator = [[NSFileManager defaultManager] enumeratorAtPath:directory];
+         
+         
+         for (NSString *file in directoryEnumerator) {
+             NSString *filename=file;
+             filename= [directory stringByAppendingPathComponent:file];
+             [self processFile:filename];
+         }
+         
+         //inform the user about the result
+         //in case the output shall be verbose, we directly push it to stdout
+         if (verbose){
+             logger([NSString stringWithFormat:@"%@%@", @"Finished cleaning directory: " , directory],true);
+             logger([NSString stringWithFormat:@"%d%@%@%@",(int)sum_dotunderscore, @" " ,@"._", @" files have been removed"],true);
+             
+             sum_dotunderscore=0; //Resetting coutner for observation mode
+             
+             
+             for(PatternMatchingString *pattern in patternMatchingArray)
+             {
+                 
+                 logger([NSString stringWithFormat:@"%d%@%@%@",(int)pattern.cleanCount, @" " ,pattern.pattern, @" files have been removed"],true);
+                 pattern.cleanCount=0; //Restting counter for observation mode
+             }
+         }
+         //otheriwse we use the curse summary
+         else {
+             
+             printw(", now finished: ");
+             //row++;
+             [self curseLineWithoutLineFeed:[NSString stringWithFormat:@"%d ._ files have been removed", sum_dotunderscore]];
+             [self curseLineWithTab:[NSString stringWithFormat:@"%d .apdisk files have been removed", ((PatternMatchingString*)[patternMatchingArray objectAtIndex: 0]).matchCount]];
+             [self curseLineWithoutLineFeed:[NSString stringWithFormat:@"%d .DS_Store have been removed", ((PatternMatchingString*)[patternMatchingArray objectAtIndex: 1]).matchCount]];
+             [self curseLineWithTab:[NSString stringWithFormat:@"%d .VolumeIcon.icns have been removed", ((PatternMatchingString*)[patternMatchingArray objectAtIndex: 2]).matchCount]];
+             
+             //Resetting coutner for observation mode
+             sum_dotunderscore=0;
+             ((PatternMatchingString*)[patternMatchingArray objectAtIndex: 0]).matchCount=0;
+             ((PatternMatchingString*)[patternMatchingArray objectAtIndex: 1]).matchCount=0;
+             ((PatternMatchingString*)[patternMatchingArray objectAtIndex: 2]).matchCount=0;
+             
+             
+             ((PatternMatchingString*)[patternMatchingArray objectAtIndex: 0]).matchCount;
+             
+             //        for(PatternMatchingString *pattern in patternMatchingArray)
+             //        {
+             //            [self curseLine:[NSString stringWithFormat:@"%d%@%@%@",(int)pattern.cleanCount, @" " ,pattern.pattern, @" files have been removed"]];
+             //            pattern.cleanCount=0; //Restting counter for observation mode
+             //        }
+             [self curseLine:@"------------------------------------------------------------------------------"];
+             
+         }
+         
+         offsetSummary=row;
+         }
+         
+         
+         /**
+          This function processes a file/folder and determines whether it should be removed. If the file has been identified for removal, the function also tries to remove the file.
+          @param file The file to be processed
+          @returns true if the file has been removed sucesfully Returns false if the file has not been identified to be removed or could not be removed (e.g. due to a lack of permissions.
+          */
+         -(bool) processFile:(NSString*) file
+         {
+             
+             NSFileManager *manager = [NSFileManager defaultManager];
+             NSError *error = nil;
+             
+             NSString* pattern=@"._";
+             
+             logger([NSString stringWithFormat:@"%@%@", @" Processing file: " , file],true);
+             
+             ///First we look for ´._ files
+             ///._ files will only be removed if a corresponding base file is existing
+             //Example: _.test.txt will be removed if a file name test.txt is existing in the same folder.
+             
+             if ([file rangeOfString:pattern].location == NSNotFound) {
+                 
+                 //let's build the name of the potentially corresponding file
+                 NSString* theFileName = file.lastPathComponent;
+                 NSString *path = file.stringByDeletingLastPathComponent;
+                 NSString *potentialTmpFile=[NSString stringWithFormat:@"%@/%@%@", path,@"._",theFileName];
+                 
+                 logger([NSString stringWithFormat:@"%@%@", @"Potential ._ file:" , potentialTmpFile],true);
+                 
+                 if([[NSFileManager defaultManager] fileExistsAtPath:potentialTmpFile])
+                 {
+                     if (isFile(potentialTmpFile)){
+                         
+                         logger([NSString stringWithFormat:@"%@%@", @"Found the following ._ file:" , potentialTmpFile],true);
+                         
+                         if (!simulate && !ignore_dot_underscore){
+                             
+                             
+                             if ([manager removeItemAtPath:potentialTmpFile error:&error])
+                             {
+                                 logger(@"Sucesfully removed file",true);
+                                 sum_dotunderscore++;
+                                 
+                                 return true;
+                             }
+                             else  {
+                                 logger(@"Error removing file",true);
+                                 return false;
+                             }
+                         }
+                     }
+                 }
+                 
+                 
+                 
+             }
+             
+             ///Now looking for the other patterns in a loop
+             
+             for(PatternMatchingString *pattern in patternMatchingArray)
+             {
+                 if ([file rangeOfString:pattern.pattern].location != NSNotFound) {
+                     
+                     logger([NSString stringWithFormat:@"%@%@", @"Found the following file:" , file],true);
+                     
+                     if (!simulate && !pattern.ignore){
+                         if ([manager removeItemAtPath:file error:&error])
+                         {
+                             logger(@"Sucesfully removed file",true);
+                             pattern.matchCount++;
+                             return true;
+                         }
+                         else  {
+                             logger(@"Error removing file",true);
+                             return false;
+                         }
+                         
+                     }
+                     
+                 }
+             }
+             return false;
+         }
+         
+         - (void) start{
+             
+             @try{
+                 
+                 
+                 FSEventStreamStart(stream);
+                 // NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(printSummary) userInfo:nil repeats:YES];
+                 
+             }
+             @catch(NSException *e){
+                 logger(@"Error during observation mode.",false);
+             }
+             
+         }
+         
+         
+         - (void) stop{
+             
+             @try{
+                 
+                 
+                 FSEventStreamStop(stream);
+                 
+                 logger(@"Now stopping observation mode for the following directories:",false);
+                 
+                 NSArray *tmp = (__bridge NSArray*)pathsToWatch;
+                 for (NSString *entry in tmp) {
+                     logger(entry,false);
+                 }
+                 
+             }
+             @catch(NSException *e){
+                 logger(@"Error during stopping observation mode.",false);
+             }
+             
+         }
+
+
+
+
+         - (int) initCurses
+         
+         {
+             if (!verbose){
+             int colMax=0;
+             int rowMax=0;
+             
+             raw();
+             initscr();
+             
+             getyx(stdscr,row,col);
+             getmaxyx(stdscr, rowMax, colMax);
+             move(0,0);
+
+             
+             if (colMax>=80) return 0;
+             else return -1;
+             }
+             else
+                 return -1;
+             
+         }
+         
+         
+         - (void) printSummary{
+             
+             move(offsetSummary,0);
+             [self curseLine:@"------------------------------------------------------------------------------"];
+             [self curseLine:@"Starting to clean the following directories in observation mode"];
+             
+             
+             //    NSArray *tmp = (__bridge NSArray*)pathsToWatch;
+             //    for (NSString *entry in tmp) {
+             //        [self curseLine:tmp];
+             //
+             //    }
+             //
+             //    [self curseLine:@"------------------------------------------------------------------------------"];
+             //
+             //    refresh();
+             
+             
+         }
+         
+         
+         
+         - (void) printIntroduction{
+             
+             if (!verbose){
+                 [self curseLine:@"******************************************************************************"];
+                 [self curseLine:@"                  Keep OS X folders clean of temporary files   "];
+                 [self curseLine:@"******************************************************************************"];
+                 [self curseLine:@"##     ##    ###     ######  ########  ########  ##     ##  ######  ##     ## "];
+                 [self curseLine:@"###   ###   ## ##   ##    ## ##     ## ##     ## ##     ## ##    ## ##     ## "];
+                 [self curseLine:@"#### ####  ##   ##  ##       ##     ## ##     ## ##     ## ##       ##     ## "];
+                 [self curseLine:@"## ### ## ##     ## ##       ########  ########  ##     ##  ######  ######### "];
+                 [self curseLine:@"##     ## ######### ##       ##     ## ##   ##   ##     ##       ## ##     ## "];
+                 [self curseLine:@"##     ## ##     ## ##    ## ##     ## ##    ##  ##     ## ##    ## ##     ## "];
+                 [self curseLine:@"##     ## ##     ##  ######  ########  ##     ##  #######   ######  ##     ## "];
+                 [self curseLine:@"******************************************************************************"];
+                 [self curseLine:@"For comments and bugs please visit https://github.com/nils-tekampe/macbrush   "];
+                 [self curseLine:@"******************************************************************************"];
+                 
+                 
+                 refresh();
+             }
+             
+         }
+         
+         
+         - (void) curseLine:(NSString *)_text{
+             
+             move(row,0);
+             printw([_text UTF8String]);
+             row++;
+             refresh();
+             
+         }
+         
+         - (void) curseLineWithoutLineFeed:(NSString *)_text{
+             
+             move(row,0);
+             printw([_text UTF8String]);
+             refresh();
+             
+         }
+         
+         - (void) curseLineWithTab:(NSString *)_text{
+             
+             move(row,39);
+             printw([_text UTF8String]);
+             row++;
+             refresh();
+             
+         }
+
+- (NSString *) stripDirectoryForPrinting:(NSString *)_directory{
+    //stripping the directory name down to 40 characters if longer. Also add brackets
+    
+    if (_directory.length>38){
+        return [NSString stringWithFormat:@"%1$@%2$@%3@%4@%5@", [_directory substringToIndex:15], @"...", [_directory substringFromIndex:_directory.length-20], @"]"];
     }
+    else
+        return [NSString stringWithFormat:@"%1$@%2$@%3@", @"[", _directory, @"]"];
     
-    //reset statistics
-    for(PatternMatchingString *pattern in patternMatchingArray)
-    {
-        pattern.cleanCount=0;
-    }
-    
-    NSDirectoryEnumerator *directoryEnumerator = [[NSFileManager defaultManager] enumeratorAtPath:directory];
-    
-    
-    for (NSString *file in directoryEnumerator) {
-        NSString *filename=file;
-        filename= [directory stringByAppendingPathComponent:file];
-        [self processFile:filename];
-    }
-    
-    //inform the user about the result
-    //in case the output shall be verbose, we directly push it to stdout
-    if (verbose){
-        logger([NSString stringWithFormat:@"%@%@", @"Finished cleaning directory: " , directory],true);
-        logger([NSString stringWithFormat:@"%d%@%@%@",(int)sum_dotunderscore, @" " ,@"._", @" files have been removed"],true);
-        
-        sum_dotunderscore=0; //Resetting coutner for observation mode
-        
-        
-        for(PatternMatchingString *pattern in patternMatchingArray)
-        {
-            
-            logger([NSString stringWithFormat:@"%d%@%@%@",(int)pattern.cleanCount, @" " ,pattern.pattern, @" files have been removed"],true);
-            pattern.cleanCount=0; //Restting counter for observation mode
-        }
-    }
-    //otheriwse we use the curse summary
-    else {
-        
-        
-        printw("Finished cleaning directory: ");
-        [self curseLine:directory];
-        [self curseLine:[NSString stringWithFormat:@"%d ._ files have been removed", sum_dotunderscore]];
-        
-        sum_dotunderscore=0; //Resetting coutner for observation mode
-     
-        for(PatternMatchingString *pattern in patternMatchingArray)
-        {
-            [self curseLine:[NSString stringWithFormat:@"%d%@%@%@",(int)pattern.cleanCount, @" " ,pattern.pattern, @" files have been removed"]];
-            pattern.cleanCount=0; //Restting counter for observation mode
-        }
-        [self curseLine:@"------------------------------------------------------------------------------"];
-        
-    }
-    
-    offsetSummary=row;
 }
 
-
-/**
- This function processes a file/folder and determines whether it should be removed. If the file has been identified for removal, the function also tries to remove the file.
- @param file The file to be processed
- @returns true if the file has been removed sucesfully Returns false if the file has not been identified to be removed or could not be removed (e.g. due to a lack of permissions.
- */
--(bool) processFile:(NSString*) file
-{
-    
-    NSFileManager *manager = [NSFileManager defaultManager];
-    NSError *error = nil;
-    
-    NSString* pattern=@"._";
-    
-    logger([NSString stringWithFormat:@"%@%@", @" Processing file: " , file],true);
-    
-    ///First we look for ´._ files
-    ///._ files will only be removed if a corresponding base file is existing
-    //Example: _.test.txt will be removed if a file name test.txt is existing in the same folder.
-    
-    if ([file rangeOfString:pattern].location == NSNotFound) {
-        
-        //let's build the name of the potentially corresponding file
-        NSString* theFileName = file.lastPathComponent;
-        NSString *path = file.stringByDeletingLastPathComponent;
-        NSString *potentialTmpFile=[NSString stringWithFormat:@"%@/%@%@", path,@"._",theFileName];
-        
-        logger([NSString stringWithFormat:@"%@%@", @"Potential ._ file:" , potentialTmpFile],true);
-        
-        if([[NSFileManager defaultManager] fileExistsAtPath:potentialTmpFile])
-        {
-            if (isFile(potentialTmpFile)){
-                
-                logger([NSString stringWithFormat:@"%@%@", @"Found the following ._ file:" , potentialTmpFile],true);
-                
-                if (!simulate && !ignore_dot_underscore){
-                    
-                    
-                    if ([manager removeItemAtPath:potentialTmpFile error:&error])
-                    {
-                        logger(@"Sucesfully removed file",true);
-                        sum_dotunderscore++;
-                        
-                        return true;
-                    }
-                    else  {
-                        logger(@"Error removing file",true);
-                        return false;
-                    }
-                }
-            }
-        }
-        
-        
-        
-    }
-    
-    ///Now looking for the other patterns in a loop
-    
-    for(PatternMatchingString *pattern in patternMatchingArray)
-    {
-        if ([file rangeOfString:pattern.pattern].location != NSNotFound) {
-            
-            logger([NSString stringWithFormat:@"%@%@", @"Found the following file:" , file],true);
-            
-            if (!simulate && !pattern.ignore){
-                if ([manager removeItemAtPath:file error:&error])
-                {
-                    logger(@"Sucesfully removed file",true);
-                    pattern.matchCount++;
-                    return true;
-                }
-                else  {
-                    logger(@"Error removing file",true);
-                    return false;
-                }
-                
-            }
-            
-        }
-    }
-    return false;
-}
-
-- (void) start{
-    
-    @try{
-        
-        
-        FSEventStreamStart(stream);
-        NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(printSummary) userInfo:nil repeats:YES];
-        
-    }
-    @catch(NSException *e){
-        logger(@"Error during observation mode.",false);
-    }
-    
-}
-
-
-- (void) stop{
-    
-    @try{
-        
-        
-        FSEventStreamStop(stream);
-        
-        logger(@"Now stopping observation mode for the following directories:",false);
-        
-        NSArray *tmp = (__bridge NSArray*)pathsToWatch;
-        for (NSString *entry in tmp) {
-            logger(entry,false);
-        }
-        
-    }
-    @catch(NSException *e){
-        logger(@"Error during stopping observation mode.",false);
-    }
-    
-}
-- (void) initCurses
-
-{
-    raw();
-    initscr();
-    
-    getyx(stdscr,row,col);
-    move(0,0);
-    
-    
-    
-}
-
-
-- (void) printSummary{
-
-    move(offsetSummary,0);
-    [self curseLine:@"------------------------------------------------------------------------------"];
-    [self curseLine:@"Starting to clean the following directories in observation mode"];
-    
-    
-//    NSArray *tmp = (__bridge NSArray*)pathsToWatch;
-//    for (NSString *entry in tmp) {
-//        [self curseLine:tmp];
-//        
-//    }
-//    
-//    [self curseLine:@"------------------------------------------------------------------------------"];
-//    
-//    refresh();
-    
-    
-}
-
-
-
-- (void) printIntroduction{
-    
-    if (!verbose){
-        [self curseLine:@"******************************************************************************"];
-        [self curseLine:@"                  Keep OS X folders clean of temporary files   "];
-        [self curseLine:@"******************************************************************************"];
-        [self curseLine:@"##     ##    ###     ######  ########  ########  ##     ##  ######  ##     ## "];
-        [self curseLine:@"###   ###   ## ##   ##    ## ##     ## ##     ## ##     ## ##    ## ##     ## "];
-        [self curseLine:@"#### ####  ##   ##  ##       ##     ## ##     ## ##     ## ##       ##     ## "];
-        [self curseLine:@"## ### ## ##     ## ##       ########  ########  ##     ##  ######  ######### "];
-        [self curseLine:@"##     ## ######### ##       ##     ## ##   ##   ##     ##       ## ##     ## "];
-        [self curseLine:@"##     ## ##     ## ##    ## ##     ## ##    ##  ##     ## ##    ## ##     ## "];
-        [self curseLine:@"##     ## ##     ##  ######  ########  ##     ##  #######   ######  ##     ## "];
-        [self curseLine:@"******************************************************************************"];
-        [self curseLine:@"For comments and bugs please visit https://github.com/nils-tekampe/macbrush   "];
-        [self curseLine:@"******************************************************************************"];
-        
-        
-        refresh();
-    }
-    
-}
-
-
-- (void) curseLine:(NSString *)_text{
-    
-    move(row,0);
-    printw([_text UTF8String]);
-    row++;
-    refresh();
-    
-}
-
-- (void) curseLineWithoutLineFeed:(NSString *)_text{
-    
-    move(row,0);
-    printw([_text UTF8String]);
-    refresh();
-    
-}
-
-
-@end
+         @end
 
 
 
