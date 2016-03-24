@@ -36,8 +36,11 @@
 - (void) start;
 - (void) stop;
 - (void) restart;
-- (void) printSummary1;
+- (void) printSummary;
+- (void) printIntroduction;
 - (void) initCurses;
+- (void) curseLine:(NSString *)_text;
+- (void) curseLineWithoutLineFeed:(NSString *)_text;
 - (void) logger:(NSString*)message:(bool)verbose_only;
 -(bool) processFile:(NSString*) file;
 -(void) cleanDirectory:(NSString*) directory;

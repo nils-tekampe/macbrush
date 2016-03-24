@@ -14,10 +14,11 @@
 @implementation MacBrush
 
 //variables for some statistics
-int sumDotUnderscore=0;
+int sumDotUnderscore;
 int col=-99;
-int row=-99;
-int counterPrinter=0;
+int row=0;
+//int counterPrinter=0;
+int offsetSummary=0;
 
 - (id) initWithValue:(bool)_ignore_dot_underscore:(bool)_ignore_apdisk:(bool)_ignore_dsstore:(bool)_ignore_volumeicon:(bool)_simulate:(bool)_verbose:(NSArray*) _pathesToWatch {
     self = [self init];
@@ -86,8 +87,10 @@ int counterPrinter=0;
         FSEventStreamScheduleWithRunLoop(stream, CFRunLoopGetCurrent(),kCFRunLoopDefaultMode);
         
         
-       
-        if (!verbose) [self initCurses];
+        
+        if (!verbose){ [self initCurses];}
+        
+        [self printIntroduction];
     }
     return self;
 }
@@ -141,14 +144,26 @@ int counterPrinter=0;
 //Todo: function could use some error handling
 -(void) cleanDirectory:(NSString*) directory
 {
-    logger([NSString stringWithFormat:@"%@%@", @"Starting to clean directory :" , directory],false);
+    //Inform the user that the directory will be cleaned
+    if (verbose){
+        logger([NSString stringWithFormat:@"%@%@", @"Starting to clean directory :" , directory],false);
+        
+        
+    }
+    else
+    {
+        move (row,0);
+        printw("Starting to clean directory :");
+        printw([directory UTF8String]);
+        row++;
+        
+    }
     
     //reset statistics
     for(PatternMatchingString *pattern in patternMatchingArray)
     {
         pattern.cleanCount=0;
     }
-    
     
     NSDirectoryEnumerator *directoryEnumerator = [[NSFileManager defaultManager] enumeratorAtPath:directory];
     
@@ -159,20 +174,42 @@ int counterPrinter=0;
         [self processFile:filename];
     }
     
-    
-    logger([NSString stringWithFormat:@"%@%@", @"Finished cleaning directory :" , directory],false);
-    
-    logger([NSString stringWithFormat:@"%d%@%@%@",(int)sum_dotunderscore, @" " ,@"._", @" files have been removed"],false);
-    
-    sum_dotunderscore=0; //Resetting coutner for observation mode
-    
-    
-    for(PatternMatchingString *pattern in patternMatchingArray)
-    {
+    //inform the user about the result
+    //in case the output shall be verbose, we directly push it to stdout
+    if (verbose){
+        logger([NSString stringWithFormat:@"%@%@", @"Finished cleaning directory: " , directory],true);
+        logger([NSString stringWithFormat:@"%d%@%@%@",(int)sum_dotunderscore, @" " ,@"._", @" files have been removed"],true);
         
-        logger([NSString stringWithFormat:@"%d%@%@%@",(int)pattern.cleanCount, @" " ,pattern.pattern, @" files have been removed"],false);
-        pattern.cleanCount=0; //Restting counter for observation mode
+        sum_dotunderscore=0; //Resetting coutner for observation mode
+        
+        
+        for(PatternMatchingString *pattern in patternMatchingArray)
+        {
+            
+            logger([NSString stringWithFormat:@"%d%@%@%@",(int)pattern.cleanCount, @" " ,pattern.pattern, @" files have been removed"],true);
+            pattern.cleanCount=0; //Restting counter for observation mode
+        }
     }
+    //otheriwse we use the curse summary
+    else {
+        
+        
+        printw("Finished cleaning directory: ");
+        [self curseLine:directory];
+        [self curseLine:[NSString stringWithFormat:@"%d ._ files have been removed", sum_dotunderscore]];
+        
+        sum_dotunderscore=0; //Resetting coutner for observation mode
+     
+        for(PatternMatchingString *pattern in patternMatchingArray)
+        {
+            [self curseLine:[NSString stringWithFormat:@"%d%@%@%@",(int)pattern.cleanCount, @" " ,pattern.pattern, @" files have been removed"]];
+            pattern.cleanCount=0; //Restting counter for observation mode
+        }
+        [self curseLine:@"------------------------------------------------------------------------------"];
+        
+    }
+    
+    offsetSummary=row;
 }
 
 
@@ -260,15 +297,12 @@ int counterPrinter=0;
 }
 
 - (void) start{
-    logger(@"Start method",false);
+    
     @try{
         
         
         FSEventStreamStart(stream);
-        
-        
-        NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(printSummary1) userInfo:nil repeats:YES];
-        
+        NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(printSummary) userInfo:nil repeats:YES];
         
     }
     @catch(NSException *e){
@@ -312,38 +346,68 @@ int counterPrinter=0;
 }
 
 
-- (void) printSummary1{
+- (void) printSummary{
+
+    move(offsetSummary,0);
+    [self curseLine:@"------------------------------------------------------------------------------"];
+    [self curseLine:@"Starting to clean the following directories in observation mode"];
     
-    int i=0;
-    move(0,0);
-    printw("************************************");
-    move(1,0);
-    printw("*****Starting macbrush**************");
-    move(2,0);
-    printw("************************************");
-    move(3,0);
-    printw("Starting to clean the following directories");
-    move(4,0);
     
-    NSArray *tmp = (__bridge NSArray*)pathsToWatch;
-    for (NSString *entry in tmp) {
-        const char* tmpString  = [entry UTF8String];
-        printw(tmpString);
-        i++;
-        move(4+i,0);
- 
-    }
-    move(4+i,0);
-    printw("************************************");
-    
-    refresh();
+//    NSArray *tmp = (__bridge NSArray*)pathsToWatch;
+//    for (NSString *entry in tmp) {
+//        [self curseLine:tmp];
+//        
+//    }
+//    
+//    [self curseLine:@"------------------------------------------------------------------------------"];
+//    
+//    refresh();
     
     
 }
 
 
 
+- (void) printIntroduction{
+    
+    if (!verbose){
+        [self curseLine:@"******************************************************************************"];
+        [self curseLine:@"                  Keep OS X folders clean of temporary files   "];
+        [self curseLine:@"******************************************************************************"];
+        [self curseLine:@"##     ##    ###     ######  ########  ########  ##     ##  ######  ##     ## "];
+        [self curseLine:@"###   ###   ## ##   ##    ## ##     ## ##     ## ##     ## ##    ## ##     ## "];
+        [self curseLine:@"#### ####  ##   ##  ##       ##     ## ##     ## ##     ## ##       ##     ## "];
+        [self curseLine:@"## ### ## ##     ## ##       ########  ########  ##     ##  ######  ######### "];
+        [self curseLine:@"##     ## ######### ##       ##     ## ##   ##   ##     ##       ## ##     ## "];
+        [self curseLine:@"##     ## ##     ## ##    ## ##     ## ##    ##  ##     ## ##    ## ##     ## "];
+        [self curseLine:@"##     ## ##     ##  ######  ########  ##     ##  #######   ######  ##     ## "];
+        [self curseLine:@"******************************************************************************"];
+        [self curseLine:@"For comments and bugs please visit https://github.com/nils-tekampe/macbrush   "];
+        [self curseLine:@"******************************************************************************"];
+        
+        
+        refresh();
+    }
+    
+}
 
+
+- (void) curseLine:(NSString *)_text{
+    
+    move(row,0);
+    printw([_text UTF8String]);
+    row++;
+    refresh();
+    
+}
+
+- (void) curseLineWithoutLineFeed:(NSString *)_text{
+    
+    move(row,0);
+    printw([_text UTF8String]);
+    refresh();
+    
+}
 
 
 @end

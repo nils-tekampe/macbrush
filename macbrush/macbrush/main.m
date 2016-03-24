@@ -33,12 +33,12 @@ NSArray *patternMatchingArray;
 
 int main(int argc, char * argv[]) {
     
-
+    
     
     //****************************************
     //Take care of options and arguments
     //****************************************
-
+    
     
     // Create settings stack.
     GBSettings *factoryDefaults = [GBSettings settingsWithName:@"Factory" parent:nil];
@@ -103,10 +103,11 @@ int main(int argc, char * argv[]) {
     
     bool IsTerminalAvailable = (term != NULL);
     
-    if (!IsTerminalAvailable)
+    if (!IsTerminalAvailable){
         verbose=true;
-
-                               
+        logger([NSString stringWithFormat:@" Overriding setting for verbose as no ncurses terminal can be found."],true);
+    }
+    
     NSArray *arguments = parser.arguments;
     
     CFArrayRef pathsToWatch = (__bridge CFArrayRef)arguments;
@@ -138,17 +139,17 @@ int main(int argc, char * argv[]) {
     }
     
     
-    MacBrush *brusher = [[MacBrush alloc] initWithValue:[settings boolForKey:@"ignore-dot-underscore"] :[settings boolForKey:@"ignore-apdisk"]:[settings boolForKey:@"ignore-dsstore"] :[settings boolForKey:@"ignore-volumeicon"] :[settings boolForKey:@"simulate"] :[settings boolForKey:@"verbose"]:arguments];
+    MacBrush *brusher = [[MacBrush alloc] initWithValue:[settings boolForKey:@"ignore-dot-underscore"] :[settings boolForKey:@"ignore-apdisk"]:[settings boolForKey:@"ignore-dsstore"] :[settings boolForKey:@"ignore-volumeicon"] :[settings boolForKey:@"simulate"] :verbose:arguments];
     
-
-
+    
+    
     
     MainController *mainer = [[MainController alloc] init];
     [mainer setup];
     
     
     [NSEvent addLocalMonitorForEventsMatchingMask:NSKeyDownMask handler:^(NSEvent *event){NSLog(@"Key pressed"); return event;}];
-
+    
     
     //********************************************************
     //Starting main functionality. 1st step: Clean directories
@@ -170,7 +171,7 @@ int main(int argc, char * argv[]) {
         
         [brusher start];
         
-
+        
         CFRunLoopRun();
         
     }
@@ -179,16 +180,16 @@ int main(int argc, char * argv[]) {
         logger(@"Skipping observation mode.",false);
     }
     
-        
+    
     return 0;
     
     
 }
 
 void startFunktionFuerNils(MacBrush *_brush){
-
+    
     [_brush start];
-
+    
 }
 
 /**
