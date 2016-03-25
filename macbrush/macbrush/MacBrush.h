@@ -37,8 +37,7 @@
 - (void) stop;
 - (void) restart;
 - (void) printSummary;
-- (void) printIntroduction;
-- (int) initCurses;
+- (void) printIntroduction; 
 - (void) curseLine:(NSString *)_text;
 - (void) curseLineWithoutLineFeed:(NSString *)_text;
 - (void) curseLineWithTab:(NSString *)_text;

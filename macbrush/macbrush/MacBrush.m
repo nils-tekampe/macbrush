@@ -87,13 +87,7 @@ int offsetSummary=0;
         FSEventStreamScheduleWithRunLoop(stream, CFRunLoopGetCurrent(),kCFRunLoopDefaultMode);
         
         
-        //Todo: diesen Teil würde ich eher in Main.m sehen. auch die initfunktion 
-        if ([self initCurses]!=0) {
             
-        verbose=true;
-            logger(@"Your terminal is below 80 characters in width. Switching to verbose mode as standard mode will need more than 80 characters");
-        }
-        
         [self printIntroduction];
     }
     return self;
@@ -349,28 +343,7 @@ int offsetSummary=0;
 
 
 
-         - (int) initCurses
-         
-         {
-             if (!verbose){
-             int colMax=0;
-             int rowMax=0;
-             
-             raw();
-             initscr();
-             
-             getyx(stdscr,row,col);
-             getmaxyx(stdscr, rowMax, colMax);
-             move(0,0);
 
-             
-             if (colMax>=80) return 0;
-             else return -1;
-             }
-             else
-                 return -1;
-             
-         }
          
          
          - (void) printSummary{
