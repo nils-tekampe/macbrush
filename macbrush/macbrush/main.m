@@ -28,8 +28,6 @@ bool skipClean;
 bool skipObservation;
 
 
-
-
 NSArray *patternMatchingArray;
 
 int main(int argc, char * argv[]) {
@@ -112,7 +110,7 @@ int main(int argc, char * argv[]) {
         verbose=true;
         logger([NSString stringWithFormat:@" Overriding setting for verbose as no ncurses terminal can be found."],true);
     }
-
+    
     
     NSArray *arguments = parser.arguments;
     
@@ -151,7 +149,7 @@ int main(int argc, char * argv[]) {
     //  [NSEvent addLocalMonitorForEventsMatchingMask:NSKeyDownMask handler:^(NSEvent *event){logger(@"Test keystroke",false); return event;}];
     
     //  NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(printSummary) userInfo:nil repeats:YES];
-
+    
     
     [NSEvent addLocalMonitorForEventsMatchingMask:NSKeyDownMask handler:^(NSEvent *event){NSLog(@"Key pressed"); return event;}];
     
@@ -229,9 +227,9 @@ void logger(NSString *message, bool verbose_only){
 
 /**
  Function for initializing ncurses
-Will return 0 in case that curses could be initialized
-Will return -1 in case terminal is too small
-Will return -2 in case no terminal is supported (as we are in debuging)
+ @return 0 in case that curses could be initialized
+ @return -1 in case terminal is too small
+ @return -2 in case no terminal is supported (as we are in debuging)
  */
 int initCurses()
 
@@ -252,10 +250,12 @@ int initCurses()
         raw();
         initscr();
         
-       // getyx(stdscr,row,col);
+        //****************************************
+        //Evaluate wheterh the terminal has the minimum width
+        //****************************************
+        
         getmaxyx(stdscr, rowMax, colMax);
         move(0,0);
-        
         
         if (colMax>=80) return 0;
         else return -1;
